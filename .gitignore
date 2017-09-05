@@ -20,3 +20,6 @@
 
 # Ignore password files
 .env
+
+# Ignore IDE files
+.idea/*
