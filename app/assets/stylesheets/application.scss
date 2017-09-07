@@ -14,8 +14,9 @@
 /* *= require_self*/
  */
 @import "bootstrap";
-@import "sb-admin";
 @import "font-awesome-sprockets";
 @import "font-awesome";
+@import "dataTables.bootstrap4";
+@import "sb-admin";
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "pages";
