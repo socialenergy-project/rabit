@@ -7,3 +7,24 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 end
+
+class ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+  setup do
+    host! "localhost:3000"
+  end
+
+  def sign_in_as_admin
+    user = users(:one)
+    user.add_role "admin"
+    sign_in user
+    user
+  end
+
+  def sign_in_as_user
+    user = users(:two)
+    sign_in user
+    user
+  end
+
+end
