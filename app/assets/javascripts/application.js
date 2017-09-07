@@ -16,6 +16,4 @@
 //= require jquery_ujs
 //= require popper
 //= require bootstrap
-//= require html5shiv
-//= require respond.min
 //= require_tree .
