@@ -23,3 +23,6 @@
 
 # Ignore IDE files
 .idea/*
+
+# Ignore vim files
+*.swp
