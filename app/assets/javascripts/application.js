@@ -20,5 +20,5 @@
 //= require Chart.min
 //= require jquery.dataTables
 //= require dataTables.bootstrap4
-//= require sb-admin.min
+//= require sb-admin
 //= require_tree .
