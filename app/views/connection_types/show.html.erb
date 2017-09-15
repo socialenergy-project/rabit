@@ -10,12 +10,18 @@
       <div class="card-body">
                     <p>
               <strong>Name:</strong>
-              <%= @connection_type.name %>
+              
+                  <%= @connection_type.name-%>
+              
+
             </p>
 
                     <p>
               <strong>User:</strong>
-              <%= @connection_type.user&.name %>
+              
+                  <%= link_to @connection_type.user&.name, user_path(@connection_type.user) if @connection_type.user -%>
+              
+
             </p>
 
         
