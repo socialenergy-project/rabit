@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :prosumer_categories
   resources :connection_types
   devise_for :users
   root 'pages#home'

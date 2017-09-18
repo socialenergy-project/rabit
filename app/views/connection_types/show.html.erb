@@ -16,14 +16,6 @@
 
             </p>
 
-                    <p>
-              <strong>User:</strong>
-              
-                  <%= link_to @connection_type.user&.name, user_path(@connection_type.user) if @connection_type.user -%>
-              
-
-            </p>
-
         
         <%= link_to 'Edit', edit_connection_type_path(@connection_type), class: 'btn btn-warning btn-sm' if can? :edit, @connection_type %> |
         <%= link_to 'All Connection Types', connection_types_path, class: 'btn btn-info btn-sm' %>

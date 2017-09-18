@@ -1,0 +1,2 @@
+class ProsumerCategory < ApplicationRecord
+end

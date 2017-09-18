@@ -1,0 +1,24 @@
+<%= form_with(model: connection_type, local: true) do |form| %>
+  <% if connection_type.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(connection_type.errors.count, "error") %> prohibited this connection_type from being saved:</h2>
+
+      <ul>
+      <% connection_type.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :name, class: "col-2 col-form-label" %>
+    <div class="col-10">
+      <%= form.text_field :name, id: :connection_type_name, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary btn-sm" %>
+  </div>
+<% end %>
