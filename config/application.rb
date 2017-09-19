@@ -16,7 +16,7 @@ module Rat
     # -- all .rb files in that directory are automatically loaded.
 
     config.generators do |g|
-      g.stylesheets false
+      g.scaffold_stylesheet false
     end
   end
 end
