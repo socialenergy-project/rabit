@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :intervals
   resources :clusters
   resources :clusterings
   resources :prosumer_categories

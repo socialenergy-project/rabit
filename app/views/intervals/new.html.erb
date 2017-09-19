@@ -1,0 +1,19 @@
+<%= content_for :title, 'New Interval' %>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        interval properties
+      </div>
+      <div class="card-body">
+        <%= render 'form', interval: @interval %>
+
+        <%= link_to 'All Intervals', intervals_path, class: 'btn btn-info btn-sm' %>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>

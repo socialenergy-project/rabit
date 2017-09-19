@@ -5,3 +5,19 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+Interval.where(duration: 900).first_or_initialize.tap do |interval|
+  interval.name = "15 minutes"
+  interval.save
+end
+
+Interval.where(duration: 3600).first_or_initialize.tap do |interval|
+  interval.name = "1 hour"
+  interval.save
+end
+
+Interval.where(duration: 86400).first_or_initialize.tap do |interval|
+  interval.name = "Daily"
+  interval.save
+end
+
