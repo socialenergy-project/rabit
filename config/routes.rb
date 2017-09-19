@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :clusters
   resources :clusterings
   resources :prosumer_categories
   resources :connection_types
