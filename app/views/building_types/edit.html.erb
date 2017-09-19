@@ -1,0 +1,20 @@
+<%= content_for :title, 'Editing Building Type' %>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        building_type properties
+      </div>
+      <div class="card-body">
+        <%= render 'form', building_type: @building_type %>
+
+        <%= link_to 'Show', @building_type, class: 'btn btn-info btn-sm' %> |
+        <%= link_to 'All Building Types', building_types_path, class: 'btn btn-info btn-sm' %>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>

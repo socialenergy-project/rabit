@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :building_types
   resources :intervals
   resources :clusters
   resources :clusterings
