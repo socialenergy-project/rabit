@@ -1,0 +1,31 @@
+<%= form_with(model: clustering, local: true) do |form| %>
+  <% if clustering.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(clustering.errors.count, "error") %> prohibited this clustering from being saved:</h2>
+
+      <ul>
+      <% clustering.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :name, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :name, id: :clustering_name, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :description, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_area :description, id: :clustering_description, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary btn-sm" %>
+  </div>
+<% end %>

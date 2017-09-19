@@ -1,0 +1,37 @@
+<%= content_for :title, 'Editing Clustering' %>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        clustering properties
+      </div>
+      <div class="card-body">
+                    <p>
+              <strong>Name:</strong>
+              
+                  <%= @clustering.name-%>
+              
+
+            </p>
+
+                    <p>
+              <strong>Description:</strong>
+              
+                  <%= @clustering.description-%>
+              
+
+            </p>
+
+        
+        <%= link_to 'Edit', edit_clustering_path(@clustering), class: 'btn btn-warning btn-sm' if can? :edit, @clustering %> |
+        <%= link_to 'All Clusterings', clusterings_path, class: 'btn btn-info btn-sm' %>
+
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>
+
