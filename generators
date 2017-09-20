@@ -1,0 +1,11 @@
+rails generate scaffold BuildingType name:string
+rails generate scaffold Clustering name:string description:text
+rails generate scaffold Community name:string description:text clustering:references
+rails generate scaffold ConnectionType name:string
+rails generate scaffold Interval name:string duration:integer
+rails generate scaffold ConsumerCategory name:string description:text real_time:boolean
+rails generate scaffold Consumer name:string location:string edms_id:string building_type:references connection_type:references location_x:float location_y:float feeder_id:string consumer_category:references
+rails generate scaffold_controller User email:string name:string
+rails generate migration CreateJoinTableConsumerCommunity consumers communities
+rails generate migration CreateJoinTableConsumerUser consumers users
+
