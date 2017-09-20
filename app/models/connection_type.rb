@@ -1,3 +1,3 @@
 class ConnectionType < ApplicationRecord
-  has_many :prosumers
+  has_many :consumers
 end

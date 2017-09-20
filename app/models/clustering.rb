@@ -1,3 +1,3 @@
 class Clustering < ApplicationRecord
-  has_many :clusters, :dependent => :destroy
+  has_many :communities, dependent: :destroy
 end

@@ -1,3 +1,3 @@
 class BuildingType < ApplicationRecord
-  has_many :prosumers
+  has_many :consumers
 end

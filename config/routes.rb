@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
-  resources :prosumers
+  resources :consumers
+  resources :consumer_categories
+  resources :communities
   resources :building_types
   resources :intervals
-  resources :clusters
   resources :clusterings
-  resources :prosumer_categories
   resources :connection_types
   devise_for :users
   root 'pages#home'
