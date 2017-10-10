@@ -2,7 +2,7 @@
   overflow-x: hidden;
 
   background: white;
-  @media (min-width: 992px) {
+  @media (min-width: 768px) {
     margin-left: $sidenav-base-width;
   }
 }
@@ -20,7 +20,7 @@
 
 body.sidenav-toggled {
   .content-wrapper {
-    @media (min-width: 992px) {
+    @media (min-width: 768px) {
       margin-left: $sidenav-collapsed-width;
     }
   }

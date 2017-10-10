@@ -5,6 +5,10 @@ html {
   min-height: 100%;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 body.sticky-footer {
   margin-bottom: 56px;
   .content-wrapper {
@@ -13,7 +17,7 @@ body.sticky-footer {
 }
 
 body.fixed-nav {
-  padding-top: 103px;
+  padding-top: 56px;
 }
 
 .content-wrapper {

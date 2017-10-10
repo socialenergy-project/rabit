@@ -21,4 +21,6 @@
 //= require jquery.dataTables
 //= require dataTables.bootstrap4
 //= require sb-admin
+//= require sb-admin-datatables
+//= require jquery.scrollTo
 //= require_tree .
