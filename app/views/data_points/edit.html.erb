@@ -1,0 +1,20 @@
+<%= content_for :title, 'Editing Data Point' %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        data_point properties
+      </div>
+      <div class="card-body">
+        <%= render 'form', data_point: @data_point %>
+
+        <%= link_to 'Show', @data_point, class: 'btn btn-info btn-sm' %> |
+        <%= link_to 'All Data Points', data_points_path, class: 'btn btn-info btn-sm' %>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>

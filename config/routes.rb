@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :data_points
   resources :consumers
   resources :consumer_categories
   resources :communities

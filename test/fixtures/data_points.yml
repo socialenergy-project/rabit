@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  consumer: one
+  interval: one
+  timestamp: 
+  consumption: 1.5
+  flexibility: 1.5
+
+two:
+  consumer: two
+  interval: two
+  timestamp: 
+  consumption: 1.5
+  flexibility: 1.5
