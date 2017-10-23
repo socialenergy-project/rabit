@@ -1,0 +1,24 @@
+<%= form_with(model: ecc_type, local: true) do |form| %>
+    <% if ecc_type.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(ecc_type.errors.count, "error") %> prohibited this ecc_type from being saved:</h2>
+
+          <ul>
+            <% ecc_type.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="form-group row">
+      <%= form.label :name, class: "col-sm-3 col-form-label" %>
+      <div class="col-sm-9">
+        <%= form.text_field :name, id: :ecc_type_name, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="actions">
+      <%= form.submit class: "btn btn-primary btn-sm" %>
+    </div>
+<% end %>

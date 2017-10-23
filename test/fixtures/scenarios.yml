@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  starttime: 2017-10-23 13:45:40
+  endtime: 2017-10-23 13:45:40
+  interval: one
+  ecc_type: one
+  energy_cost_parameter: 1.5
+  profit_margin_parameter: 1.5
+  flexibility_factor: 1.5
+  gamma_parameter: 1.5
+
+two:
+  name: MyString
+  starttime: 2017-10-23 13:45:40
+  endtime: 2017-10-23 13:45:40
+  interval: two
+  ecc_type: two
+  energy_cost_parameter: 1.5
+  profit_margin_parameter: 1.5
+  flexibility_factor: 1.5
+  gamma_parameter: 1.5

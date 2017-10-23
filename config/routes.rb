@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :scenarios
+  resources :energy_programs
+  resources :ecc_types
   resources :data_points
   resources :consumers
   resources :consumer_categories
