@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  scenario: one
+  timestamp: 2017-10-26 12:51:38
+  energy_cost: 1.5
+  user_welfare: 1.5
+  retailer_profit: 1.5
+
+two:
+  scenario: two
+  timestamp: 2017-10-26 12:51:38
+  energy_cost: 1.5
+  user_welfare: 1.5
+  retailer_profit: 1.5
