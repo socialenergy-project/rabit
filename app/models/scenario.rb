@@ -9,10 +9,11 @@ class Scenario < ApplicationRecord
 
   after_commit do
     self.results&.destroy_all
-    Result.create!(self.interval.timestamps(self.starttime, self.endtime).map do |dt|
+    Result.create!(self.interval.timestamps(self.starttime, self.endtime).to_a.product(self.energy_programs).map do |dt, ep|
       {
           scenario: self,
           timestamp: dt,
+          energy_program_id: ep.id,
           energy_cost: rand * 10.0,
           user_welfare: rand * 10.0,
           retailer_profit: rand * 10.0,
