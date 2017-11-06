@@ -1,0 +1,3 @@
+[submodule "pricing_algorithms"]
+	path = pricing_algorithms
+	url = ./pricing_algorithms/
