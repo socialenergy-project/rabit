@@ -7,6 +7,7 @@ class CreateResults < ActiveRecord::Migration[5.1]
       t.float :energy_cost
       t.float :user_welfare
       t.float :retailer_profit
+      t.float :total_welfare
 
       t.timestamps
     end

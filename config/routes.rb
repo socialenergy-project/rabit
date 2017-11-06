@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :intervals
   resources :clusterings
   resources :connection_types
+  resources :flexibilities
   devise_for :users
   root 'pages#home'
   get 'pages/home'

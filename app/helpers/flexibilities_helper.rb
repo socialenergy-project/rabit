@@ -1,0 +1,2 @@
+module FlexibilitiesHelper
+end

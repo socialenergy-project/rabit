@@ -1,0 +1,20 @@
+<%= content_for :title, 'Editing Flexibility' %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        flexibility properties
+      </div>
+      <div class="card-body">
+        <%= render 'form', flexibility: @flexibility %>
+
+        <%= link_to 'Show', @flexibility, class: 'btn btn-info btn-sm' %> |
+        <%= link_to 'All Flexibilities', flexibilities_path, class: 'btn btn-info btn-sm' %>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>

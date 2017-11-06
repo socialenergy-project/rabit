@@ -1,0 +1,25 @@
+<%= content_for :title, @flexibility.name || @flexibility.id -%>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        flexibility properties
+      </div>
+      <div class="card-body">
+        <p>
+          <strong>Name:</strong>
+          <%= @flexibility.name-%>
+        </p>
+
+        <%= link_to 'Edit', edit_flexibility_path(@flexibility), class: 'btn btn-warning btn-sm' if can? :edit, @flexibility %> |
+        <%= link_to 'All Flexibilities', flexibilities_path, class: 'btn btn-info btn-sm' %>
+
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -8,7 +8,7 @@ class CreateScenarios < ActiveRecord::Migration[5.1]
       t.references :ecc_type, foreign_key: true
       t.float :energy_cost_parameter
       t.float :profit_margin_parameter
-      t.float :flexibility_factor
+      t.references :flexibility, foreign_key: true
       t.float :gamma_parameter
 
       t.timestamps
