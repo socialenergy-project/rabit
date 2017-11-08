@@ -15,6 +15,9 @@ git pull
 # update the database
 RAILS_ENV=production rails db:migrate
 
+# create new seeds
+[ "$1" == --seed ] && RAILS_ENV=production rails db:seed
+
 # and the static files
 RAILS_ENV=production rails assets:precompile
 
