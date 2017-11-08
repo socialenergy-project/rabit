@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This repository is the Research Algorithm Toolkit, developed in the context
+of the Horizon 2020 SocialEnergy project http://socialenergy-project.eu/. 
 
-Things you may want to cover:
+The purpose of this module is to allow administrators or priviledged RAT users
+to evaluate the performance of different pricing algorithms, on the portfolio
+of the SocialEnergy userbase.
 
-* Ruby version
+The portal is available at https://rat.socialenergy-project.eu.
 
-* System dependencies
+In order to be able to run the algorithms, you need to install the 
+"pricing algorithms" submodule 
+https://bitbucket.org/socialenergy-iccs/pricing_algorithms, 
+in a directory subdirectory of this repo, with the default name.
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Ensure that the submodule is installed correctly, by following the instruction
+in the corresponding README file 
