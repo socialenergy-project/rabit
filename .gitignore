@@ -26,3 +26,6 @@
 
 # Ignore vim files
 *.swp
+
+# Ignore csv files
+*.csv
