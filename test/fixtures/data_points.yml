@@ -3,13 +3,20 @@
 one:
   consumer: one
   interval: one
-  timestamp: 
+  timestamp: 2017-10-23 13:45:00
   consumption: 1.5
   flexibility: 1.5
 
 two:
   consumer: two
-  interval: two
-  timestamp: 
+  interval: one
+  timestamp: 2017-10-23 13:45:00
+  consumption: 1.5
+  flexibility: 1.5
+
+three:
+  consumer: three
+  interval: one
+  timestamp: 2017-10-23 13:45:00
   consumption: 1.5
   flexibility: 1.5
