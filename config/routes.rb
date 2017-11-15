@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :scenarios
+  resources :scenarios do
+    get :stderr, on: :member
+  end
   resources :energy_programs
   resources :ecc_types
   resources :data_points
