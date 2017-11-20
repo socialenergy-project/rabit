@@ -12,6 +12,9 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 # pull new code
 git pull
 
+# install new gems
+bundle install
+
 # update the database
 RAILS_ENV=production rails db:migrate
 
