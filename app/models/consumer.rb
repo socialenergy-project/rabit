@@ -6,4 +6,6 @@ class Consumer < ApplicationRecord
   has_many :data_points, dependent: :destroy
 
   scope :category, ->(cat) { where(consumer_category: cat) if cat.present? }
+
+  validates_associated :communities, message: ->(_class_obj, obj){ p "consumer OBJ is ", obj[:value]; obj[:value].map(&:errors).map(&:full_messages).join(',') }
 end
