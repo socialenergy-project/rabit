@@ -2,6 +2,7 @@
 
 one:
   name: MyString
+  user: :three
   starttime: 2017-10-23 13:45:00
   endtime: 2017-10-23 15:45:00
   interval: one

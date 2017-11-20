@@ -12,3 +12,6 @@ one:
 #
 two:
   email: test2@test.com
+
+three:
+  email: test3@test.com

@@ -21,8 +21,8 @@ class ActionDispatch::IntegrationTest
     user
   end
 
-  def sign_in_as_user
-    user = users(:two)
+  def sign_in_as_user(user_id = :two)
+    user = users(user_id)
     sign_in user
     user
   end
