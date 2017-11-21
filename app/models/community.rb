@@ -6,10 +6,13 @@ class Community < ApplicationRecord
   validate :consumer_belongs_to_only_one_community_per_clustering
 
   def consumer_belongs_to_only_one_community_per_clustering
-    p "Error checking: #{consumer_ids}, #{(clustering.communities - [self]).map(&:consumer_ids).flatten}"
-    if consumer_ids.any?{|c| (clustering.communities - [self]).map(&:consumer_ids).flatten.include?(c)  }
-      errors.add(:consumer, "Consumers can't belong in two communities in the same clustering")
+    (clustering.communities - [self]).each do |community|
+      collisions = consumer_ids.select{|c| community.consumer_ids.include? c }
+      p "Found #{collisions}. consumer_ids= #{consumer_ids}, comm=#{community.consumer_ids}"
+      if collisions.count > 0
+        errors.add(:consumer_ids, "Consumers \"#{Consumer.find(collisions).map(&:name).join(", ")}\" are in " \
+                   "community \"#{community.name}\", which is also in clustering \"#{clustering.name}\".")
+      end
     end
-
   end
 end
