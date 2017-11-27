@@ -7,8 +7,8 @@ module ChartsHelper
 
   def initParams
     {
-        start_date:  (DateTime.now - 7.days).to_datetime,
-        end_date:    DateTime.now,
+        start_date:  (DateTime.now - 7.days).to_datetime.change(year: 2015),
+        end_date:    DateTime.now.change(year: 2015),
         interval_id: 2,
     }
   end
