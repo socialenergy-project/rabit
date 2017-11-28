@@ -10,6 +10,9 @@ module ChartsHelper
         start_date:  (DateTime.now - 7.days).to_datetime.change(year: 2015),
         end_date:    DateTime.now.change(year: 2015),
         interval_id: 2,
+        algorithm: "building_type",
+        kappa: 5,
+        category_id: ConsumerCategory.first.id,
     }
   end
 
@@ -19,6 +22,9 @@ module ChartsHelper
         start_date:  :to_datetime,
         end_date:    :to_datetime,
         interval_id: :to_i,
+        algorithm: :itself,
+        kappa: :to_i,
+        category_id: :to_i,
     }
   end
 end
