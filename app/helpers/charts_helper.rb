@@ -13,6 +13,7 @@ module ChartsHelper
         algorithm: "building_type",
         kappa: 5,
         category_id: ConsumerCategory.first.id,
+        consumer_ids: Consumer.take(3).pluck(:id),
     }
   end
 
@@ -25,6 +26,7 @@ module ChartsHelper
         algorithm: :itself,
         kappa: :to_i,
         category_id: :to_i,
+        consumer_ids: :itself,
     }
   end
 end
