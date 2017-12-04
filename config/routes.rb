@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
-  get 'clusterings/select'
-
-  post 'clusterings/run'
-
+  resources :cl_scenarios
   resources :scenarios do
     get :stderr, on: :member
   end
