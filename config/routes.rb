@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :cl_scenarios
   resources :scenarios do
     get :stderr, on: :member
   end

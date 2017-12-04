@@ -1,0 +1,2 @@
+module ClScenariosHelper
+end
