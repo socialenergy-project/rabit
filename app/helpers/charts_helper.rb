@@ -9,7 +9,7 @@ module ChartsHelper
     {
         start_date:  (DateTime.now - 7.days).to_datetime.change(year: 2015),
         end_date:    DateTime.now.change(year: 2015),
-        interval_id: 2,
+        interval_id: Interval.find_by(duration: 3600).id,
     }
   end
 
