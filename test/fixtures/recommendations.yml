@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  status: 1
+  recommendation_type: one
+  scenario: one
+  parameter: MyString
+
+two:
+  status: 1
+  recommendation_type: two
+  scenario: two
+  parameter: MyString
