@@ -11,6 +11,7 @@ class User < ApplicationRecord
   before_create :set_name
 
   has_many :scenarios, dependent: :nullify
+  has_and_belongs_to_many :consumers
 
   private
   def set_name
