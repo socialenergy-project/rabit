@@ -8,7 +8,12 @@ class Recommendation < ApplicationRecord
 
   def messages
     consumers.map do |c|
-      recommendation_type.description % [c.name, parameter]
-    end
+      c.users.map do |u|
+        {
+            recipient: u,
+            message: recommendation_type.description % [c.name, parameter]
+        }
+      end
+    end.flatten
   end
 end
