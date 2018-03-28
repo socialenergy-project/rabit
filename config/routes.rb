@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :recommendations
+  resources :messages
+  resources :recommendations do
+    post :send_messages, on: :member
+    post :delete_messages, on: :member
+  end
   resources :recommendation_types
   resources :cl_scenarios
   resources :scenarios do
