@@ -6,7 +6,9 @@ Rails.application.routes.draw do
     post :delete_messages, on: :member
   end
   resources :recommendation_types
-  resources :cl_scenarios
+  resources :cl_scenarios do
+    get :stderr, on: :member
+  end
   resources :scenarios do
     get :stderr, on: :member
   end
