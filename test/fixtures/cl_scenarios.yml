@@ -10,6 +10,7 @@ one:
   interval: one
   clustering: one
   consumers: [one, two, three]
+  flexibility: one
 
 two:
   name: MyString
@@ -19,3 +20,4 @@ two:
   endtime: 2017-12-04 17:22:13
   interval: two
   clustering: two
+  flexibility_id: 1
