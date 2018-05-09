@@ -130,14 +130,16 @@ The most important functionalities of the RAT module are the following :
     - http://localhost:3000/consumers/5001?start_date=2015-05-02T14%3A57%3A14.333%2B03%3A00&end_date=2015-05-09T14%3A57%3A14.333%2B03%3A00&interval_id=2
     - http://localhost:3000/communities/105
     - http://localhost:3000/clusterings/1
-    ![consumption_dat](readme-images/screenshot-localhost-3000-2018.05.09-15-24-26.png)
+
+      [![consumption_dat](readme-images/thumb.screenshot-localhost-3000-2018.05.09-15-24-26.png)](readme-images/screenshot-localhost-3000-2018.05.09-15-24-26.png)
 
 2.  Clustering algorithms:
     - To view the list of created clusterings, visit http://localhost:3000/clusterings/1
     - To create a new clustering, by executing a clustering algorithm,
       visit the link: http://localhost:3000/cl_scenarios/new.
       The dialog looks like this:
-      ![clustering_algorithm_selection](readme-images/screenshot-localhost-3000-2018.05.09-15-35-42.png)
+
+      [![clustering_algorithm_selection](readme-images/thumb.screenshot-localhost-3000-2018.05.09-15-35-42.png)](readme-images/screenshot-localhost-3000-2018.05.09-15-35-42.png)
     - To view the list of clustering scenarios, in order to view their parameters and/or edit them,
       you can visit http://localhost:3000/cl_scenarios
 
@@ -147,7 +149,8 @@ The most important functionalities of the RAT module are the following :
       conditions, visit http://localhost:3000/scenarios/new
     - After the scenario is created, you may see it in the url http://localhost:3000/scenarios/1.
       The results are depicted like in the screenshot below:
-      ![pricing_algorithm_results](readme-images/screenshot-localhost-3000-2018.05.09-15-57-04.png)
+
+      [![pricing_algorithm_results](readme-images/thumb.screenshot-localhost-3000-2018.05.09-15-57-04.png)](readme-images/screenshot-localhost-3000-2018.05.09-15-57-04.png)
 
 4.  Recommendation engine
     - To view all the recommendations that have been created visit: http://localhost:3000/recommendations/
@@ -156,4 +159,5 @@ The most important functionalities of the RAT module are the following :
       is the id of the recommendation)
     - To send the recommendation, click the button `Send`. The users that are associated with the consumers
       in the recommendation will be notified with a notification like in the screenshot bellow:
-      ![recommendation_notification](readme-images/screenshot-localhost-3000-2018.05.09-16-01-59.png)
+
+      [![recommendation_notification](readme-images/thumb.screenshot-localhost-3000-2018.05.09-16-01-59.png)](readme-images/screenshot-localhost-3000-2018.05.09-16-01-59.png)
