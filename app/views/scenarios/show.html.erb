@@ -1,0 +1,170 @@
+<%= content_for :title, @scenario.name || @scenario.id -%>
+
+<div class="row equal">
+  <div class="col-lg-12 align-items-stretch">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        scenario properties
+      </div>
+      <div class="card-body row">
+        <div class="row">
+          <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <strong>Name:</strong>
+            <%= @scenario.name -%>
+          </p>
+          <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <strong>User:</strong>
+            <%= @scenario.user&.name -%>
+          </p>
+          <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2 max-height-200px">
+            <strong>Consumers:</strong>
+            <%= @scenario.consumers.map{|c| link_to c.name, consumer_path(c)}.join(" | ").html_safe -%>
+          </p>
+          <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <strong>Starttime:</strong>
+            <%= format_datetime(@scenario.starttime) -%>
+          </p>
+          <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <strong>Endtime:</strong>
+            <%= format_datetime(@scenario.endtime) -%>
+          </p>
+          <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <strong>Interval:</strong>
+            <%= link_to @scenario.interval&.name, interval_path(@scenario.interval) if @scenario.interval -%>
+          </p>
+          <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <strong>Ecc type:</strong>
+            <%= link_to @scenario.ecc_type&.name, ecc_type_path(@scenario.ecc_type) if @scenario.ecc_type -%>
+          </p>
+          <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <strong>Energy cost parameter:</strong>
+            <%= @scenario.energy_cost_parameter -%>
+          </p>
+          <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <strong>Profit margin parameter:</strong>
+            <%= @scenario.profit_margin_parameter -%>
+          </p>
+          <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <strong>Flexibility factor:</strong>
+            <%= link_to @scenario.flexibility&.name, flexibility_path(@scenario.flexibility) if @scenario.flexibility -%>
+          </p>
+          <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <strong>Number of clusters:</strong>
+            <%= @scenario.number_of_clusters -%>
+          </p>
+          <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <strong>Gamma parameter:</strong>
+            <%= @scenario.gamma_parameter -%>
+          </p>
+          <p class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <%= link_to 'Edit', edit_scenario_path(@scenario), class: 'btn btn-warning btn-sm' if can? :edit, @scenario %> |
+            <%= link_to 'Clone', new_scenario_path({scenario: @scenario.attributes.merge(consumer_ids: @scenario.consumer_ids, energy_program_ids: @scenario.energy_program_ids)}), class: 'btn btn-success btn-sm' if can? :create, @scenario %> |
+            <%= link_to 'New', new_scenario_path, class: 'btn btn-primary btn-sm' if can? :create, @scenario %> |
+            <%= link_to 'All Scenarios', scenarios_path, class: 'btn btn-info btn-sm' %>
+          </p>
+        </div>
+      </div>
+
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 align-items-stretch">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        Energy Cost
+      </div>
+      <div class="card-body">
+        <canvas id="energyCostChart" width="100%" height="55"></canvas>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 align-items-stretch">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        User Wellfare
+      </div>
+      <div class="card-body">
+        <canvas id="userWellfareChart" width="100%" height="55"></canvas>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 align-items-stretch">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        Retailer profit
+      </div>
+      <div class="card-body">
+        <canvas id="retailerProfitChart" width="100%" height="55"></canvas>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 align-items-stretch">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        Total Consumption
+      </div>
+      <div class="card-body">
+        <canvas id="totalConsumptionChart" width="100%" height="55"></canvas>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 align-items-stretch">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        Total Bill
+      </div>
+      <div class="card-body">
+        <canvas id="totalBillChart" width="100%" height="55"></canvas>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 align-items-stretch">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        Total Welfare
+      </div>
+      <div class="card-body">
+        <canvas id="totalWelfareChart" width="100%" height="55"></canvas>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    console.log("Turbolinks called");
+    clearAllCharts();
+
+    createChart("energyCostChart", <%= @plot_data[:energy_cost].to_json.html_safe -%>);
+    createChart("userWellfareChart", <%= @plot_data[:user_welfare].to_json.html_safe -%>, null, false);
+    createChart("retailerProfitChart", <%= @plot_data[:retailer_profit].to_json.html_safe -%>);
+    createChart("totalConsumptionChart", <%= @plot_data[:total_consumption].to_json.html_safe -%>);
+    createChart("totalBillChart", <%= @plot_data[:total_bill].to_json.html_safe -%>);
+    createChart("totalWelfareChart", <%= @plot_data[:total_welfare].to_json.html_safe -%>);
+
+</script>

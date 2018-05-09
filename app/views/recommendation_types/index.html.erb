@@ -1,0 +1,45 @@
+<%= content_for :title, 'Recommendation Types' %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        All Recommendation Types
+      </div>
+      <div class="card-body">
+        <table class="table table-responsive table-striped table-bordered table-hover">
+          <thead>
+          <tr>
+            <th><%= sortable "name", "Name" -%></th>
+            <th><%= sortable "description", "Description" -%></th>
+            <th colspan="3"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @recommendation_types.each do |recommendation_type| %>
+          <tr>
+            <td>
+                <%= recommendation_type.name-%>
+            </td>
+            <td>
+                <%= recommendation_type.description-%>
+            </td>
+            <td><%= link_to 'Show', recommendation_type, class: 'btn btn-info btn-sm' if can? :show, recommendation_type%></td>
+            <td><%= link_to 'Edit', edit_recommendation_type_path(recommendation_type), class: 'btn btn-warning btn-sm' if can? :update, recommendation_type %></td>
+            <td><%= link_to 'Destroy', recommendation_type, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' if can? :destroy, recommendation_type %></td>
+          </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <%= will_paginate @collection, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <br>
+        <%= link_to 'New Recommendation Type', new_recommendation_type_path, class: 'btn btn-primary btn-sm' if can? :create, RecommendationType %>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>
+
+

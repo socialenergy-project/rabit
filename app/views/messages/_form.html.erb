@@ -1,0 +1,52 @@
+<%= form_with(model: message, local: true) do |form| %>
+  <% if message.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(message.errors.count, "error") %> prohibited this message from being saved:</h2>
+
+      <ul>
+      <% message.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :recommendation_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.collection_select :recommendation_id, Recommendation.all, :id, :id, { prompt: true }, class: "form-control custom-select", id: 'message_recommendation_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :sender_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+       <%= form.collection_select :sender_id, User.all, :id, :name, { prompt: true }, class: "form-control custom-select", id: 'message_sender_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :recipient_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+       <%= form.collection_select :recipient_id, User.all, :id, :name, { prompt: true }, class: "form-control custom-select", id: 'message_recipient_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :content, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_area :content, id: :message_content, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :status, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.number_field :status, id: :message_status, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary btn-sm" %>
+  </div>
+<% end %>

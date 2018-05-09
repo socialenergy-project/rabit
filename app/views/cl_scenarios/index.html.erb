@@ -1,0 +1,73 @@
+<%= content_for :title, 'Cl Scenarios' %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        All Cl Scenarios
+      </div>
+      <div class="card-body">
+        <table class="table table-responsive table-striped table-bordered table-hover">
+          <thead>
+          <tr>
+            <th><%= sortable "name", "Name" -%></th>
+            <th><%= sortable "algorithm", "Algorithm" -%></th>
+            <th><%= sortable "kappa", "Kappa" -%></th>
+            <th><%= sortable "starttime", "Starttime" -%></th>
+            <th><%= sortable "endtime", "Endtime" -%></th>
+            <th><%= sortable "interval_id", "Interval" -%></th>
+            <th><%= sortable "clustering_id", "Clustering" -%></th>
+            <th><%= sortable "created_at", "Created at" -%></th>
+            <th><%= sortable "updated_at", "Updated at" -%></th>
+            <th colspan="3"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @cl_scenarios.each do |cl_scenario| %>
+          <tr>
+            <td>
+                <%= cl_scenario.name-%>
+            </td>
+            <td>
+                <%= cl_scenario.algorithm-%>
+            </td>
+            <td>
+                <%= cl_scenario.kappa-%>
+            </td>
+            <td>
+                <%= cl_scenario.starttime-%>
+            </td>
+            <td>
+                <%= cl_scenario.endtime-%>
+            </td>
+            <td>
+                <%= link_to cl_scenario.interval&.name, interval_path(cl_scenario.interval) if cl_scenario.interval -%>
+            </td>
+            <td>
+                <%= link_to cl_scenario.clustering&.name, clustering_path(cl_scenario.clustering) if cl_scenario.clustering -%>
+            </td>
+            <td>
+              <%= cl_scenario.created_at -%>
+            </td>
+            <td>
+              <%= cl_scenario.updated_at -%>
+            </td>
+            <td><%= link_to 'Show', cl_scenario, class: 'btn btn-info btn-sm' if can? :show, cl_scenario%></td>
+            <td><%= link_to 'Edit', edit_cl_scenario_path(cl_scenario), class: 'btn btn-warning btn-sm' if can? :update, cl_scenario %></td>
+            <td><%= link_to 'Destroy', cl_scenario, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' if can? :destroy, cl_scenario %></td>
+          </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <%= will_paginate @collection, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <br>
+        <%= link_to 'New Cl Scenario', new_cl_scenario_path, class: 'btn btn-primary btn-sm' if can? :create, ClScenario %>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>
+
+

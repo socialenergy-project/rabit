@@ -1,0 +1,52 @@
+<%= form_with(model: recommendation, local: true) do |form| %>
+  <% if recommendation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(recommendation.errors.count, "error") %> prohibited this recommendation from being saved:</h2>
+
+      <ul>
+      <% recommendation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :status, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= recommendation.status %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :recommendation_type_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+       <%= form.collection_select :recommendation_type_id, RecommendationType.all, :id, :name, { prompt: true }, class: "form-control custom-select", id: 'recommendation_recommendation_type_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :scenario_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+       <%= form.collection_select :scenario_id, Scenario.all, :id, :name, { prompt: true }, class: "form-control custom-select", id: 'recommendation_scenario_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :parameter, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :parameter, id: :recommendation_parameter, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :consumer_ids, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.collection_select :consumer_ids, Consumer.order(name: :asc), :id, :name, {prompt: true}, class: "form-control custom-select", id: 'scenario_consumer_ids', multiple: true, size: 20%>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary btn-sm" %>
+  </div>
+<% end %>

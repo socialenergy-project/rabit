@@ -1,0 +1,87 @@
+<%= form_with(model: consumer, local: true) do |form| %>
+  <% if consumer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(consumer.errors.count, "error") %> prohibited this consumer from being saved:</h2>
+
+      <ul>
+      <% consumer.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :name, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :name, id: :consumer_name, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :location, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :location, id: :consumer_location, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :edms_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :edms_id, id: :consumer_edms_id, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :building_type_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+       <%= form.collection_select :building_type_id, BuildingType.order(name: :asc), :id, :name, { prompt: true }, class: "form-control custom-select", id: 'consumer_building_type_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :connection_type_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+       <%= form.collection_select :connection_type_id, ConnectionType.order(name: :asc), :id, :name, { prompt: true }, class: "form-control custom-select", id: 'consumer_connection_type_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :location_x, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :location_x, id: :consumer_location_x, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :location_y, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :location_y, id: :consumer_location_y, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :feeder_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :feeder_id, id: :consumer_feeder_id, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :consumer_category_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+       <%= form.collection_select :consumer_category_id, ConsumerCategory.order(name: :asc), :id, :name, { prompt: true }, class: "form-control custom-select", id: 'consumer_consumer_category_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :user_ids, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.collection_select :user_ids, User.order(name: :asc), :id, :name, {prompt: true}, class: "form-control custom-select", id: 'consumer_user_ids', multiple: true, size: 20%>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary btn-sm" %>
+  </div>
+<% end %>

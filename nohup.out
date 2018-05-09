@@ -1,0 +1,18 @@
+Created 3 intervals
+Hash is {1=>"By building type"}, model is Clustering
+Created 2 clusterings
+Hash is {1=>"Hedno"}, model is ConsumerCategory
+Created 1 consumer categories
+Hash is {100=>"Hedno industrial MV", 101=>"Hedno industrial LV", 102=>"Hedno commercial MV", 103=>"Hedno professional", 104=>"Hedno public lighting", 105=>"Hedno Residential"}, model is Community
+Created 7 Communities
+Hash is {1=>"Industrial", 2=>"Commercial", 3=>"Proffessional", 4=>"Public lighting", 5=>"Residential"}, model is BuildingType
+Created 5 Building types
+Hash is {1=>"Night hours", 2=>"Weekend", 3=>"Mon-Fri", 4=>"Peak hours"}, model is EccType
+Created 4 ECC types
+Hash is {1=>"Fixed", 2=>"Time of Usage", 3=>"Real-time pricing", 4=>"Personal Real-time pricing", 5=>"Community Real-time pricing"}, model is EnergyProgram
+Created 5 Energy Programs
+Hash is {1=>"Custom", 2=>"Low", 3=>"Medium", 4=>"High"}, model is Flexibility
+Created 4 Flexibilities
+Created 296 Consumers
+Created 296 Community::HABTM_Consumers
+Created 22726215 DataPoints

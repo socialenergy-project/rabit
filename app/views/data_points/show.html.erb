@@ -1,0 +1,41 @@
+<%= content_for :title, @data_point.name || @data_point.id -%>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        data_point properties
+      </div>
+      <div class="card-body">
+        <p>
+          <strong>Consumer:</strong>
+          <%= link_to @data_point.consumer&.name, consumer_path(@data_point.consumer) if @data_point.consumer -%>
+        </p>
+        <p>
+          <strong>Interval:</strong>
+          <%= link_to @data_point.interval&.name, interval_path(@data_point.interval) if @data_point.interval -%>
+        </p>
+        <p>
+          <strong>Timestamp:</strong>
+          <%= @data_point.timestamp-%>
+        </p>
+        <p>
+          <strong>Consumption:</strong>
+          <%= @data_point.consumption-%>
+        </p>
+        <p>
+          <strong>Flexibility:</strong>
+          <%= @data_point.flexibility-%>
+        </p>
+
+        <%= link_to 'Edit', edit_data_point_path(@data_point), class: 'btn btn-warning btn-sm' if can? :edit, @data_point %> |
+        <%= link_to 'All Data Points', data_points_path, class: 'btn btn-info btn-sm' %>
+
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>
+

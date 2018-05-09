@@ -1,0 +1,137 @@
+<%= form_with(model: scenario, local: true) do |form| %>
+    <% if scenario.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(scenario.errors.count, "error") %> prohibited this scenario from being saved:</h2>
+
+          <ul>
+            <% scenario.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="form-group row">
+      <%= form.label :name, class: "col-sm-3 col-form-label" %>
+      <div class="col-sm-9">
+        <%= form.text_field :name, id: :scenario_name, class: "form-control" %>
+      </div>
+    </div>
+
+    <% if current_user.has_role? :admin %>
+      <div class="form-group row">
+        <%= form.label :user_id, class: "col-sm-3 col-form-label" %>
+        <div class="col-sm-9">
+          <%= form.collection_select :user_id, User.order(name: :asc), :id, :name, {prompt: false}, class: "form-control custom-select", id: 'scenario_user_id' %>
+        </div>
+      </div>
+    <% end %>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="stepone-tab" data-toggle="tab" href="#stepone" role="tab" aria-controls="stepone" aria-selected="true">Step
+          1</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="steptwo-tab" data-toggle="tab" href="#steptwo" role="tab" aria-controls="steptwo" aria-selected="false">Step
+          2</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="stepthree-tab" data-toggle="tab" href="#stepthree" role="tab" aria-controls="stepthree" aria-selected="false">Step
+          3</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="stepfour-tab" data-toggle="tab" href="#stepfour" role="tab" aria-controls="stepfour" aria-selected="false">Step
+          4</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="stepone" role="tabpanel" aria-labelledby="stepone-tab">
+        <div class="form-group row">
+          <%= form.label :consumer_ids, class: "col-sm-3 col-form-label" %>
+          <div class="col-sm-9">
+            <%= form.collection_select :consumer_ids, Consumer.order(name: :asc), :id, :name, {prompt: true}, class: "form-control custom-select", id: 'scenario_consumer_ids', multiple: true, size: 20%>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <%= form.label :starttime, class: "col-sm-3 col-form-label" %>
+          <div class="col-sm-9">
+            <%= form.text_field :starttime, value: format_datetime(@scenario.starttime), id: :scenario_starttime, class: "form-control datetimepicker" %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <%= form.label :endtime, class: "col-sm-3 col-form-label" %>
+          <div class="col-sm-9">
+            <%= form.text_field :endtime, value: format_datetime(@scenario.endtime), id: :scenario_endtime, class: "form-control datetimepicker" %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <%= form.label :interval_id, class: "col-sm-3 col-form-label" %>
+          <div class="col-sm-9">
+            <%= form.collection_select :interval_id, Interval.order(duration: :asc), :id, :name, {prompt: false}, class: "form-control custom-select", id: 'scenario_interval_id' %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <%= form.label :ecc_type_id, class: "col-sm-3 col-form-label" %>
+          <div class="col-sm-9">
+            <%= form.collection_select :ecc_type_id, EccType.order(name: :asc), :id, :name, {prompt: false}, class: "form-control custom-select", id: 'scenario_ecc_type_id' %>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="steptwo" role="tabpanel" aria-labelledby="steptwo-tab">
+        <div class="form-group row">
+          <%= form.label :energy_cost_parameter, class: "col-sm-3 col-form-label" %>
+          <div class="col-sm-9">
+            <%= form.text_field :energy_cost_parameter, id: :scenario_energy_cost_parameter, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <%= form.label :profit_margin_parameter, class: "col-sm-3 col-form-label" %>
+          <div class="col-sm-9">
+            <%= form.text_field :profit_margin_parameter, id: :scenario_profit_margin_parameter, class: "form-control" %>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="stepthree" role="tabpanel" aria-labelledby="stepthree-tab">
+        <div class="form-group row">
+          <%= label '', :flexibility_id, "Flexibility factor", class: "col-sm-3 col-form-label" %>
+          <div class="col-sm-9">
+            <%= form.collection_select :flexibility_id, Flexibility.order(id: :asc), :id, :name, {prompt: false}, class: "form-control custom-select", id: 'flexibility_id' %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <%= label '', :number_of_clusters, class: "col-sm-3 col-form-label" %>
+          <div class="col-sm-9">
+            <%= form.text_field :number_of_clusters, class: "form-control custom-select", id: 'flexibility_id' %>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="stepfour" role="tabpanel" aria-labelledby="stepfour-tab">
+        <div class="form-group row">
+          <%= form.label :energy_program_ids, "Energy Programs", class: "col-sm-3 col-form-label" %>
+          <div class="col-sm-9">
+            <%= form.collection_select :energy_program_ids, EnergyProgram.order(name: :asc), :id, :name, {prompt: true}, class: "form-control custom-select", id: 'scenario_energy_program_ids', multiple: :true, size: EnergyProgram.count %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <%= form.label :gamma_parameter, class: "col-sm-3 col-form-label" %>
+          <div class="col-sm-9">
+            <%= form.text_field :gamma_parameter, id: :scenario_gamma_parameter, class: "form-control" %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="actions">
+      <%= content_tag :button, type: :submit, class: "btn btn-primary btn-sm", id: 'run_algorithm' do  %>
+          Run algorithm
+      <% end %>
+    </div>
+<% end %>
