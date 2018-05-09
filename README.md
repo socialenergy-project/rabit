@@ -139,7 +139,7 @@ The most important functionalities of the RAT module are the following :
       visit the link: http://localhost:3000/cl_scenarios/new.
       The dialog looks like this:
 
-      [![clustering_algorithm_selection](readme-images/thumb.screenshot-localhost-3000-2018.05.09-15-35-42.png)](readme-images/screenshot-localhost-3000-2018.05.09-15-35-42.png)
+      [![clustering_algorithm_selection](readme-images/thumb.screenshot-localhost-3000-2018.05.09-15-35-42.png)](readme-images/thumb2.md)
     - To view the list of clustering scenarios, in order to view their parameters and/or edit them,
       you can visit http://localhost:3000/cl_scenarios
 
@@ -150,7 +150,7 @@ The most important functionalities of the RAT module are the following :
     - After the scenario is created, you may see it in the url http://localhost:3000/scenarios/1.
       The results are depicted like in the screenshot below:
 
-      [![pricing_algorithm_results](readme-images/thumb.screenshot-localhost-3000-2018.05.09-15-57-04.png)](readme-images/screenshot-localhost-3000-2018.05.09-15-57-04.png)
+      [![pricing_algorithm_results](readme-images/thumb.screenshot-localhost-3000-2018.05.09-15-57-04.png)](readme-images/thumb3.md)
 
 4.  Recommendation engine
     - To view all the recommendations that have been created visit: http://localhost:3000/recommendations/
@@ -160,4 +160,4 @@ The most important functionalities of the RAT module are the following :
     - To send the recommendation, click the button `Send`. The users that are associated with the consumers
       in the recommendation will be notified with a notification like in the screenshot bellow:
 
-      [![recommendation_notification](readme-images/thumb.screenshot-localhost-3000-2018.05.09-16-01-59.png)](readme-images/screenshot-localhost-3000-2018.05.09-16-01-59.png)
+      [![recommendation_notification](readme-images/thumb.screenshot-localhost-3000-2018.05.09-16-01-59.png)](readme-images/thumb4.md)
