@@ -131,7 +131,7 @@ The most important functionalities of the RAT module are the following :
     - http://localhost:3000/communities/105
     - http://localhost:3000/clusterings/1
 
-      [![consumption_dat](readme-images/thumb.screenshot-localhost-3000-2018.05.09-15-24-26.png)](readme-images/screenshot-localhost-3000-2018.05.09-15-24-26.png)
+      [![consumption_dat](readme-images/thumb.screenshot-localhost-3000-2018.05.09-15-24-26.png)](readme-images/thumb1.md)
 
 2.  Clustering algorithms:
     - To view the list of created clusterings, visit http://localhost:3000/clusterings/1
