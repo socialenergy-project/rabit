@@ -9,7 +9,7 @@ one:
   ecc_type: one
   energy_cost_parameter: 0.02
   profit_margin_parameter: 0.2
-  flexibility_id: 1
+  flexibility: one
   energy_programs: [one, two]
   consumers: [one, two, three]
   gamma_parameter: 1.5

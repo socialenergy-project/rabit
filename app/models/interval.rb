@@ -1,6 +1,7 @@
 class Interval < ApplicationRecord
   has_many :data_points, dependent: :nullify
   has_many :scenarios, dependent: :nullify
+  has_many :cl_scenarios, dependent: :nullify
 
   def next_timestamp(datetime)
     Time.at((datetime.to_f / self.duration).ceil * self.duration).to_datetime
