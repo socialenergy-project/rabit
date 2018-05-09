@@ -1,0 +1,32 @@
+<div class="card card-narrow">
+  <div class="card-header">
+    <i class="fa fa-area-chart"></i>
+    Consumer locations
+  </div>
+  <div class="card-body" style="padding: 0px">
+    <div id="map" style='height: 400px;'></div>
+  </div>
+  <div class="card-footer small text-muted">
+  </div>
+  <script>
+    handler = Gmaps.build('Google');
+    handler.buildMap({
+        provider: {
+          // disableDefaultUI: true
+          // pass in other Google Maps API options here
+        },
+        internal: {
+          id: 'map'
+        }
+      },
+      function () {
+        markers = handler.addMarkers(<%=raw @hash.to_json %>);
+        handler.bounds.extendWith(markers);
+        handler.fitMapToBounds();
+        if (markers.length == 1 ) {
+          handler.getMap().setZoom(9);
+        }
+      }
+    );
+  </script>
+</div>

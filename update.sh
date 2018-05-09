@@ -10,7 +10,11 @@ export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 # pull new code
-git pull
+git pull --recurse-submodules
+git submodule update --recursive --remote
+git submodule foreach git pull
+
+# git pull 
 
 # install new gems
 bundle install

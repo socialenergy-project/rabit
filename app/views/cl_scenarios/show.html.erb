@@ -1,0 +1,56 @@
+<%= content_for :title, @cl_scenario.name || @cl_scenario.id -%>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        cl_scenario properties
+      </div>
+      <div class="card-body">
+        <p>
+          <strong>Name:</strong>
+          <%= @cl_scenario.name-%>
+        </p>
+        <p>
+          <strong>Algorithm:</strong>
+          <%= @cl_scenario.algorithm-%>
+        </p>
+        <p>
+          <strong>Kappa:</strong>
+          <%= @cl_scenario.kappa-%>
+        </p>
+        <p>
+          <strong>Starttime:</strong>
+          <%= @cl_scenario.starttime-%>
+        </p>
+        <p>
+          <strong>Endtime:</strong>
+          <%= @cl_scenario.endtime-%>
+        </p>
+        <p>
+          <strong>Interval:</strong>
+          <%= link_to @cl_scenario.interval&.name, interval_path(@cl_scenario.interval) if @cl_scenario.interval -%>
+        </p>
+        <p>
+          <strong>Clustering:</strong>
+          <%= link_to @cl_scenario.clustering&.name, clustering_path(@cl_scenario.clustering) if @cl_scenario.clustering -%>
+        </p>
+        <p class="col-sm-6 col-md-4 col-lg-3 col-xl-2 max-height-200px">
+          <strong>Consumers:</strong>
+          <%= @cl_scenario.consumers.map{|c| link_to c.name, consumer_path(c)}.join(" | ").html_safe -%>
+        </p>
+
+        <%= link_to 'Edit', edit_cl_scenario_path(@cl_scenario), class: 'btn btn-warning btn-sm' if can? :edit, @cl_scenario %> |
+        <%= link_to 'Clone', new_cl_scenario_path({cl_scenario: @cl_scenario.attributes.merge(consumer_ids: @cl_scenario.consumer_ids)}), class: 'btn btn-success btn-sm' if can? :create, @cl_scenario %> |
+        <%= link_to 'New', new_cl_scenario_path, class: 'btn btn-primary btn-sm' if can? :create, @cl_scenario %> |
+        <%= link_to 'All Cl Scenarios', cl_scenarios_path, class: 'btn btn-info btn-sm' %>
+
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+    <%= render partial: "charts/gmap" %>
+  </div>
+</div>
+

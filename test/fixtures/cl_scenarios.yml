@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  user: three
+  algorithm: building_type
+  kappa: 1
+  starttime: 2017-12-04 17:22:13
+  endtime: 2017-12-04 17:22:13
+  interval: one
+  clustering: one
+  consumers: [one, two, three]
+  flexibility: one
+
+two:
+  name: MyString
+  algorithm: building_type
+  kappa: 1
+  starttime: 2017-12-04 17:22:13
+  endtime: 2017-12-04 17:22:13
+  interval: two
+  clustering: two
+  flexibility_id: 1

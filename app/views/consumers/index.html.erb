@@ -1,0 +1,73 @@
+<%= content_for :title, category_name(params[:category]) %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        Consumers
+      </div>
+      <div class="card-body">
+        <table class="table table-responsive table-striped table-bordered table-hover">
+          <thead>
+          <tr>
+            <th><%= sortable "name", "Name" -%></th>
+            <th><%= sortable "location", "Location" -%></th>
+            <th><%= sortable "edms_id", "Edms" -%></th>
+            <th><%= sortable "building_type_id", "Building type" -%></th>
+            <th><%= sortable "connection_type_id", "Connection type" -%></th>
+            <th><%= sortable "location_x", "Location x" -%></th>
+            <th><%= sortable "location_y", "Location y" -%></th>
+            <th><%= sortable "feeder_id", "Feeder" -%></th>
+            <th><%= sortable "consumer_category_id", "Consumer category" -%></th>
+            <th colspan="3"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @consumers.each do |consumer| %>
+          <tr>
+            <td>
+                <%= consumer.name-%>
+            </td>
+            <td>
+                <%= consumer.location-%>
+            </td>
+            <td>
+                <%= consumer.edms_id-%>
+            </td>
+            <td>
+                <%= link_to consumer.building_type&.name, building_type_path(consumer.building_type) if consumer.building_type -%>
+            </td>
+            <td>
+                <%= link_to consumer.connection_type&.name, connection_type_path(consumer.connection_type) if consumer.connection_type -%>
+            </td>
+            <td>
+                <%= consumer.location_x-%>
+            </td>
+            <td>
+                <%= consumer.location_y-%>
+            </td>
+            <td>
+                <%= consumer.feeder_id-%>
+            </td>
+            <td>
+                <%= link_to consumer.consumer_category&.name, consumer_category_path(consumer.consumer_category) if consumer.consumer_category -%>
+            </td>
+            <td><%= link_to 'Show', consumer, class: 'btn btn-info btn-sm' if can? :show, consumer%></td>
+            <td><%= link_to 'Edit', edit_consumer_path(consumer), class: 'btn btn-warning btn-sm' if can? :update, consumer %></td>
+            <td><%= link_to 'Destroy', consumer, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' if can? :destroy, consumer %></td>
+          </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <%= will_paginate @collection, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <br>
+        <%= link_to 'New Consumer', new_consumer_path(category: params[:category]), class: 'btn btn-primary btn-sm' if can? :create, Consumer %>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>
+
+

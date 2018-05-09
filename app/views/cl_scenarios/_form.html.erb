@@ -1,0 +1,107 @@
+<%= form_with(model: cl_scenario, local: true) do |form| %>
+  <% if cl_scenario.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(cl_scenario.errors.count, "error") %> prohibited this cl_scenario from being saved:</h2>
+
+      <ul>
+      <% cl_scenario.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :name, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :name, id: :cl_scenario_name, class: "form-control" %>
+    </div>
+  </div>
+
+  <% if current_user.has_role? :admin %>
+    <div class="form-group row">
+      <%= form.label :user_id, class: "col-sm-3 col-form-label" %>
+      <div class="col-sm-9">
+        <%= form.collection_select :user_id, User.order(name: :asc), :id, :name, {prompt: false}, class: "form-control custom-select", id: 'cl_scenario_user_id' %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :algorithm, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.select "algorithm", options_for_select(algorithms.map {|k, v| [ v[:string], k] }, @cl_scenario.algorithm), {}, {class: "form-control", id: 'cl_scenario_algorithm'} %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :kappa, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.number_field :kappa, id: :cl_scenario_kappa, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :starttime, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :starttime, value: format_datetime(@cl_scenario.starttime), id: :cl_scenario_starttime, class: "form-control datetimepicker" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :endtime, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :endtime, value: format_datetime(@cl_scenario.endtime), id: :cl_scenario_endtime, class: "form-control datetimepicker" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :interval_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+       <%= form.collection_select :interval_id, Interval.all, :id, :name, { prompt: true }, class: "form-control custom-select", id: 'cl_scenario_interval_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :consumer_ids, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.collection_select :consumer_ids, Consumer.order(name: :asc), :id, :name, {prompt: true}, class: "form-control custom-select", id: 'cl_scenario_consumer_ids', multiple: true, size: 20%>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :cost_parameter, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.number_field :cost_parameter, id: :cl_scenario_cost_parameter, class: "form-control" %>
+    </div>
+  </div>
+
+<!--  <div class="form-group row">
+    <%#= form.label :energy_program_ids, "Energy Programs", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%#= form.collection_select :energy_program_ids, EnergyProgram.order(name: :asc), :id, :name, {prompt: true}, class: "form-control custom-select", id: 'cl_scenario_energy_program_ids', multiple: :true, size: EnergyProgram.count %>
+    </div>
+  </div>-->
+
+  <div class="form-group row">
+    <%= label '', :flexibility_id, "Flexibility factor", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.collection_select :flexibility_id, Flexibility.order(id: :asc), :id, :name, {prompt: false}, class: "form-control custom-select", id: 'flexibility_id' %>
+    </div>
+  </div>
+
+
+  <!--<div class="form-group row">
+    <%#= form.label :clustering_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+       <%#= form.collection_select :clustering_id, Clustering.all, :id, :name, { prompt: true }, class: "form-control custom-select", id: 'cl_scenario_clustering_id'  %>
+    </div>
+  </div>-->
+
+
+  <div class="actions">
+    <%= content_tag :button, type: :submit, class: "btn btn-primary btn-sm", id: 'run_algorithm' do  %>
+      Run algorithm
+    <% end %>
+  </div>
+<% end %>

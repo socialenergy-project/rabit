@@ -1,0 +1,77 @@
+<div class="card card-narrow">
+  <div class="card-header">
+    <i class="fa fa-area-chart"></i>
+    Consumption data
+  </div>
+  <div class="card-body">
+    <% chart_vars = chart_cookies %>
+      <%= form_tag({remote: false}, method: "get", class: "form-inline") do %>
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm ">
+          <%= label_tag :start_date, "Start datetime: " %>
+          <%= text_field_tag :start_date, format_datetime(chart_vars[:start_date]), id: :start_date, class: 'form-control input-sm datetimepicker' %>
+        </div>
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm ">
+          <%= label_tag :end_date, "End datetime: " %>
+          <%= text_field_tag :end_date, format_datetime(chart_vars[:end_date]), id: :end_date, class: 'form-control input-sm datetimepicker' %>
+        </div>
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm ">
+          <%= label_tag :interval_id, "Interval: " %>
+          <%= collection_select(nil, :interval_id,
+                                Interval.order("duration asc"),
+                                :id,
+                                :name,
+                                {include_blank: false, :selected => chart_vars[:interval_id]},
+                                class: 'input-group input-sm mb-2 mr-sm-2 mb-sm-0 custom-select') %>
+        </div>
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm ">
+          <input type="submit" value="Set" class="input-sm btn btn-primary btn-sm"> |
+          <input type="reset" id="resetDates" value="Reset filter" class="input-sm btn btn-info btn-sm">
+        </div>
+    <% end %>
+
+  </div>
+  <div class="card-footer small text-muted">
+  </div>
+</div>
+
+<script>
+  var initParams = JSON.parse('<%= initParams.to_json.html_safe -%>');
+  clearAllCharts();
+  <% data_points = entity.getData(chart_vars) %>
+  var data_points = JSON.parse('<%= data_points.to_json.html_safe -%>')
+</script>
+</div>
+<% if data_points&.keys&.count && data_points&.keys&.count > 1 %>
+  <div class="container-fluid">
+<% end %>
+  <div class="card-group ">
+    <% data_points&.keys&.each do |com_id| %>
+        <% community = Community.find_by(id: com_id) %>
+      <% if data_points&.keys&.count > 1 %>
+        <div class="card col-4 card-wide">
+      <% else %>
+        <div class="card col-6 d-flex card-wide">
+      <% end %>
+      <!--div class="card flex-fill card-wide"-->
+        <div class="card-header">
+          <i class="fa fa-area-chart"></i>
+          <%= community ? link_to(community.name,community_path(community)) : "Consumption data" %>
+        </div>
+        <div class="card-body">
+          <canvas id="consumptionChart<%= com_id -%>" width="100%" height="55"></canvas>
+          <div class="cell" id="consumptionLegend"></div>
+        </div>
+        <div class="card-footer small text-muted">
+        </div>
+      <!--/div-->
+      </div>
+      <script>
+        createChart("consumptionChart<%= com_id-%>", data_points[<%= com_id -%>], "consumptionLegend");
+      </script>
+    <% end %>
+<% if data_points&.keys&.count && data_points&.keys&.count > 1 %>
+  </div>
+<% end %>
+
+
+

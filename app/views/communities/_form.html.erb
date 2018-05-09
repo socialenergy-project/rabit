@@ -1,0 +1,49 @@
+<%= form_with(model: community, local: true) do |form| %>
+  <% if community.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(community.errors.count, "error") %> prohibited this community from being saved:</h2>
+
+      <ul>
+      <% community.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :name, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :name, id: :community_name, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :description, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_area :description, id: :community_description, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :clustering_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+       <%= form.collection_select :clustering_id, Clustering.order(name: :asc), :id, :name, { prompt: true }, class: "form-control custom-select", id: 'community_clustering_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :consumers, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.collection_select :consumer_ids, Consumer.order(name: :asc), :id, :name, {  prompt: true }, {class: "form-control custom-select", multiple: true, size: 20, id: :community_consumers } %>
+    </div>
+  </div>
+
+  <script>
+    var clustering_info = <%= @clustering_info.to_json.html_safe -%>;
+  </script>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary btn-sm" %>
+  </div>
+<% end %>

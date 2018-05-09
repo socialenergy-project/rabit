@@ -1,4 +1,14 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  resources :messages
+  resources :recommendations do
+    post :send_messages, on: :member
+    post :delete_messages, on: :member
+  end
+  resources :recommendation_types
+  resources :cl_scenarios do
+    get :stderr, on: :member
+  end
   resources :scenarios do
     get :stderr, on: :member
   end
@@ -13,7 +23,8 @@ Rails.application.routes.draw do
   resources :clusterings
   resources :connection_types
   resources :flexibilities
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+
   root 'pages#home'
   get 'pages/home'
   resources :users
