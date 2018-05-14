@@ -12,8 +12,11 @@ The portal is available at https://rat.socialenergy-project.eu.
 
 ## Installation steps
 
+The following steps have been tested on Ubuntu 16.04 and Ubuntu 18.04.
+Please adapt accordingly for other distributions/OSs.
+
 1.  Clone the repository into a directory on the local computer, and enter
-    the directory
+    the directory. If `git` is not present it should be installed first.
 
         git clone https://github.com/socialenergy-project/rat.git
         cd rat/
@@ -21,7 +24,7 @@ The portal is available at https://rat.socialenergy-project.eu.
 2.  Install `ruby` version `2.4.1`, using `rbenv`. Installation instructions for
     `rbenv` may be found here https://github.com/rbenv/rbenv#installation
 
-3.  Install postgres, create database user for rat, and setup password:
+3.  Install postgres, create database user for rat, and setup a password:
 
         sudo apt install postgresql-common
         sudo apt install libpq-dev
@@ -59,7 +62,7 @@ The portal is available at https://rat.socialenergy-project.eu.
         rails db:create
         rails db:migrate
 
-7.  Now you can the server with the command
+7.  Now you can start the server with the command
 
         rails s
 
@@ -88,7 +91,7 @@ The steps for this follow:
 
 1.  Start the server by running command `rails s` from the installation directory
 
-2.  Open a browser window at location http://localhost:3000/
+2.  Open a browser window at location http://localhost:3000/ (or https://rat.socialenergy.eu)
 
 3.  Register a new user using the `Sign up` link (or navigate to http://localhost:3000/users/sign_up).
     Set an email and a password and submit the form
@@ -114,7 +117,7 @@ The steps for this follow:
 
         rails db:seed
 
-    After this command, navigating to https://localhost:3000/, on should be able to see consumers,
+    After this command, navigating to https://localhost:3000/, you should be able to see consumers,
     with consumption data for the dates from 1/1/2015 to 30/9/2016
 
 
