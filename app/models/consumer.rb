@@ -28,4 +28,14 @@ class Consumer < ApplicationRecord
                  .map{|d| [d.con, d.tims.zip(d.cons)] }.to_h
     }
   end
+
+  def initDates
+    start = DateTime.now - 1.week
+    if consumer_category&.name == "CTI"
+      start += 3.hours
+    else
+      start = start.change(year: 2015)
+    end
+    { start: start, end: start + 1.week }
+  end
 end

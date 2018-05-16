@@ -1,5 +1,6 @@
 id,name,location,edms_id,building_type_id,connection_type_id,location_x,location_y,feeder_id,consumer_category_id,created_at,updated_at
 1,CTI lab,"Zografou, Athens",cnl_hem,3,,37.979494,23.783337,"",2,2018-05-16 04:54:39 UTC,2018-05-16 04:54:39 UTC
+2,CTI smart plug,"Zografou, Athens",FibaroPlug02,3,,37.979518,23.783403,"",2,2018-05-16 04:54:39 UTC,2018-05-16 04:54:39 UTC
 5001,HEDNO Commercial MV 5001,Μ.Τ. Περ. Φιλοθέης,5001,2,,38.024273,23.778155,"",1,2017-09-22 12:33:01 UTC,2018-04-17 13:34:54 UTC
 5002,HEDNO Commercial MV 5002,Μ.Τ Περ. Περιστερίου,5002,2,,38.016637,23.696304,"",1,2017-09-22 12:33:01 UTC,2018-04-17 13:35:31 UTC
 5003,HEDNO Commercial MV 5003,Κοζάνης,5003,2,,40.291358,21.788554,"",1,2017-09-22 12:33:01 UTC,2018-04-17 13:36:09 UTC

@@ -25,6 +25,18 @@ Interval.where(duration: 86400).first_or_initialize.tap do |interval|
   interval.save!
 end
 
+Interval.where(duration: 300).first_or_initialize.tap do |interval|
+  interval.name = "5 minutes"
+  interval.id = 4
+  interval.save!
+end
+
+Interval.where(duration: 60).first_or_initialize.tap do |interval|
+  interval.name = "1 minute"
+  interval.id = 5
+  interval.save!
+end
+
 RecommendationType.where(id: 1).first_or_initialize.tap do |recommendation_type|
   recommendation_type.name = "Switch Energy Program"
   recommendation_type.description = "Our algorithm has determined that you should switch your energy program " \

@@ -15,6 +15,7 @@ class Community < ApplicationRecord
   end
 
   def getData(chart_cookies)
+    FetchData::FetchData.new(self.consumers, chart_cookies).sync
     if Interval.find(chart_cookies[:interval_id]).timestamps(chart_cookies[:start_date], chart_cookies[:end_date]).count < 700
       aggr = []
       res = DataPoint.joins(consumer: :communities)
@@ -28,7 +29,7 @@ class Community < ApplicationRecord
                         'array_agg(consumption ORDER BY data_points.timestamp ASC) as cons')
                 .map do |d|
         aggr = d.tims.map{|t| [t,0]} if aggr.size == 0
-        aggr = aggr.zip(d.cons).map{|(a,b),d| [a,(b+d)]}
+        aggr = aggr.zip(d.cons).map{|(a,b),d| [a,((b.nil? or d.nil?) ? nil : b+d)]}
         [d.con, d.tims.zip(d.cons)]
       end.to_h
       res["aggregate"] = aggr
@@ -51,5 +52,9 @@ class Community < ApplicationRecord
       }
     end
 
+  end
+
+  def initDates
+    (consumers.first || Consumer.first)&.initDates
   end
 end

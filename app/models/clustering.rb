@@ -60,4 +60,8 @@ class Clustering < ApplicationRecord
     res
 =end
   end
+
+  def initDates
+    (communities.first || Consumer.first)&.initDates
+  end
 end
