@@ -1,3 +1,5 @@
+require 'fetch_data/fetch_data'
+
 class Consumer < ApplicationRecord
   belongs_to :building_type, optional: true
   belongs_to :connection_type, optional: true
@@ -14,6 +16,8 @@ class Consumer < ApplicationRecord
   validates_associated :communities, message: ->(_class_obj, obj){ p "consumer OBJ is ", obj[:value]; obj[:value].map(&:errors).map(&:full_messages).join(',') }
 
   def getData(chart_cookies)
+
+    FetchData::FetchData.new([self], chart_cookies).sync
     {
         '0': data_points.joins(:consumer).where(timestamp: chart_cookies[:start_date] .. chart_cookies[:end_date],
                                        interval_id: chart_cookies[:interval_id])

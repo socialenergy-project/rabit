@@ -104,3 +104,4 @@ gem 'gmaps4rails'
 gem 'underscore-rails' ## For maips
 
 gem 'ruby-progressbar'
+gem 'upsert'

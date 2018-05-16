@@ -14,7 +14,8 @@ class ConsumersController < ApplicationController
   # GET /consumers/1
   # GET /consumers/1.json
   def show
-    @hash = build_map([@consumer])
+    @hash = build_map([@consumer], Clustering.find(@consumer.consumer_category.id))
+                                            # This is a hack, we happen to have the same IDs
   end
 
   # GET /consumers/new

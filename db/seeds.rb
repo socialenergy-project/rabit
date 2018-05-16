@@ -47,13 +47,15 @@ def initialize_with_id_and_name(hash, model)
   end
 end
 
-initialize_with_id_and_name({ 1 => "By building type" }, Clustering)
+initialize_with_id_and_name({ 1 => "By building type", 2 => "CTI" }, Clustering)
 puts "Created #{Clustering.all.count} clusterings"
 
-initialize_with_id_and_name({ 1 => "Hedno" }, ConsumerCategory)
+initialize_with_id_and_name({ 1 => "Hedno", 2 => "CTI" }, ConsumerCategory)
 puts "Created #{ConsumerCategory.all.count} consumer categories"
 
-initialize_with_id_and_name({ 100 => "Hedno industrial MV",
+initialize_with_id_and_name({
+                              1   => "CTI community",
+                              100 => "Hedno industrial MV",
                               101 => "Hedno industrial LV",
                               102 => "Hedno commercial MV",
                               103 => "Hedno professional",
@@ -62,6 +64,13 @@ initialize_with_id_and_name({ 100 => "Hedno industrial MV",
                             }, Community) do |community|
   community.clustering_id = 1
 end
+initialize_with_id_and_name({
+                                1   => "CTI community",
+                            }, Community) do |community|
+  community.clustering_id = 2
+end
+
+
 puts "Created #{Community.all.count} Communities"
 
 initialize_with_id_and_name({
@@ -99,15 +108,15 @@ initialize_with_id_and_name({
 puts "Created #{Flexibility.all.count} Flexibilities"
 
 
-["Consumer", "Community::HABTM_Consumers", "DataPoint"].each do |tbl_name|
-# ["Consumer", "Community::HABTM_Consumers"].each do |tbl_name|
+# ["Consumer", "Community::HABTM_Consumers", "DataPoint"].each do |tbl_name|
+["Consumer", "Community::HABTM_Consumers"].each do |tbl_name|
   dbconn = ActiveRecord::Base.connection_pool.checkout
   raw  = dbconn.raw_connection
   begin
     file = File.new "db/initdata/#{tbl_name}.csv"        # open a compressed file
     dbconn.disable_referential_integrity do
       if tbl_name == "Community::HABTM_Consumers"
-        tbl_name.constantize.where(community_id: 100 .. 105).delete_all
+        tbl_name.constantize.where(community_id: [1,100 .. 105]).delete_all
       else
         tbl_name.constantize.delete_all
       end
