@@ -68,16 +68,16 @@ module FetchData
 
         @params[:starttime] = @consumers.map do |c|
           midpoint = @params[:starttime] + in_db[c.id] * @interval.duration.seconds
-          puts "Consumer #{c.id}"
-          puts "start: #{@params[:starttime]}"
-          puts "end: #{@params[:endtime]}"
-          puts "midpoint: #{midpoint}"
-          puts "in_db: #{in_db[c.id]}"
-          puts "total: #{total_per_consumer}"
-          puts "points til mid #{DataPoint.where(consumer: c,
+          Rails.logger.debug "Consumer #{c.id}"
+          Rails.logger.debug "start: #{@params[:starttime]}"
+          Rails.logger.debug "end: #{@params[:endtime]}"
+          Rails.logger.debug "midpoint: #{midpoint}"
+          Rails.logger.debug "in_db: #{in_db[c.id]}"
+          Rails.logger.debug "total: #{total_per_consumer}"
+          Rails.logger.debug "points til mid #{DataPoint.where(consumer: c,
                                                  interval: @interval,
                                                  timestamp: @params[:starttime]..midpoint).count}"
-          puts "we want #{@interval.timestamps(@params[:starttime], midpoint).count}"
+          Rails.logger.debug "we want #{@interval.timestamps(@params[:starttime], midpoint).count}"
 
           if DataPoint.where(consumer: c,
                              interval: @interval,
@@ -90,8 +90,8 @@ module FetchData
 
 
 
-        puts "start: #{@params[:starttime]}"
-        puts "end: #{@params[:endtime]}"
+        Rails.logger.debug "start: #{@params[:starttime]}"
+        Rails.logger.debug "end: #{@params[:endtime]}"
         download
       end
     end
