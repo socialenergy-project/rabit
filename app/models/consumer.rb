@@ -31,7 +31,7 @@ class Consumer < ApplicationRecord
 
   def initDates
     start = DateTime.now - 1.week
-    if consumer_category&.name == "CTI"
+    if consumer_category&.name == "ICCS"
       start += 3.hours
     else
       start = start.change(year: 2015)

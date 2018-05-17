@@ -24,7 +24,7 @@ getColor = (label, opacity) ->
 prepareData = (dataset) ->
   keys = Object.keys(dataset)
   showPoints = dataset[keys[0]].length < 60
-  keys.map (k) ->
+  keys.map((k) ->
     {
       label: k,
       data: dataset[k].map (d) ->
@@ -42,7 +42,8 @@ prepareData = (dataset) ->
       pointHoverBackgroundColor: getColor(k, 0.2),
       pointHitRadius: 20,
       pointBorderWidth: 2,
-    }
+    }).reverse()
+
 
 window.clearAllCharts = () ->
   Chart.helpers.each Chart.instances, (instance) ->

@@ -59,14 +59,14 @@ def initialize_with_id_and_name(hash, model)
   end
 end
 
-initialize_with_id_and_name({ 1 => "By building type", 2 => "CTI" }, Clustering)
+initialize_with_id_and_name({ 1 => "By building type", 2 => "ICCS" }, Clustering)
 puts "Created #{Clustering.all.count} clusterings"
 
-initialize_with_id_and_name({ 1 => "Hedno", 2 => "CTI" }, ConsumerCategory)
+initialize_with_id_and_name({ 1 => "Hedno", 2 => "ICCS" }, ConsumerCategory)
 puts "Created #{ConsumerCategory.all.count} consumer categories"
 
 initialize_with_id_and_name({
-                              1   => "CTI community",
+                              1   => "ICCS community",
                               100 => "Hedno industrial MV",
                               101 => "Hedno industrial LV",
                               102 => "Hedno commercial MV",
@@ -77,7 +77,7 @@ initialize_with_id_and_name({
   community.clustering_id = 1
 end
 initialize_with_id_and_name({
-                                1   => "CTI community",
+                                1   => "ICCS community",
                             }, Community) do |community|
   community.clustering_id = 2
 end
