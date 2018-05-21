@@ -46,7 +46,7 @@ class Community < ApplicationRecord
                                  .group('communities.id')
                                  .group('timestamp')
                                  .order(timestamp: :asc)
-                                 .select('communities.id as com, timestamp, sum(consumption) as cons')
+                                 .select('communities.id as com, timestamp, case when sum(case when consumption is null then 1 else 0 end) > 0 then null else sum(consumption) end as cons')
                                  .map{|d| [d.timestamp, d.cons] }
           }
       }
