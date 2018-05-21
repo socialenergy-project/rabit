@@ -1,3 +1,4 @@
+require 'rack-mini-profiler'
 
 class ApplicationController < ActionController::Base
 
@@ -10,6 +11,13 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user! # , :except => [:getdata, :prosumer, :getdayahead]
   before_action :check_messages
+
+  before_action do
+    if current_user && current_user.has_role?(:admin)
+      Rack::MiniProfiler.authorize_request
+    end
+  end
+
 
   def check_messages
     current_user&.received_messages&.sent&.update_all(status: :notified)

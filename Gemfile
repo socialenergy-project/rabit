@@ -105,3 +105,6 @@ gem 'underscore-rails' ## For maips
 
 gem 'ruby-progressbar'
 gem 'upsert'
+
+gem 'rack-mini-profiler', require: false
+
