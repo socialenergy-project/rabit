@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180424111811) do
+ActiveRecord::Schema.define(version: 20180521082231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -140,6 +140,8 @@ ActiveRecord::Schema.define(version: 20180424111811) do
     t.index ["consumer_id"], name: "index_data_points_on_consumer_id"
     t.index ["interval_id"], name: "index_data_points_on_interval_id"
     t.index ["timestamp", "consumer_id", "interval_id"], name: "index_data_points_on_timestamp_and_consumer_id_and_interval_id", unique: true
+    t.index ["timestamp", "consumer_id"], name: "index_data_points_on_timestamp_and_consumer_id"
+    t.index ["timestamp", "interval_id"], name: "index_data_points_on_timestamp_and_interval_id"
     t.index ["timestamp"], name: "index_data_points_on_timestamp"
   end
 
