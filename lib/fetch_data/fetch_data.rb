@@ -3,12 +3,12 @@ module FetchData
     Upsert.logger = Logger.new("/dev/null")
 
     def initialize(consumers, chart_cookies)
-      @interval = Interval.find(chart_cookies[:interval_id])
+      @interval = Interval.find(chart_cookies[:interval_id]&.to_i)
       @consumers = consumers.select {|c| c&.consumer_category&.name == "ICCS"}
       @params = {
           mac: @consumers.map {|c| c.edms_id}.join(","),
-          starttime: chart_cookies[:start_date],
-          endtime: chart_cookies[:end_date],
+          starttime: chart_cookies[:start_date].to_datetime,
+          endtime: chart_cookies[:end_date].to_datetime,
           interval: @interval.duration
       }
     end

@@ -1,3 +1,5 @@
+require 'fetch_data/fetch_data'
+
 class DataPointsController < ApplicationController
   load_and_authorize_resource
   before_action :set_data_point, only: [:show, :edit, :update, :destroy]
@@ -5,7 +7,35 @@ class DataPointsController < ApplicationController
   # GET /data_points
   # GET /data_points.json
   def index
-    @data_points = DataPoint.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    respond_to do |format|
+      format.html do
+        @data_points = DataPoint.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+        render :index
+      end
+      format.json do
+        FetchData::FetchData.new(Consumer.where(id: params[:consumer_id]), params).sync
+        filter = {
+            timestamp: params[:start_date]&.to_datetime ..
+                params[:end_date]&.to_datetime,
+            interval_id: params[:interval_id]&.to_i
+        }
+        filter[:consumer_id] = params[:consumer_id] if params[:consumer_id]
+        puts "The filter is #{filter}"
+        render json: (DataPoint
+                         .joins(:consumer)
+                         .where(filter)
+                          .order(timestamp: :asc)
+                         .select('consumers.name as cname',
+                                 :timestamp,
+                                 :consumption
+                         )
+                         .inject( {} ) do |res, v|
+          res[v.cname] ||= []
+          res[v.cname] += [[v.timestamp.to_datetime.to_s, v.consumption]]
+          res
+        end)
+      end
+    end
   end
 
   # GET /data_points/1
