@@ -119,3 +119,8 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
     }
   })
 
+window.getdata = (domElementId, consumers, chart_vars) ->
+  $.ajax(url: "/data_points.json", data: $.extend(chart_vars, consumer_id: consumers)).done (res) ->
+    console.log res
+    lines = Object.keys(res).length
+    createChart(domElementId, res, lines == 1 || lines > 5);

@@ -21,7 +21,8 @@ class DataPointsController < ApplicationController
         }
         filter[:consumer_id] = params[:consumer_id] if params[:consumer_id]
         puts "The filter is #{filter}"
-        render json: (DataPoint
+        aggr = {}
+        result = (DataPoint
                          .joins(:consumer)
                          .where(filter)
                           .order(timestamp: :asc)
@@ -32,8 +33,18 @@ class DataPointsController < ApplicationController
                          .inject( {} ) do |res, v|
           res[v.cname] ||= []
           res[v.cname] += [[v.timestamp.to_datetime.to_s, v.consumption]]
+          if v.consumption.nil? or (aggr.key?(v.timestamp.to_datetime.to_s) and aggr[v.timestamp.to_datetime.to_s].nil?)
+            aggr[v.timestamp.to_datetime.to_s] = nil
+          elsif aggr[v.timestamp.to_datetime.to_s]
+            aggr[v.timestamp.to_datetime.to_s] += v.consumption
+          else
+            aggr[v.timestamp.to_datetime.to_s] = v.consumption
+          end
           res
         end)
+        result[:aggregate] = aggr.sort
+
+        render json: result
       end
     end
   end

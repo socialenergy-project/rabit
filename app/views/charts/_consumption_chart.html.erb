@@ -36,9 +36,10 @@
 
 <script>
   var initParams = JSON.parse('<%= initParams(entity).to_json.html_safe -%>');
+  var chart_vars = JSON.parse('<%= chart_vars.to_json.html_safe -%>');
   clearAllCharts();
-  <% data_points = entity.getData(chart_vars) %>
-  var data_points = JSON.parse('<%= data_points.to_json.html_safe -%>')
+  <%# data_points = entity.getData(chart_vars) %>
+  // var data_points = JSON.parse('<%#= data_points.to_json.html_safe -%>')
 </script>
 </div>
 <% if entity.class.name == "Clustering" %>
@@ -69,8 +70,12 @@
       <!--/div-->
       </div>
       <script>
-        var lines= Object.keys(data_points[<%= community&.id || 0  -%>]).length
-        createChart("consumptionChart<%= community&.id || 0  -%>", data_points[<%= community&.id || 0  -%>], lines == 1 || lines > 5);
+        // var lines= Object.keys(data_points[<%= community&.id || 0  -%>]).length;
+
+
+        getdata("consumptionChart<%= community&.id || 0  -%>", <%= community&.consumers&.pluck(:id) || [entity.id ]  -%>, chart_vars);
+
+        // createChart("consumptionChart<%= community&.id || 0  -%>", data_points[<%= community&.id || 0  -%>], lines == 1 || lines > 5);
       </script>
     <% end %>
 <% if entity.class.name == "Clustering" %>
