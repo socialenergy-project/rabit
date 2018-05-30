@@ -1,0 +1,15 @@
+<div class="card col-6 d-flex card-wide">
+  <div class="card-header">
+    <i class="fa fa-area-chart"></i>
+    <%= chart[:title] -%>
+  </div>
+  <div class="card-body">
+    <canvas id="<%= chart[:dom_id] -%>" width="100%" height="55"></canvas>
+    <div class="cell legend" ></div>
+  </div>
+  <div class="card-footer small text-muted">
+  </div>
+</div>
+<script>
+  getdata('<%= chart[:dom_id] -%>', <%= {community: chart[:community]}.to_json.html_safe -%>, <%= chart[:params].to_json.html_safe -%>);
+</script>

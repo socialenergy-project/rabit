@@ -11,3 +11,11 @@ two:
 three:
   name: Daily
   duration: 86400
+
+four:
+  name: 5-minute
+  duration: 300
+
+five:
+  name: 1-minute
+  duration: 60

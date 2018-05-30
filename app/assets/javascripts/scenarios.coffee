@@ -120,14 +120,17 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
   })
 
 window.getdata = (domElementId, consumers, chart_vars) ->
-  $('#' + domElementId).parent().append("<div class='loading'>Data loading, please wait...</div>")
-  request = $.ajax(url: "/data_points.json", data: $.extend(chart_vars, consumer_id: consumers))
+  $('#' + domElementId).siblings('.legend').text('Data loading, please wait...')
+  request = $.ajax(url: "/data_points.json", data: $.extend(chart_vars, consumers))
   request.done (res) ->
-    $('#' + domElementId).siblings('.loading').remove()
-    console.log res
-    lines = Object.keys(res).length
-    createChart(domElementId, res, lines == 1 || lines > 5)
+    if Math.max.apply(Math, Object.values(res).map((o) -> o.length)) > 0
+      $('#' + domElementId).siblings('.legend').text('')
+      console.log res
+      lines = Object.keys(res).length
+      createChart(domElementId, res, lines == 1 || lines > 5)
+    else
+      $('#' + domElementId).siblings('.legend').text('No data points in range, select (or reset) the interval')
 
   request.fail  ->
     console.log "Failed to load"
-    $('#' + domElementId).siblings('.loading').text('Data loading FAILED')
+    $('#' + domElementId).siblings('.legend').text('Data loading FAILED')

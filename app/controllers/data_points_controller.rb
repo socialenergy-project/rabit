@@ -13,38 +13,54 @@ class DataPointsController < ApplicationController
         render :index
       end
       format.json do
-        FetchData::FetchData.new(Consumer.where(id: params[:consumer_id]), params).sync
         filter = {
             timestamp: params[:start_date]&.to_datetime ..
                 params[:end_date]&.to_datetime,
             interval_id: params[:interval_id]&.to_i
         }
-        filter[:consumer_id] = params[:consumer_id] if params[:consumer_id]
-        puts "The filter is #{filter}"
-        aggr = {}
-        result = (DataPoint
-                         .joins(:consumer)
-                         .where(filter)
-                          .order(timestamp: :asc)
-                         .select('consumers.name as cname',
-                                 :timestamp,
-                                 :consumption
-                         )
-                         .inject( {} ) do |res, v|
-          res[v.cname] ||= []
-          res[v.cname] += [[v.timestamp.to_datetime.to_s, v.consumption]]
-          if v.consumption.nil? or (aggr.key?(v.timestamp.to_datetime.to_s) and aggr[v.timestamp.to_datetime.to_s].nil?)
-            aggr[v.timestamp.to_datetime.to_s] = nil
-          elsif aggr[v.timestamp.to_datetime.to_s]
-            aggr[v.timestamp.to_datetime.to_s] += v.consumption
-          else
-            aggr[v.timestamp.to_datetime.to_s] = v.consumption
-          end
-          res
-        end)
-        result[:aggregate] = aggr.sort
 
-        render json: result
+        render json: (if params[:consumer]
+          consumer = Consumer.find(params[:consumer])
+          FetchData::FetchData.new([consumer], params).sync
+          consumer.data_points.joins(:consumer).where(filter)
+                       .group('consumers.name')
+                       .select('consumers.name as con',
+                               'array_agg(timestamp ORDER BY data_points.timestamp asc) as tims',
+                               'array_agg(consumption ORDER BY data_points.timestamp ASC) as cons')
+                       .map{|d| [d.con, d.tims.zip(d.cons)] }.to_h
+        else
+          community = Community.find(params[:community])
+          FetchData::FetchData.new(community.consumers, params).sync
+
+          if Interval.find(params[:interval_id]&.to_i)
+                 .timestamps(params[:start_date]&.to_datetime, params[:end_date]&.to_datetime).count < 700
+            aggr = []
+            res = DataPoint.joins(consumer: :communities)
+                      .where(filter.merge 'communities.id': community.id)
+                      .group('communities.id')
+                      .group('consumers.name')
+                      .select('consumers.name as con',
+                              'array_agg(timestamp ORDER BY data_points.timestamp asc) as tims',
+                              'array_agg(consumption ORDER BY data_points.timestamp ASC) as cons')
+                      .map do |d|
+              aggr = d.tims.map{|t| [t,0]} if aggr.size == 0
+              aggr = aggr.zip(d.cons).map{|(a,b),d| [a,((b.nil? or d.nil?) ? nil : b+d)]}
+              [d.con, d.tims.zip(d.cons)]
+            end.to_h
+            res["aggregate"] = aggr
+            res
+          else
+            {
+                "aggregate" => DataPoint.joins(consumer: :communities)
+                                   .where(filter.merge 'communities.id': community.id)
+                                   .group('communities.id')
+                                   .group('timestamp')
+                                   .order(timestamp: :asc)
+                                   .select('communities.id as com, timestamp, case when sum(case when consumption is null then 1 else 0 end) > 0 then null else sum(consumption) end as cons')
+                                   .map{|d| [d.timestamp, d.cons] }
+            }
+          end
+        end)
       end
     end
   end

@@ -15,20 +15,6 @@ class Consumer < ApplicationRecord
 
   validates_associated :communities, message: ->(_class_obj, obj){ p "consumer OBJ is ", obj[:value]; obj[:value].map(&:errors).map(&:full_messages).join(',') }
 
-  def getData(chart_cookies)
-
-    FetchData::FetchData.new([self], chart_cookies).sync
-    {
-        '0': data_points.joins(:consumer).where(timestamp: chart_cookies[:start_date] .. chart_cookies[:end_date],
-                                       interval_id: chart_cookies[:interval_id])
-                 .group('consumers.name')
-                 .select('consumers.name as con',
-                         'array_agg(timestamp ORDER BY data_points.timestamp asc) as tims',
-                         'array_agg(consumption ORDER BY data_points.timestamp ASC) as cons')
-                 .map{|d| [d.con, d.tims.zip(d.cons)] }.to_h
-    }
-  end
-
   def initDates
     start = DateTime.now - 1.week
     if consumer_category&.name == "ICCS"

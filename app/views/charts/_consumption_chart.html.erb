@@ -46,7 +46,7 @@
   <div class="container-fluid">
 <% end %>
   <div class="card-group ">
-    <% p entity.class.name ; (entity.class.name == "Clustering" ?
+    <% (entity.class.name == "Clustering" ?
            entity.communities :
            entity.class.name == "Community" ?
                [ entity ]:
@@ -63,7 +63,7 @@
         </div>
         <div class="card-body">
           <canvas id="consumptionChart<%= community&.id || 0 -%>" width="100%" height="55"></canvas>
-          <div class="cell" id="consumptionLegend"></div>
+          <div class="cell legend"></div>
         </div>
         <div class="card-footer small text-muted">
         </div>
@@ -73,7 +73,7 @@
         // var lines= Object.keys(data_points[<%= community&.id || 0  -%>]).length;
 
 
-        getdata("consumptionChart<%= community&.id || 0  -%>", <%= community&.consumers&.pluck(:id) || [entity.id ]  -%>, chart_vars);
+        getdata("consumptionChart<%= community&.id || 0  -%>", <%= (community ? {community: community.id} : {consumer: entity.id }).to_json.html_safe -%>, chart_vars);
 
         // createChart("consumptionChart<%= community&.id || 0  -%>", data_points[<%= community&.id || 0  -%>], lines == 1 || lines > 5);
       </script>
