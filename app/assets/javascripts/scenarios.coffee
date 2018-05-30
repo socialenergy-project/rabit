@@ -47,7 +47,7 @@ prepareData = (dataset) ->
 
 window.clearAllCharts = () ->
   Chart.helpers.each Chart.instances, (instance) ->
-    console.log instance
+    console.log "Clearing chart #{instance}"
     instance.chart.destroy()
 
 window.createChart = (domElementId, dataset, legendId = null, startFromZero = true) ->
