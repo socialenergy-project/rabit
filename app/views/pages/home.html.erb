@@ -8,7 +8,10 @@
 
   <div class="container-fluid">
     <div class="card-group ">
-      <script>clearAllCharts();</script>
+      <script>
+        console.log("Turbolinks called");
+        clearAllCharts();
+      </script>
       <%= render partial: 'home_chart', collection: @charts, as: :chart %>
     </div>
   </div>
