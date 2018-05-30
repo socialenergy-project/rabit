@@ -13,7 +13,7 @@ class PagesController < ApplicationController
     @charts = [{
                    dom_id: :real_time_hour_chart,
                    title: 'Real time data for past hour',
-                   community: Community.find(1).id,
+                   community: Community.find(1),
                    params: {
                        'start_date': now - 60.minutes,
                        'end_date': now + 30.minutes,
@@ -22,7 +22,7 @@ class PagesController < ApplicationController
                }, {
                    dom_id: :real_time_day_chart,
                    title: 'Real time data for past day',
-                   community: Community.find(1).id,
+                   community: Community.find(1),
                    params: {
                        'start_date': now - 24.hours,
                        'end_date': now + 1.hour,
@@ -31,7 +31,7 @@ class PagesController < ApplicationController
                }, {
                    dom_id: :real_time_week_chart,
                    title: 'Real time data for past week',
-                   community: Community.find(1).id,
+                   community: Community.find(1),
                    params: {
                        'start_date': now - 1.week,
                        'end_date': now + 1.hour,
@@ -40,7 +40,7 @@ class PagesController < ApplicationController
                }, {
                    dom_id: :historical_day_chart,
                    title: 'Historical residential data for 1 day',
-                   community: Community.find(105).id,
+                   community: Community.find(105),
                    params: {
                        'start_date': today_in_2015,
                        'end_date': today_in_2015 + 1.day,
@@ -49,7 +49,7 @@ class PagesController < ApplicationController
                }, {
                    dom_id: :historical_industrial_chart,
                    title: 'Historical industrial data for 1 week',
-                   community: Community.find(100).id,
+                   community: Community.find(100),
                    params: {
                        'start_date': today_in_2015  ,
                        'end_date': today_in_2015 + 1.week,
@@ -58,7 +58,7 @@ class PagesController < ApplicationController
                }, {
                    dom_id: :historical_professional_chart,
                    title: 'Historical professional data for 1 month',
-                   community: Community.find(103).id,
+                   community: Community.find(103),
                    params: {
                        'start_date': today_in_2015  ,
                        'end_date': today_in_2015 + 1.month,

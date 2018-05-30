@@ -5,14 +5,15 @@
 
   <%= render partial: 'home_card', collection: @cards, as: :card %>
 
+  <script>
+    clearAllCharts();
+  </script>
 
   <div class="container-fluid">
     <div class="card-group ">
-      <script>
-        console.log("Turbolinks called");
-        clearAllCharts();
-      </script>
       <%= render partial: 'home_chart', collection: @charts, as: :chart %>
     </div>
   </div>
+
+
 </div>

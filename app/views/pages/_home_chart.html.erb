@@ -1,7 +1,7 @@
 <div class="card col-6 d-flex card-wide">
   <div class="card-header">
     <i class="fa fa-area-chart"></i>
-    <%= chart[:title] -%>
+    <%= chart[:title] -%>, <%= link_to "More data", community_path(chart[:community], chart[:params]) -%>
   </div>
   <div class="card-body">
     <canvas id="<%= chart[:dom_id] -%>" width="100%" height="55"></canvas>
@@ -9,7 +9,11 @@
   </div>
   <div class="card-footer small text-muted">
   </div>
+  <script>
+    getdata(
+      '<%= chart[:dom_id] -%>',
+      <%= {community: chart[:community].id}.to_json.html_safe -%>,
+      <%= chart[:params].to_json.html_safe -%>
+    );
+  </script>
 </div>
-<script>
-  getdata('<%= chart[:dom_id] -%>', <%= {community: chart[:community]}.to_json.html_safe -%>, <%= chart[:params].to_json.html_safe -%>);
-</script>
