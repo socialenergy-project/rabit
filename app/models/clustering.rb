@@ -11,6 +11,10 @@ class Clustering < ApplicationRecord
     end.first) || "N"
   end
 
+  def realtime
+    (communities.first || Community.first)&.realtime
+  end
+
   def initDates
     (communities.first || Consumer.first)&.initDates
   end

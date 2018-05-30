@@ -14,6 +14,10 @@ class Community < ApplicationRecord
     end if clustering
   end
 
+  def realtime
+    (consumers.first || Consumer.first)&.consumer_category&.name == "ICCS"
+  end
+
   def initDates
     (consumers.first || Consumer.first)&.initDates
   end

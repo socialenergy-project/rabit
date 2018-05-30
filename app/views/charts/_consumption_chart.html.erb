@@ -28,7 +28,11 @@
           <input type="reset" id="resetDates" value="Reset filter" class="input-sm btn btn-info btn-sm">
         </div>
     <% end %>
-
+    <ul>
+      <% quicklinks(entity).each do |link| %>
+        <li><%= link_to link[:name], link[:link]%></li>
+      <% end %>
+    </ul>
   </div>
   <div class="card-footer small text-muted">
   </div>

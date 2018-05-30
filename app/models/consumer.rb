@@ -15,9 +15,13 @@ class Consumer < ApplicationRecord
 
   validates_associated :communities, message: ->(_class_obj, obj){ p "consumer OBJ is ", obj[:value]; obj[:value].map(&:errors).map(&:full_messages).join(',') }
 
+  def realtime
+    consumer_category&.name == "ICCS"
+  end
+
   def initDates
     start = DateTime.now - 1.week
-    if consumer_category&.name == "ICCS"
+    if realtime
       start += 3.hours
     else
       start = start.change(year: 2015)
