@@ -75,7 +75,7 @@ SimpleNavigation::Configuration.run do |navigation|
       ConsumerCategory.order(id: :asc).each do |cc|
         sub_nav.dom_class = 'sidenav-second-level collapse'
         sub_nav.dom_id = 'collapseConsumers'
-        sub_nav.item "menu_consumers_#{cc.id}", cc.name, "#collapseConsumers_cat_#{cc.id}", dropdown_options.deep_dup.deep_merge({link_html: { 'data-parent': :consumers}}) do |sub_sub_nav|
+        sub_nav.item "menu_consumers_#{cc.id}", cc.name, "#collapseConsumers_cat_#{cc.id}", dropdown_options.deep_dup.deep_merge({link_html: { 'data-parent': '#collapseConsumers'}}) do |sub_sub_nav|
           sub_sub_nav.dom_class = 'sidenav-third-level collapse'
           sub_sub_nav.dom_id = "collapseConsumers_cat_#{cc.id}"
           sub_sub_nav.item "menu_consumers_#{cc.id}_list", "Consumer list", consumers_path(category: cc), options.deep_dup.merge(highlights_on: ->() { request.url.ends_with? consumers_path(category: cc) } )
