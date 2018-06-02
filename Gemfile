@@ -108,3 +108,9 @@ gem 'upsert'
 
 gem 'rack-mini-profiler', require: false
 
+# For jobs
+gem "sidekiq-cron", "~> 0.6.3"
+gem 'rufus-scheduler', '~> 3.4.0'
+
+gem 'sidekiq'
+gem 'sidekiq-unique-jobs'

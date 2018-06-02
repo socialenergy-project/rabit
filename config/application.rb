@@ -18,5 +18,11 @@ module Rat
     config.generators do |g|
       g.scaffold_stylesheet false
     end
+
+    config.active_job.queue_adapter = :sidekiq
+    config.after_initialize do
+      MonitorRedisJob.perform_later
+    end
+
   end
 end

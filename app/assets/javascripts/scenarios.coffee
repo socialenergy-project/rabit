@@ -47,7 +47,7 @@ prepareData = (dataset) ->
 
 window.clearAllCharts = () ->
   Chart.helpers.each Chart.instances, (instance) ->
-    console.log "Clearing chart", instance.chart
+    # console.log "Clearing chart", instance.chart
     instance.chart.destroy()
 
 window.createChart = (domElementId, dataset, legendId = null, startFromZero = true) ->
@@ -125,7 +125,7 @@ window.getdata = (domElementId, consumers, chart_vars) ->
   $('#' + domElementId).siblings('.legend').text('Data loading, please wait...')
 
   if window.ajaxcache[domElementId]
-    console.log "Aborting request", window.ajaxcache[domElementId]
+    # console.log "Aborting request", window.ajaxcache[domElementId]
     window.ajaxcache[domElementId].abort()
     window.ajaxcache[domElementId] = null
 
@@ -135,9 +135,9 @@ window.getdata = (domElementId, consumers, chart_vars) ->
   request.done (res) ->
     if Math.max.apply(Math, Object.values(res).map((o) -> o.length)) > 0
       $('#' + domElementId).siblings('.legend').text('')
-      console.log res
+      # console.log res
       lines = Object.keys(res).length
-      console.log "Painting chart"
+      # console.log "Painting chart"
       createChart(domElementId, res, lines == 1 || lines > 5)
     else
       $('#' + domElementId).siblings('.legend').text('No data points in range, select (or reset) the interval')
@@ -146,3 +146,6 @@ window.getdata = (domElementId, consumers, chart_vars) ->
   request.fail (reason) ->
     console.log "Failed to load", reason
     $('#' + domElementId).siblings('.legend').text('Data loading FAILED')
+
+  if new Date(chart_vars['end_date']) > new Date()
+    subscribe_data_point(consumers, chart_vars['interval_id'], domElementId)

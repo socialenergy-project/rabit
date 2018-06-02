@@ -13,12 +13,53 @@ module FetchData
       }
     end
 
+    def pollchanges
+      last = @consumers.map{|c| [c.edms_id, 0 ]}.to_h.merge(
+          DataPoint
+              .joins(:consumer)
+              .where(consumer: @consumers,
+                     interval: @interval,
+                     timestamp: @params[:starttime]..@params[:endtime])
+              .group(:edms_id)
+              .select('edms_id, max(timestamp) as last')
+              .map{|dp| [dp.edms_id, dp.last]}.to_h
+
+      )
+      p "The last ones are #{last}"
+      new_data_points = download
+                            .reject{|d| d["timestamp"].to_datetime < last[d["mac"]]}
+
+
+      publish_to_channel new_data_points.map { |d|
+        {
+            interval_id: @interval.id,
+            timestamp: d["timestamp"].to_datetime.to_s,
+            consumer: Consumer.find_by(edms_id: d['mac']),
+            consumption: d["kwhinterval"]
+        }
+      }
+      upsert new_data_points
+    end
+
+    def publish_to_channel(data_points)
+      data_points.each do |dp|
+        ActionCable.server.broadcast("dp_channel_consumer_#{dp[:consumer].id}_#{dp[:interval_id]}", dp)
+        dp[:consumer].communities.each do |community|
+          ActionCable.server.broadcast("dp_channel_community_#{community.id}_#{dp[:interval_id]}", dp)
+        end
+      end
+
+    end
+
     def download
       Rails.logger.debug "We need: #{@consumers.length * @interval.timestamps(@params[:starttime], @params[:endtime]).count} points"
       Rails.logger.debug "We have: #{DataPoint.where(consumer: @consumers, interval: @interval, timestamp: @params[:starttime]..@params[:endtime]).count} points"
 
-      res = JSON.parse RestClient.get ENV['EDMS_URL'], params: @params
+      JSON.parse RestClient.get ENV['EDMS_URL'], params: @params
 
+    end
+
+    def upsert(res)
       Rails.logger.debug "We got this data #{res}"
       now = DateTime.now
 
@@ -39,6 +80,7 @@ module FetchData
           end
         end
       end
+
     end
 
     def sync
@@ -88,11 +130,10 @@ module FetchData
           end
         end.min
 
-
-
         Rails.logger.debug "start: #{@params[:starttime]}"
         Rails.logger.debug "end: #{@params[:endtime]}"
-        download
+        new_points = download
+        upsert(new_points)
       end
     end
   end
