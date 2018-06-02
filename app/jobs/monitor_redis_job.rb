@@ -1,9 +1,9 @@
 class MonitorRedisJob < ApplicationJob
   queue_as :default
 
-  rescue_from(StandardError) do
-    retry_job wait: 30.seconds
-  end
+#  rescue_from(StandardError) do
+#    retry_job wait: 30.seconds
+#  end
 
   def perform(*args)
     redis = Redis.new
