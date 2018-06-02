@@ -2,11 +2,14 @@ App.db_rooms ||= {}
 
 window.subscribe_data_point = (consumers, interval_id, domElementId) ->
   # App.cable.subscriptions.remove(App.db_rooms[[consumers, interval_id]]) if App.db_rooms[[consumers, interval_id]]
-  unless App.db_rooms[[consumers, interval_id]]
-    App.db_rooms[[consumers, interval_id]] = App.cable.subscriptions.create({ channel: "DataPointChannel", consumers: consumers, interval_id: interval_id }, received: (data) ->
+  unless App.db_rooms[[consumers, interval_id, domElementId]]
+    App.db_rooms[[consumers, interval_id, domElementId]] = App.cable.subscriptions.create({ channel: "DataPointChannel", consumers: consumers, interval_id: interval_id }, received: (data) ->
       chart = Chart.helpers.where(Chart.instances, (instance) ->
         instance.canvas.id == domElementId)[0]
-
+      if !chart
+        console.log "The subsciption is ", this
+        this.unsubscribe()
+        return
       dataset = chart.data.datasets.find((d) -> d.label == data['consumer']['name'])
       last_time = dataset.data.slice(-1)[0].x
       new_time = new Date(data['timestamp'])
