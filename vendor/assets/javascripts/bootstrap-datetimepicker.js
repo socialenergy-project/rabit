@@ -50,6 +50,15 @@
     }
   }
 
+
+  function toLocaleTimeStringSupportsLocales() {
+    try {
+      new Date().toLocaleTimeString('i');
+    } catch (e) {
+      return e.name === 'RangeError';
+    }
+    return false;
+  } 
   // Add timezone abbreviation support for ie6+, Chrome, Firefox
   function timeZoneAbbreviation() {
     var abbreviation, date, formattedStr, i, len, matchedStrings, ref, str;
@@ -64,6 +73,10 @@
         }
       }
       formattedStr = matchedStrings.pop();
+    }
+    if (toLocaleTimeStringSupportsLocales()) {
+       var tok = (new Date()).toLocaleString('en-us',{timeZoneName:'short'}).split(" ");
+       formattedStr = tok[tok.length -1 ]
     }
     return formattedStr;
   }
