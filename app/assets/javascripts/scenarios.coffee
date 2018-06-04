@@ -50,11 +50,11 @@ window.clearAllCharts = () ->
     # console.log "Clearing chart", instance.chart
     instance.chart.destroy()
 
-window.createChart = (domElementId, dataset, legendId = null, startFromZero = true) ->
+window.createChart = (domElementId, dataset, legendId = null, startFromZero = true, duration = 0) ->
   return unless Object.keys(dataset).length > 0
   ctx = document.getElementById(domElementId)
-  disp_legend = !legendId;
-  myLineChart = new Chart(ctx, {
+  disp_legend = !legendId
+  chart = new Chart(ctx, {
     type: 'scatter',
     data: {
       datasets: prepareData dataset
@@ -119,6 +119,12 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
     }
   })
 
+  if (duration)
+    App.livecharts[domElementId] = {chart: chart, duration: duration}
+    console.log "Adde livechart ", App.livecharts
+
+
+
 window.ajaxcache = {}
 
 window.getdata = (domElementId, consumers, chart_vars) ->
@@ -138,7 +144,12 @@ window.getdata = (domElementId, consumers, chart_vars) ->
       # console.log res
       lines = Object.keys(res).length
       # console.log "Painting chart"
-      createChart(domElementId, res, lines == 1 || lines > 5)
+      duration = if new Date(chart_vars['end_date']) > new Date()
+                   new Date().getTime() - new Date(chart_vars['start_date']).getTime()
+                 else
+                   0
+      createChart(domElementId, res, lines == 1 || lines > 5, true, duration)
+        
     else
       $('#' + domElementId).siblings('.legend').text('No data points in range, select (or reset) the interval')
 
@@ -148,4 +159,6 @@ window.getdata = (domElementId, consumers, chart_vars) ->
     $('#' + domElementId).siblings('.legend').text('Data loading FAILED')
 
   if new Date(chart_vars['end_date']) > new Date()
-    subscribe_data_point(consumers, chart_vars['interval_id'], domElementId)
+    subscribe_data_point(consumers, chart_vars, domElementId)
+
+

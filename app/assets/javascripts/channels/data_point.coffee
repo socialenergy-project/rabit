@@ -1,9 +1,32 @@
 App.db_rooms ||= {}
 
-window.subscribe_data_point = (consumers, interval_id, domElementId) ->
+window.subscribe_data_point = (consumers, chart_vars, domElementId) ->
   # App.cable.subscriptions.remove(App.db_rooms[[consumers, interval_id]]) if App.db_rooms[[consumers, interval_id]]
     # unless App.db_rooms[[consumers, interval_id, domElementId]]
-    App.cable.subscriptions.create({ channel: "DataPointChannel", consumers: consumers, interval_id: interval_id }, received: (data) ->
+    App.livecharts ||= []
+    App.timer ||= setInterval (() ->
+#      console.log "interval1", App.livecharts
+      toremove = []
+      for k,v of App.livecharts
+#        console.log "interval: ", k,v
+        chart = v['chart']
+#        console.log "The chart is ", chart
+        elem = document.getElementById(k)
+        if elem == null || !chart
+          toremove.push k
+        else
+#          console.log "The options are ", chart.options
+          now = (new Date()).getTime()
+          chart.options.scales.xAxes[0].ticks.min = now
+          chart.options.scales.xAxes[0].ticks.max = now - v.duration
+          chart.update()
+#          ;
+#         console.log chart, dom
+      for k of toremove
+        delete App.livecharts[k]
+    ), 10000
+
+    App.cable.subscriptions.create({ channel: "DataPointChannel", consumers: consumers, interval_id: chart_vars['interval_id'] }, received: (data) ->
       chart = Chart.helpers.where(Chart.instances, (instance) ->
         instance.canvas.id == domElementId)[0]
       if !chart
@@ -36,6 +59,7 @@ window.subscribe_data_point = (consumers, interval_id, domElementId) ->
     )
 
 
-
-
     console.log "connected to channel"
+
+
+
