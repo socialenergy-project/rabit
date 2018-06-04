@@ -4,7 +4,8 @@
 
 window.disable_consumers = (current_clustering, clustering_communities) ->
   $('#community_consumers option').each () ->
-    $(this).attr("disabled", +this.getAttribute("value") in clustering_communities[current_clustering] )
+    if current_clustering of clustering_communities
+      $(this).attr("disabled", +this.getAttribute("value") in clustering_communities[current_clustering] )
 
 $(document).on "turbolinks:load", ->
   $("#community_clustering_id").change () ->
