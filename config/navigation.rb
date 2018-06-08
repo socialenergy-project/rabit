@@ -71,11 +71,20 @@ SimpleNavigation::Configuration.run do |navigation|
 
     primary.item :home, 'Home', root_path, options.deep_dup.merge(icon: ['fa fa-home fa-fw'])  # We add deep_dup otherwise the menu items end up with identical ids
     # primary.item :connection_types, 'Connection Types', connection_types_path, options.deep_dup
-    primary.item :consumers, 'Consumers', "#collapseConsumers", dropdown_options.deep_dup.merge(icon: ['fa fa-line-chart fa-fw'])  do |sub_nav|
+    primary.item :consumers, 'Consumers', "#collapseConsumers", dropdown_options.deep_dup.merge(
+        icon: ['fa fa-line-chart fa-fw'],
+        highlights_on: %r(^/consumers(/|$))
+    ) do |sub_nav|
       ConsumerCategory.order(id: :asc).each do |cc|
         sub_nav.dom_class = 'sidenav-second-level collapse'
         sub_nav.dom_id = 'collapseConsumers'
-        sub_nav.item "menu_consumers_#{cc.id}", cc.name, "#collapseConsumers_cat_#{cc.id}", dropdown_options.deep_dup.deep_merge({link_html: { 'data-parent': '#collapseConsumers'}}) do |sub_sub_nav|
+        sub_nav.item "menu_consumers_#{cc.id}",
+                     cc.name,
+                     "#collapseConsumers_cat_#{cc.id}",
+                     dropdown_options.deep_dup.deep_merge(
+                         link_html: { 'data-parent': '#collapseConsumers'},
+                         highlights_on: lambda { @consumer&.consumer_category == cc }
+                     ) do |sub_sub_nav|
           sub_sub_nav.dom_class = 'sidenav-third-level collapse'
           sub_sub_nav.dom_id = "collapseConsumers_cat_#{cc.id}"
           sub_sub_nav.item "menu_consumers_#{cc.id}_list", "Consumer list", consumers_path(category: cc), options.deep_dup.merge(highlights_on: ->() { request.url.ends_with? consumers_path(category: cc) } )
@@ -87,7 +96,10 @@ SimpleNavigation::Configuration.run do |navigation|
         end
       end
     end
-    primary.item :communities, 'Communities', "#collapseCommunities", dropdown_options.deep_dup.merge(icon: 'fa fa-fw fa-handshake-o') do |sub_nav|
+    primary.item :communities, 'Communities', "#collapseCommunities", dropdown_options.deep_dup.merge(
+        icon: 'fa fa-fw fa-handshake-o',
+        highlights_on: %r(^/communities(/|$))
+    ) do |sub_nav|
       sub_nav.dom_class = 'sidenav-second-level collapse'
       sub_nav.dom_id = 'collapseCommunities'
       sub_nav.item "menu_communities_list", "Community list", communities_path, options.deep_dup
@@ -106,11 +118,14 @@ SimpleNavigation::Configuration.run do |navigation|
 =end
 
     end
-    primary.item :clustrings, 'Community Creation', "#collapseClusterings", dropdown_options.deep_dup.merge(icon: 'fa fa-fw fa-sitemap') do |sub_nav|
+    primary.item :clusterings, 'Community Creation', "#collapseClusterings", dropdown_options.deep_dup.merge(
+        icon: 'fa fa-fw fa-sitemap',
+        highlights_on: %r(^/clusterings(/|$))
+    ) do |sub_nav|
       sub_nav.dom_class = 'sidenav-second-level collapse'
       sub_nav.dom_id = 'collapseClusterings'
       sub_nav.item "menu_clusterings_list", "Clustering list", clusterings_path, options.deep_dup
-      sub_nav.item "menu_cl_scenarios", "Clustering algorithms", cl_scenarios_path, options.deep_dup
+      sub_nav.item "menu_cl_scenarios", "Clustering algorithms", cl_scenarios_path, options.deep_dup.merge(highlights_on: %r(^/cl_scenarios(/|$)))
       sub_nav.item "menu_clusterings_new", "New Clustering", new_cl_scenario_path, options.deep_dup
 =begin
       Clustering.order(name: :asc).each do |c|
@@ -122,8 +137,14 @@ SimpleNavigation::Configuration.run do |navigation|
 
 
 #                 clusterings_path, options.deep_dup
-    primary.item :reporting, 'Reporting/Recommendation', recommendations_path, options.deep_dup.merge(icon: ['fa fa-money fa-fw'])
-    primary.item :dynamic_pricing, 'Energy Programs', scenarios_path, options.deep_dup.merge(icon: ['fa fa-plug fa-fw'])
+    primary.item :reporting, 'Reporting/Recommendation', recommendations_path, options.deep_dup.merge(
+        icon: ['fa fa-money fa-fw'],
+        highlights_on: %r(^/recommendations(/|$))
+    )
+    primary.item :dynamic_pricing, 'Energy Programs', scenarios_path, options.deep_dup.merge(
+        icon: ['fa fa-plug fa-fw'],
+        highlights_on: %r(^/scenarios(/|$))
+    )
 
 =begin
     # Add an item which has a sub navigation (same params, but with block)
