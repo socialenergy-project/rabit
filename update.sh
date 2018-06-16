@@ -1,4 +1,6 @@
 #!/bin/bash
+. ~/.bash_profile
+
 set -e
 
 # import rbenv
