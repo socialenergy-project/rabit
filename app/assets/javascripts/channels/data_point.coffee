@@ -17,8 +17,8 @@ window.subscribe_data_point = (consumers, chart_vars, domElementId) ->
         else
 #          console.log "The options are ", chart.options
           now = (new Date()).getTime()
-          chart.options.scales.xAxes[0].ticks.min = now
-          chart.options.scales.xAxes[0].ticks.max = now - v.duration
+          chart.options.scales.xAxes[0].ticks.max = now + v.duration / 5.0
+          chart.options.scales.xAxes[0].ticks.min = now - v.duration
           chart.update()
 #          ;
 #         console.log chart, dom

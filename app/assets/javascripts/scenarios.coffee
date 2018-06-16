@@ -55,6 +55,9 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
   # console.log "The chart is: ", chart
   if chart
     chart.destroy()
+
+  now = (new Date()).getTime()
+  limits = if duration then { min: now - duration, max: now + duration / 5.0 } else  {}
   chart = new Chart(ctx, {
     type: 'scatter',
     data: {
@@ -84,13 +87,13 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
           gridLines: {
             display: false
           },
-          ticks: {
-      #      min: Date.parse("2017-10-10T12:00:00.000Z"),
-      #      max: Date.parse("2017-10-18T11:00:00.000Z"),
+          ticks: Object.assign {
+#            min: Date.parse("2017-10-10T12:00:00.000Z"),
+#           max: Date.parse("2017-10-18T11:00:00.000Z"),
       #       maxTicksLimit: 15,
-             userCallback: (label, index, labels) ->
+            userCallback: (label, index, labels) ->
                new Date(label).toISOString()
-          }
+          }, limits
         }],
         yAxes: [{
           ticks: if startFromZero then   {
