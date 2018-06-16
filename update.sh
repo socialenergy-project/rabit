@@ -28,7 +28,7 @@ RAILS_ENV=production rails db:migrate
 [ "$1" == --seed ] && RAILS_ENV=production rails db:seed
 
 # and the static files
-RAILS_ENV=production rails assets:precompile
+RAILS_ENV=production rails assets:precompile || echo "Not compiled"
 
 # and restart the server
 passenger-config restart-app .
