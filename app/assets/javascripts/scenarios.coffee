@@ -7,9 +7,9 @@ $(document).on "turbolinks:load", ->
     format: 'yyyy-mm-dd hh:ii z',
     minuteStep: 15,
     autoclose: true,
-  });
+  })
   $("#run_algorithm").click (e) ->
-    $(this).html("<i class=\"fa fa-spinner\" aria-hidden=\"true\"></i> Running algorithm, please wait...").prop('disabled', true);
+    $(this).html("<i class=\"fa fa-spinner\" aria-hidden=\"true\"></i> Running algorithm, please wait...").prop('disabled', true)
     $(this).parents('form').submit()
 
 getColor = (label, opacity) ->
@@ -44,16 +44,17 @@ prepareData = (dataset) ->
       pointBorderWidth: 2,
     }).reverse()
 
-
-window.clearAllCharts = () ->
-  Chart.helpers.each Chart.instances, (instance) ->
-    # console.log "Clearing chart", instance.chart
-    instance.chart.destroy()
-
 window.createChart = (domElementId, dataset, legendId = null, startFromZero = true, duration = 0) ->
   return unless Object.keys(dataset).length > 0
   ctx = document.getElementById(domElementId)
+  unless ctx
+    return
   disp_legend = !legendId
+  chart = Chart.helpers.where(Chart.instances, (instance) ->
+    instance.canvas.id == domElementId)[0]
+  # console.log "The chart is: ", chart
+  if chart
+    chart.destroy()
   chart = new Chart(ctx, {
     type: 'scatter',
     data: {
@@ -155,8 +156,9 @@ window.getdata = (domElementId, consumers, chart_vars) ->
 
 
   request.fail (reason) ->
-    console.log "Failed to load", reason
-    $('#' + domElementId).siblings('.legend').text('Data loading FAILED')
+    if reason.statusText != "abort"
+      console.log "Failed to load", reason
+      $('#' + domElementId).siblings('.legend').text('Data loading FAILED')
 
   if new Date(chart_vars['end_date']) > new Date()
     subscribe_data_point(consumers, chart_vars, domElementId)

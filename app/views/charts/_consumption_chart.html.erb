@@ -41,7 +41,6 @@
 <script>
   var initParams = JSON.parse('<%= initParams(entity).to_json.html_safe -%>');
   var chart_vars = JSON.parse('<%= chart_vars.to_json.html_safe -%>');
-  clearAllCharts();
   <%# data_points = entity.getData(chart_vars) %>
   // var data_points = JSON.parse('<%#= data_points.to_json.html_safe -%>')
 </script>

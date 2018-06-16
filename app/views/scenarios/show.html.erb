@@ -158,7 +158,6 @@
 
 <script>
     console.log("Turbolinks called");
-    clearAllCharts();
 
     createChart("energyCostChart", <%= @plot_data[:energy_cost].to_json.html_safe -%>);
     createChart("userWellfareChart", <%= @plot_data[:user_welfare].to_json.html_safe -%>, null, false);
