@@ -4,9 +4,9 @@
     $("body").toggleClass("sidenav-toggled");
 
     if ($("body").hasClass("sidenav-toggled")) {
-      $(".logo-image").attr('src', "assets/SocialEnergyLogoBlack_150.png");
+      $(".logo-image").attr('src', '<%= image_url("SocialEnergyLogoBlack_150.png") %>');
     } else {
-      $(".logo-image").attr('src', "assets/SocialEnergyLogoWhite_150.png");
+      $(".logo-image").attr('src', '<%= image_url("SocialEnergyLogoWhite_150.png") %>');
     }
 
     $(".navbar-sidenav .nav-link-collapse").addClass("collapsed");
