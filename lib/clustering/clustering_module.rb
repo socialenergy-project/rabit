@@ -11,16 +11,18 @@ module ClusteringModule
             string: 'By building type',
             proc: ->(k) { run_building_type k }
         },
+=begin
         connection_type: {
             string: 'By connection type',
             proc: ->(k) { run_connection_type k }
         },
+=end
         location: {
             string: 'By location',
             proc: ->(k) { run_location k }
         },
         genetic: {
-            string: 'Using genetic algorithms',
+            string: 'By consumption profile (Genetic)',
             proc: ->(params) {
               ClusteringModule::GeneticErrorClustering.new(
                   consumers: consumers(params),
@@ -31,7 +33,7 @@ module ClusteringModule
             }
         },
         genetic_smart: {
-            string: 'Genetic algorithm with smart reproduction',
+            string: 'By consumption profile (Genetic – smart)',
             proc: ->(params) {
               ClusteringModule::GeneticErrorClustering.new(
                   consumers: consumers(params),
@@ -43,7 +45,7 @@ module ClusteringModule
             }
         },
         positive_consumption_spectral_clustering: {
-            string: 'Positive Consumption Spectral Clustering',
+            string: 'By consumption profile (Spectral – positive)',
             proc: ->(params) {
               ClusteringModule::PositiveConsumptionSpectralClustering.new(
                   consumers: consumers(params),
@@ -54,7 +56,7 @@ module ClusteringModule
             }
         },
         negative_consumption_spectral_clustering: {
-            string: 'Negative Consumption Spectral Clustering',
+            string: 'By consumption profile (Spectral – negative)',
             proc: ->(params) {
               ClusteringModule::NegativeConsumptionSpectralClustering.new(
                   consumers: consumers(params),
@@ -65,7 +67,7 @@ module ClusteringModule
             }
         },
         crtp: {
-            string: 'CRTP'
+            string: 'Pricing based community formation – CRTP'
         }
     }
   end
