@@ -138,7 +138,7 @@ select {
   max-height: 200px;
 }
 
-.nav-item > a.nav-link {
+.nav-item > a:not(.nav-link-collapse)  {
   white-space: nowrap;
 }
 
