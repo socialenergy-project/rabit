@@ -15,27 +15,27 @@ class PagesController < ApplicationController
                    title: 'Real time data for past hour',
                    community: Community.find(1),
                    params: {
-                       'start_date': now - 60.minutes,
-                       'end_date': now + 30.minutes,
-                       'interval_id': Interval.find_by(duration: 60).id
+                       'duration': 60.minutes.to_i,
+                       'interval_id': Interval.find_by(duration: 60).id,
+                       'type': 'Real-time',
                    }
                }, {
                    dom_id: :real_time_day_chart,
                    title: 'Real time data for past day',
                    community: Community.find(1),
                    params: {
-                       'start_date': now - 24.hours,
-                       'end_date': now + 1.hour,
-                       'interval_id': Interval.find_by(duration: 900).id
+                       'duration': 24.hours,
+                       'interval_id': Interval.find_by(duration: 900).id,
+                       'type': 'Real-time',
                    }
                }, {
                    dom_id: :real_time_week_chart,
                    title: 'Real time data for past week',
                    community: Community.find(1),
                    params: {
-                       'start_date': now - 1.week,
-                       'end_date': now + 1.hour,
-                       'interval_id': Interval.find_by(duration: 3600).id
+                       'duration': 1.week,
+                       'interval_id': Interval.find_by(duration: 3600).id,
+                       'type': 'Real-time',
                    }
                }, {
                    dom_id: :historical_day_chart,

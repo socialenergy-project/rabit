@@ -7,12 +7,20 @@
     <% chart_vars = chart_cookies(entity) %>
       <%= form_tag({remote: false}, method: "get", class: "form-inline") do %>
         <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm ">
+          <%= label_tag :type, "Chart Type: " %>
+          <%= select_tag :type, options_for_select([ "Real-time", "Historical" ], chart_vars[:type]), id: 'type-selector', class: 'input-group input-sm mb-2 mr-sm-2 mb-sm-0 custom-select' %>
+        </div>
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm historical">
           <%= label_tag :start_date, "Start datetime: " %>
           <%= text_field_tag :start_date, format_datetime(chart_vars[:start_date]), id: :start_date, class: 'form-control input-sm datetimepicker' %>
         </div>
-        <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm ">
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm historical">
           <%= label_tag :end_date, "End datetime: " %>
           <%= text_field_tag :end_date, format_datetime(chart_vars[:end_date]), id: :end_date, class: 'form-control input-sm datetimepicker' %>
+        </div>
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm real-time">
+          <%= label_tag :duration, "Duration (sec): " %>
+          <%= number_field_tag :duration, chart_vars[:duration], id: :duration, class: 'form-control input-sm' %>
         </div>
         <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm ">
           <%= label_tag :interval_id, "Interval: " %>
@@ -39,6 +47,22 @@
 </div>
 
 <script>
+  function hide_and_show() {
+    if ($('#type-selector').val() == "Real-time") {
+      $('.historical').hide();
+      $('.real-time').show();
+    } else {
+      $('.historical').show();
+      $('.real-time').hide();
+    }
+  }
+
+  $(document).on("turbolinks:load", function() {
+    hide_and_show();
+  });
+  $( '#type-selector' ).change(function() {
+    hide_and_show();
+  });
   var initParams = JSON.parse('<%= initParams(entity).to_json.html_safe -%>');
   var chart_vars = JSON.parse('<%= chart_vars.to_json.html_safe -%>');
   <%# data_points = entity.getData(chart_vars) %>

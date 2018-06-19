@@ -147,11 +147,13 @@ window.getdata = (domElementId, consumers, chart_vars) ->
       $('#' + domElementId).siblings('.legend').text('')
       # console.log res
       lines = Object.keys(res).length
-      # console.log "Painting chart"
-      duration = if new Date(chart_vars['end_date']) > new Date()
-                   new Date().getTime() - new Date(chart_vars['start_date']).getTime()
+
+      duration = if chart_vars['type'] == "Real-time"
+                  chart_vars['duration'] * 1000
                  else
                    0
+
+      console.log "Painting chart, duration:", duration
       createChart(domElementId, res, lines == 1 || lines > 5, true, duration)
         
     else
@@ -163,7 +165,7 @@ window.getdata = (domElementId, consumers, chart_vars) ->
       console.log "Failed to load", reason
       $('#' + domElementId).siblings('.legend').text('Data loading FAILED')
 
-  if new Date(chart_vars['end_date']) > new Date()
+  if chart_vars['type'] == "Real-time"
     subscribe_data_point(consumers, chart_vars, domElementId)
 
 

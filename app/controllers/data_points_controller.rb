@@ -13,9 +13,15 @@ class DataPointsController < ApplicationController
         render :index
       end
       format.json do
+
+        duration = params[:duration]&.to_i&.seconds
+        puts "duration:", duration
+        timerange = params[:type] == "Real-time" ?
+            DateTime.now - duration .. DateTime.now + duration / 5.0 :
+            params[:start_date]&.to_datetime .. params[:end_date]&.to_datetime
+
         filter = {
-            timestamp: params[:start_date]&.to_datetime ..
-                params[:end_date]&.to_datetime,
+            timestamp: timerange,
             interval_id: params[:interval_id]&.to_i
         }
 
@@ -33,7 +39,7 @@ class DataPointsController < ApplicationController
           FetchData::FetchData.new(community.consumers, params).sync
 
           if Interval.find(params[:interval_id]&.to_i)
-                 .timestamps(params[:start_date]&.to_datetime, params[:end_date]&.to_datetime).count < 700
+                 .timestamps(timerange.first, timerange.last).count < 700
             aggr = []
             res = DataPoint.joins(consumer: :communities)
                       .where(filter.merge 'communities.id': community.id)

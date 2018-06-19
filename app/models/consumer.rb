@@ -20,12 +20,11 @@ class Consumer < ApplicationRecord
   end
 
   def initDates
-    start = DateTime.now - 1.week
     if realtime
-      start += 3.hours
+      { duration: 1.week.to_i, start_date: nil, end_date: nil, type: "Real-time" }
     else
-      start = start.change(year: 2015)
+      start = (DateTime.now - 1.week).change(year: 2015)
+      { start_date: start, end_date: start + 1.week, duration: nil, type: "Historical" }
     end
-    { start: start, end: start + 1.week }
   end
 end

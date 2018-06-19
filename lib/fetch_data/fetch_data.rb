@@ -5,10 +5,17 @@ module FetchData
     def initialize(consumers, chart_cookies)
       @interval = Interval.find(chart_cookies[:interval_id]&.to_i)
       @consumers = consumers.select {|c| c&.consumer_category&.name == "ICCS"}
+      start = chart_cookies[:duration] ?
+          DateTime.now - chart_cookies[:duration].to_i.seconds :
+          chart_cookies[:start_date].to_datetime
+      stop = chart_cookies[:duration] ?
+          DateTime.now + (chart_cookies[:duration].to_i / 5.0).seconds :
+          chart_cookies[:end_date].to_datetime
+
       @params = {
           mac: @consumers.map {|c| c.edms_id}.join(","),
-          starttime: chart_cookies[:start_date].to_datetime,
-          endtime: chart_cookies[:end_date].to_datetime,
+          starttime: start,
+          endtime: stop,
           interval: @interval.duration
       }
     end

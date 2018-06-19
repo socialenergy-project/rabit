@@ -1,73 +1,67 @@
 module ChartsHelper
   def chart_cookies(entity = Clustering.first)
     initParams(entity).map do |k,v|
-      [k, session[k] = (params[k] || session[k] || v).send(paramTypes[k])]
+      [k, session[k] = (params[k] || session[k] || v)&.send(paramTypes[k])]
     end.to_h
   end
 
   def initParams(entity = Clustering.first)
-    params = entity.initDates
-    {
-        start_date:  params[:start],
-        end_date:    params[:end],
-        interval_id: Interval.find_by(duration: 3600).id,
-    }
+    params = entity.initDates.merge interval_id: Interval.find_by(duration: 3600).id
   end
 
   def quicklinks(entity)
-    now = DateTime.now
-
     realtime_links = [{
                           name: "Past 15 minutes",
                           params: {
-                              'start_date': now - 15.minutes,
-                              'end_date': now + 30.minutes,
+                              'duration': 15.minutes.to_i,
+                              'type': "Real-time",
                               'interval_id': Interval.find_by(duration: 60).id,
                           }
                       },{
                           name: "Past hour",
                           params: {
-                              'start_date': now - 60.minutes,
-                              'end_date': now + 30.minutes,
+                              'duration': 60.minutes.to_i,
+                              'type': "Real-time",
                               'interval_id': Interval.find_by(duration: 300).id,
                           }
                       },{
                           name: "Past two hours",
                           params: {
-                              'start_date': now - 2.hours,
-                              'end_date': now + 30.minutes,
+                              'duration': 2.hours.to_i,
+                              'type': "Real-time",
                               'interval_id': Interval.find_by(duration: 300).id,
                           }
                       },{
                           name: "Past day",
                           params: {
-                              'start_date': now - 1.day,
-                              'end_date': now + 30.minutes,
+                              'duration': 1.day.to_i,
+                              'type': "Real-time",
                               'interval_id': Interval.find_by(duration: 900).id,
                           }
                       },{
                           name: "Past week",
                           params: {
-                              'start_date': now - 1.week,
-                              'end_date': now + 30.minutes,
+                              'duration': 1.week.to_i,
+                              'type': "Real-time",
                               'interval_id': Interval.find_by(duration: 3600).id,
                           }
                       },{
                           name: "Past month",
                           params: {
-                              'start_date': now - 1.month,
-                              'end_date': now + 30.minutes,
+                              'duration': 1.month.to_i,
+                              'type': "Real-time",
                               'interval_id': Interval.find_by(duration: 86400).id,
                           }
                       }]
 
-    start_2015 = now.change(year: 2015)
+    start_2015 = DateTime.now.change(year: 2015)
 
     historical_links = [{
                           name: "1 day",
                           params: {
                               'start_date': start_2015,
                               'end_date': start_2015 + 1.day,
+                              'type': "Historical",
                               'interval_id': Interval.find_by(duration: 900).id,
                           }
                       },{
@@ -75,6 +69,7 @@ module ChartsHelper
                           params: {
                               'start_date': start_2015,
                               'end_date': start_2015 + 1.week,
+                              'type': "Historical",
                               'interval_id': Interval.find_by(duration: 3600).id,
                           }
                       },{
@@ -82,6 +77,7 @@ module ChartsHelper
                           params: {
                               'start_date': start_2015,
                               'end_date': start_2015 + 1.month,
+                              'type': "Historical",
                               'interval_id': Interval.find_by(duration: 86400).id,
                           }
                       },{
@@ -89,6 +85,7 @@ module ChartsHelper
                             params: {
                                 'start_date': '2015-01-01T00:00:00Z'.to_datetime,
                                 'end_date': '2015-12-31T00:00:00Z'.to_datetime,
+                                'type': "Historical",
                                 'interval_id': Interval.find_by(duration: 86400).id,
                             }
                         }]
@@ -116,6 +113,8 @@ module ChartsHelper
         start_date:  :to_datetime,
         end_date:    :to_datetime,
         interval_id: :to_i,
+        duration:    :to_i,
+        type:        :to_s,
     }
   end
 
