@@ -14,7 +14,7 @@ class BootstrapBreadcrumbs < SimpleNavigation::Renderer::Base
 
       if include_sub_navigation?(item)
         options = { method: item.method, class: 'breadcrumb-item' }.merge(item.html_options.except(:class, :id))
-        list << content_tag(:li, link_to(item.name, item.url), options)
+        list << content_tag(:li, item.name,  options)
         list.concat li_tags(item.sub_navigation)
       else
         list << content_tag(:li, item.name, { class: 'breadcrumb-item active' })

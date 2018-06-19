@@ -160,14 +160,15 @@
   }
 
   .logo-image {
-    border: solid $gray-800 0px;
+//    background-color: $gray-800;
+ //   border: solid $gray-800 8px;
     position: absolute;
     left: 0px;
     top: 0px;
   }
 
   .logo-text {
-    padding-left: 135px;
+    padding-left: 75px;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
