@@ -64,7 +64,7 @@
         }
       }
       formattedStr = matchedStrings.pop();
-    } else {
+    } else if (formattedStr.split(" ").length > 1) {
       formattedStr = formattedStr.split(" ").map(function (s) {return s[0]}).join('');
     }
     return formattedStr;
