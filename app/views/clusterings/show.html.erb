@@ -21,11 +21,11 @@
         <%= link_to @clustering.cl_scenario&.name, cl_scenario_path(@clustering.cl_scenario) if @clustering.cl_scenario -%>
       </p>
       <p>
-        <strong>Clusters:</strong>
+        <strong>Communities:</strong>
         <div class="row">
           <% @clustering.communities.each do |community| %>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
-              <strong><%= community.name -%></strong>
+              <strong><%= link_to community&.name, community_path(community) -%></strong>
               <p class="max-height-200px">
                 <%= community.consumers.map{|c| link_to c.name, consumer_path(c)}.join(" | ").html_safe -%>
               </p>

@@ -44,6 +44,13 @@
         <%= link_to @consumer.consumer_category&.name, consumer_category_path(@consumer.consumer_category) if @consumer.consumer_category -%>
       </p>
 
+      <p>
+        <strong>Communities (Clusterings):</strong>
+        <%= @consumer&.communities&.map do |c|
+          cl = c&.clustering
+          "#{link_to c&.name, community_path(c)} (#{link_to cl&.name, clustering_path(cl)})"
+        end.join(" | ").html_safe -%>
+      </p>
       <p class="max-height-200px">
         <strong>Users:</strong>
         <%= @consumer.users.map{|u| link_to u.name, user_path(u)}.join(" | ").html_safe -%>
