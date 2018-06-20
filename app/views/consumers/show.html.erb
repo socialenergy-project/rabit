@@ -1,70 +1,72 @@
 <%= content_for :title, @consumer.name || @consumer.id -%>
 
-<div class="card-group">
-  <div class="card card-narrow">
-    <div class="card-header">
-      <i class="fa fa-area-chart"></i>
-      consumer properties
-    </div>
-    <div class="card-body">
-      <p>
-        <strong>Name:</strong>
-        <%= @consumer.name-%>
-      </p>
-      <p>
-        <strong>Location:</strong>
-        <%= @consumer.location-%>
-      </p>
-      <p>
-        <strong>Edms:</strong>
-        <%= @consumer.edms_id-%>
-      </p>
-      <p>
-        <strong>Building type:</strong>
-        <%= link_to @consumer.building_type&.name, building_type_path(@consumer.building_type) if @consumer.building_type -%>
-      </p>
-      <p>
-        <strong>Connection type:</strong>
-        <%= link_to @consumer.connection_type&.name, connection_type_path(@consumer.connection_type) if @consumer.connection_type -%>
-      </p>
-      <p>
-        <strong>Location x:</strong>
-        <%= @consumer.location_x-%>
-      </p>
-      <p>
-        <strong>Location y:</strong>
-        <%= @consumer.location_y-%>
-      </p>
-      <p>
-        <strong>Feeder:</strong>
-        <%= @consumer.feeder_id-%>
-      </p>
-      <p>
-        <strong>Consumer category:</strong>
-        <%= link_to @consumer.consumer_category&.name, consumer_category_path(@consumer.consumer_category) if @consumer.consumer_category -%>
-      </p>
+<div class="row" >
+  <div class="col-md-6 mb-3">
+    <div class="card card-narrow">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        consumer properties
+      </div>
+      <div class="card-body">
+        <div>
+          <strong>Name:</strong>
+          <%= @consumer.name-%>
+        </div>
+        <div>
+          <strong>Location:</strong>
+          <%= @consumer.location-%>
+        </div>
+        <div>
+          <strong>Edms:</strong>
+          <%= @consumer.edms_id-%>
+        </div>
+        <div>
+          <strong>Building type:</strong>
+          <%= link_to @consumer.building_type&.name, building_type_path(@consumer.building_type) if @consumer.building_type -%>
+        </div>
+        <div>
+          <strong>Connection type:</strong>
+          <%= link_to @consumer.connection_type&.name, connection_type_path(@consumer.connection_type) if @consumer.connection_type -%>
+        </div>
+        <div>
+          <strong>Location x:</strong>
+          <%= @consumer.location_x-%>
+        </div>
+        <div>
+          <strong>Location y:</strong>
+          <%= @consumer.location_y-%>
+        </div>
+        <div>
+          <strong>Feeder:</strong>
+          <%= @consumer.feeder_id-%>
+        </div>
+        <div>
+          <strong>Consumer category:</strong>
+          <%= link_to @consumer.consumer_category&.name, consumer_category_path(@consumer.consumer_category) if @consumer.consumer_category -%>
+        </div>
 
-      <p>
-        <strong>Member in:</strong>
-        <ul class="max-height-100px">
-          <% @consumer&.communities&.map do |c|
-            cl = c&.clustering %>
-          <li><%= link_to c&.name, community_path(c) -%> (<%= link_to cl&.name, clustering_path(cl) -%>)</li>
-          <% end %>
-        </ul>
-      </p>
+        <div>
+          <strong>Member in:</strong>
+          <ul class="max-height-100px">
+            <% @consumer&.communities&.map do |c|
+              cl = c&.clustering %>
+            <li><%= link_to c&.name, community_path(c) -%> (<%= link_to cl&.name, clustering_path(cl) -%>)</li>
+            <% end %>
+          </ul>
+        </div>
 
-      <p class="max-height-200px">
-        <strong>Users:</strong>
-        <%= @consumer.users.map{|u| link_to u.name, user_path(u)}.join(" | ").html_safe -%>
-      </p>
+        <div class="max-height-200px">
+          <strong>Users:</strong>
+          <%= @consumer.users.map{|u| link_to u.name, user_path(u)}.join(" | ").html_safe -%>
+        </div>
 
-      <%= link_to 'Edit', edit_consumer_path(@consumer), class: 'btn btn-warning btn-sm' if can? :edit, @consumer %> |
-      <%= link_to "All #{category_name(@consumer.consumer_category)}", consumers_path(category: @consumer.consumer_category), class: 'btn btn-info btn-sm' %> |
-      <%= link_to 'All Consumers', consumers_path, class: 'btn btn-info btn-sm' %>
+        <%= link_to 'Edit', edit_consumer_path(@consumer), class: 'btn btn-warning btn-sm' if can? :edit, @consumer %> |
+        <%= link_to "All #{category_name(@consumer.consumer_category)}", consumers_path(category: @consumer.consumer_category), class: 'btn btn-info btn-sm' %> |
+        <%= link_to 'All Consumers', consumers_path, class: 'btn btn-info btn-sm' %>
 
-    </div>
-    <div class="card-footer small text-muted">
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
     </div>
   </div>
   <%= render partial: "charts/gmap" %>

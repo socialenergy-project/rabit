@@ -1,36 +1,38 @@
-<div class="card card-narrow">
-  <div class="card-header">
-    <i class="fa fa-area-chart"></i>
-    Consumer locations
-  </div>
-  <div class="card-body" style="padding: 0px; display: flex;  ">
-    <div id="map" style='min-height: 400px; width: 100%;'></div>
-  </div>
-  <div class="card-footer small text-muted">
-  </div>
-  <script>
-    handler = Gmaps.build('Google');
-    handler.buildMap({
-        provider: {
-          // disableDefaultUI: true
-          // pass in other Google Maps API options here
+<div class="col-md-6 mb-3 d-flex">
+  <div class="card card-100">
+    <div class="card-header">
+      <i class="fa fa-area-chart"></i>
+      Consumer locations
+    </div>
+    <div class="card-body" style="padding: 0px; display: flex;  ">
+      <div id="map" style='min-height: 400px; width: 100%;'></div>
+    </div>
+    <div class="card-footer small text-muted">
+    </div>
+    <script>
+      handler = Gmaps.build('Google');
+      handler.buildMap({
+          provider: {
+            // disableDefaultUI: true
+            // pass in other Google Maps API options here
+          },
+          internal: {
+            id: 'map'
+          }
         },
-        internal: {
-          id: 'map'
+        function () {
+          markers = handler.addMarkers(<%=raw @hash.to_json %>);
+          handler.bounds.extendWith(markers);
+          handler.fitMapToBounds();
+          if (markers.length == 1 ) {
+            handler.getMap().setZoom(9);
+          }
+          console.log("Current zoom " + handler.getMap().getZoom())
+          if (handler.getMap().getZoom() > 18) {
+            handler.getMap().setZoom(18);
+          }
         }
-      },
-      function () {
-        markers = handler.addMarkers(<%=raw @hash.to_json %>);
-        handler.bounds.extendWith(markers);
-        handler.fitMapToBounds();
-        if (markers.length == 1 ) {
-          handler.getMap().setZoom(9);
-        }
-        console.log("Current zoom " + handler.getMap().getZoom())
-        if (handler.getMap().getZoom() > 18) {
-          handler.getMap().setZoom(18);
-        }
-      }
-    );
-  </script>
+      );
+    </script>
+  </div>
 </div>

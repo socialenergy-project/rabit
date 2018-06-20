@@ -60,6 +60,8 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
   limits = if duration then { min: now - duration, max: now + duration / 5.0 } else  {}
   chart = new Chart(ctx, {
     type: 'scatter',
+    responsive: true,
+    maintainAspectRatio: false,
     data: {
       datasets: prepareData dataset
       ###datasets: [{

@@ -1,7 +1,8 @@
 <%= content_for :title, 'Community' %>
 
-<div class="card-group">
-  <div class="card card-narrow">
+<div class="row" >
+  <div class="col-md-6 mb-3 d-flex">
+    <div class="card card-100">
     <div class="card-header">
       <i class="fa fa-area-chart"></i>
       community properties
@@ -29,6 +30,7 @@
     </div>
     <div class="card-footer small text-muted">
     </div>
+  </div>
   </div>
   <%= render partial: "charts/gmap" %>
   <%= render partial: "charts/consumption_chart", locals: {entity: @community} %>
