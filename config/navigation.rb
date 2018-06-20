@@ -137,13 +137,15 @@ SimpleNavigation::Configuration.run do |navigation|
 
 
 #                 clusterings_path, options.deep_dup
-    primary.item :reporting, 'Reporting/Recommendation', recommendations_path, options.deep_dup.merge(
+    primary.item :reporting, 'Reporting/Recommendation', recommendations_path, options.deep_dup.deep_merge(
         icon: ['fa fa-money fa-fw'],
-        highlights_on: %r(^/recommendations(/|$))
+        highlights_on: %r(^/recommendations(/|$)),
+        link_html: {class: options[:link_html][:class] + ' nobreak'},
     )
     primary.item :dynamic_pricing, 'Energy Programs', scenarios_path, options.deep_dup.merge(
         icon: ['fa fa-plug fa-fw'],
-        highlights_on: %r(^/scenarios(/|$))
+        highlights_on: %r(^/scenarios(/|$)),
+
     )
 
 =begin
