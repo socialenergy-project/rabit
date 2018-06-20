@@ -45,21 +45,14 @@
       </p>
 
       <p>
-      <table class="table table-striped table-bordered table-hover">
-        <tr><th>Communities </th><th>Clusterings</th></tr>
-        <% @consumer&.communities&.map do |c|
-          cl = c&.clustering %>
-        <tr>
-          <td>
-            <%= link_to c&.name, community_path(c) -%>
-          </td>
-          <td>
-            <%= link_to cl&.name, clustering_path(cl) -%>
-          </td>
-        </tr>
-
-        <% end %>
-      </table>
+        <strong>Member in:</strong>
+        <ul>
+          <% @consumer&.communities&.map do |c|
+            cl = c&.clustering %>
+          <li><%= link_to c&.name, community_path(c) -%> (<%= link_to cl&.name, clustering_path(cl) -%>)</li>
+          <% end %>
+        </ul>
+      </p>
 
       <p class="max-height-200px">
         <strong>Users:</strong>
