@@ -45,7 +45,7 @@
                 <%= link_to cl_scenario.interval&.name, interval_path(cl_scenario.interval) if cl_scenario.interval -%>
             </td>
             <td>
-                <%= link_to cl_scenario.clustering&.name, clustering_path(cl_scenario.clustering) if cl_scenario.clustering -%>
+                <%= link_to cl_scenario.clustering&.name, clustering_path(cl_scenario.clustering, cl_scenario.clustering&.initDates) if cl_scenario.clustering -%>
             </td>
             <td>
               <%= cl_scenario.created_at -%>

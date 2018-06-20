@@ -16,6 +16,16 @@ class Clustering < ApplicationRecord
   end
 
   def initDates
-    (communities.first || Consumer.first)&.initDates
+    if self.cl_scenario&.starttime and self.cl_scenario&.endtime and self.cl_scenario&.interval_id
+      {
+          start_date: self.cl_scenario&.starttime,
+          end_date: self.cl_scenario&.endtime,
+          interval_id: self.cl_scenario&.interval_id,
+          duration: nil,
+          type: "Historical"
+      }
+    else
+      (self.communities&.first.consumers&.first || Consumer.first)&.initDates
+    end
   end
 end

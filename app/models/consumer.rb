@@ -25,6 +25,6 @@ class Consumer < ApplicationRecord
     else
       start = (DateTime.now - 1.week).change(year: 2015)
       { start_date: start, end_date: start + 1.week, duration: nil, type: "Historical" }
-    end
+    end.merge interval_id: Interval.find_by(duration: 3600).id
   end
 end

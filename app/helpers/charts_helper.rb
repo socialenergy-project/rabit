@@ -6,7 +6,7 @@ module ChartsHelper
   end
 
   def initParams(entity = Clustering.first)
-    params = entity.initDates.merge interval_id: Interval.find_by(duration: 3600).id
+    params = entity.initDates
   end
 
   def quicklinks(entity)
