@@ -46,7 +46,7 @@
 
       <p>
         <strong>Member in:</strong>
-        <ul>
+        <ul class="max-height-100px">
           <% @consumer&.communities&.map do |c|
             cl = c&.clustering %>
           <li><%= link_to c&.name, community_path(c) -%> (<%= link_to cl&.name, clustering_path(cl) -%>)</li>
