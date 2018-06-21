@@ -1,12 +1,12 @@
 #!/bin/bash
 . ~/.bash_profile
 
-set -e
 
 # import rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+set -e
 
 # enter deploy directory
 cd "$(dirname "${BASH_SOURCE[0]}")"
