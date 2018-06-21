@@ -11,42 +11,42 @@ module ChartsHelper
 
   def quicklinks(entity)
     realtime_links = [{
-                          name: "Past 15 minutes",
+                          name: "Past 15 minutes, 1 minute interval",
                           params: {
                               'duration': 15.minutes.to_i,
                               'type': "Real-time",
                               'interval_id': Interval.find_by(duration: 60).id,
                           }
                       },{
-                          name: "Past hour",
+                          name: "Past hour, 5 minute interval",
                           params: {
                               'duration': 60.minutes.to_i,
                               'type': "Real-time",
                               'interval_id': Interval.find_by(duration: 300).id,
                           }
                       },{
-                          name: "Past two hours",
+                          name: "Past two hours, 5 minute interval",
                           params: {
                               'duration': 2.hours.to_i,
                               'type': "Real-time",
                               'interval_id': Interval.find_by(duration: 300).id,
                           }
                       },{
-                          name: "Past day",
+                          name: "Past day, 15 minute interval",
                           params: {
                               'duration': 1.day.to_i,
                               'type': "Real-time",
                               'interval_id': Interval.find_by(duration: 900).id,
                           }
                       },{
-                          name: "Past week",
+                          name: "Past week, 1 hour interval",
                           params: {
                               'duration': 1.week.to_i,
                               'type': "Real-time",
                               'interval_id': Interval.find_by(duration: 3600).id,
                           }
                       },{
-                          name: "Past month",
+                          name: "Past month, 1 day interval",
                           params: {
                               'duration': 1.month.to_i,
                               'type': "Real-time",
@@ -57,7 +57,7 @@ module ChartsHelper
     start_2015 = DateTime.now.change(year: 2015)
 
     historical_links = [{
-                          name: "1 day",
+                          name: "1 day, 15 minute interval",
                           params: {
                               'start_date': start_2015,
                               'end_date': start_2015 + 1.day,
@@ -65,7 +65,7 @@ module ChartsHelper
                               'interval_id': Interval.find_by(duration: 900).id,
                           }
                       },{
-                          name: "1 week",
+                          name: "1 week, 1 hour interval",
                           params: {
                               'start_date': start_2015,
                               'end_date': start_2015 + 1.week,
@@ -73,7 +73,7 @@ module ChartsHelper
                               'interval_id': Interval.find_by(duration: 3600).id,
                           }
                       },{
-                          name: "1 month",
+                          name: "1 month, 1 day interval",
                           params: {
                               'start_date': start_2015,
                               'end_date': start_2015 + 1.month,
@@ -81,7 +81,7 @@ module ChartsHelper
                               'interval_id': Interval.find_by(duration: 86400).id,
                           }
                       },{
-                            name: "1 year",
+                            name: "1 year, 1 day interval",
                             params: {
                                 'start_date': '2015-01-01T00:00:00Z'.to_datetime,
                                 'end_date': '2015-12-31T00:00:00Z'.to_datetime,
@@ -91,19 +91,14 @@ module ChartsHelper
                         }]
 
     if entity.realtime
-      realtime_links.map do |link|
-        {
-            name: link[:name],
-            link: path_for_entity(entity, link[:params])
-        }
-      end
+      realtime_links
     else
-      historical_links.map do |link|
-        {
-            name: link[:name],
-            link: path_for_entity(entity, link[:params])
-        }
-      end
+      historical_links
+    end.map do |link|
+      {
+        name: link[:name],
+        link: "javascript:App.chart_view.change_location(#{format_datetime(link[:params]).to_json.html_safe})"
+      }
     end
   end
 

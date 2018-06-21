@@ -85,10 +85,14 @@ $(document).on 'turbolinks:load', ->
     update_hisory params
 
   $('#resetDates').click ->
-    refresh_charts App.chart_view.initParams
-    update_form App.chart_view.initParams
-    update_hisory App.chart_view.initParams
+    App.chart_view.change_location App.chart_view.initParams
+
+App.chart_view.change_location = (chart_vars) ->
+    refresh_charts chart_vars
+    update_form chart_vars
+    update_hisory chart_vars
     hide_and_show()
+  
 
 App.chart_view.init_graphs = (chart_vars) ->
   # console.log ("init_graphs  init_graphs init_graphs init_graphs init_graphs init_graphs init_graphs  CALLLED!!!")
