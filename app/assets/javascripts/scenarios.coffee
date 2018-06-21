@@ -127,7 +127,7 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
 
   if (duration)
     App.livecharts[domElementId] = {chart: chart, duration: duration}
-    console.log "Adde livechart ", App.livecharts
+    # console.log "Adde livechart ", App.livecharts
 
 
 
@@ -155,7 +155,7 @@ window.getdata = (domElementId, consumers, chart_vars) ->
                  else
                    0
 
-      console.log "Painting chart, duration:", duration
+      # console.log "Painting chart, duration:", duration
       createChart(domElementId, res, lines == 1 || lines > 5, true, duration)
         
     else
@@ -164,7 +164,7 @@ window.getdata = (domElementId, consumers, chart_vars) ->
 
   request.fail (reason) ->
     if reason.statusText != "abort"
-      console.log "Failed to load", reason
+      # console.log "Failed to load", reason
       $('#' + domElementId).siblings('.legend').text('Data loading FAILED')
 
   if chart_vars['type'] == "Real-time"

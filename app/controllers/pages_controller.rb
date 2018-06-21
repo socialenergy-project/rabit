@@ -44,7 +44,8 @@ class PagesController < ApplicationController
                    params: {
                        'start_date': today_in_2015,
                        'end_date': today_in_2015 + 1.day,
-                       'interval_id': Interval.find_by(duration: 900).id
+                       'interval_id': Interval.find_by(duration: 900).id,
+                       'type': 'Historical',
                    }
                }, {
                    dom_id: :historical_industrial_chart,
@@ -53,7 +54,8 @@ class PagesController < ApplicationController
                    params: {
                        'start_date': today_in_2015  ,
                        'end_date': today_in_2015 + 1.week,
-                       'interval_id': Interval.find_by(duration: 3600).id
+                       'interval_id': Interval.find_by(duration: 3600).id,
+                       'type': 'Historical',
                    }
                }, {
                    dom_id: :historical_professional_chart,
@@ -62,7 +64,8 @@ class PagesController < ApplicationController
                    params: {
                        'start_date': today_in_2015  ,
                        'end_date': today_in_2015 + 1.month,
-                       'interval_id': Interval.find_by(duration: 86400).id
+                       'interval_id': Interval.find_by(duration: 86400).id,
+                       'type': 'Historical',
                    }
                }]
 

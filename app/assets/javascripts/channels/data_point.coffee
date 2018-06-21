@@ -30,7 +30,7 @@ window.subscribe_data_point = (consumers, chart_vars, domElementId) ->
       chart = Chart.helpers.where(Chart.instances, (instance) ->
         instance.canvas.id == domElementId)[0]
       if !chart
-        console.log "The subsciption is ", this
+#        console.log "The subsciption is ", this
         this.unsubscribe()
         return
       dataset = chart.data.datasets.find((d) -> d.label == data['consumer']['name'])
@@ -42,7 +42,7 @@ window.subscribe_data_point = (consumers, chart_vars, domElementId) ->
 #        chart.update()
 #        console.log "New data is", dataset.data
         datasets_without_aggregate = chart.data.datasets.filter((d) -> d.label != 'aggregate')
-        console.log "datasets_without_aggregate= ", datasets_without_aggregate
+#        console.log "datasets_without_aggregate= ", datasets_without_aggregate
         count_elems = datasets_without_aggregate.reduce( ((a, b) -> a + b.data.some( (d) -> d.x.getTime() == new_time.getTime() && d.y != null )) , 0)
 
         if count_elems == datasets_without_aggregate.length
@@ -59,7 +59,7 @@ window.subscribe_data_point = (consumers, chart_vars, domElementId) ->
     )
 
 
-    console.log "connected to channel"
+#    console.log "connected to channel"
 
 
 
