@@ -14,7 +14,7 @@
       getdata(
         '<%= chart[:dom_id] -%>',
         <%= {community: chart[:community].id}.to_json.html_safe -%>,
-        <%= chart[:params].to_json.html_safe -%>
+        <%= chart[:params].merge(nocookies: true).to_json.html_safe -%>
       );
     </script>
   </div>

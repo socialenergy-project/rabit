@@ -142,7 +142,7 @@ window.getdata = (domElementId, consumers, chart_vars) ->
     window.ajaxcache[domElementId] = null
 
 
-  request = $.ajax(url: "/data_points.json", data: $.extend(chart_vars, consumers))
+  request = $.ajax(url: "/data_points.json", data: $.extend({}, chart_vars, consumers))
   window.ajaxcache[domElementId] = request
   request.done (res) ->
     if Math.max.apply(Math, Object.values(res).map((o) -> o.length)) > 0

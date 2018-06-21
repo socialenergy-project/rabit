@@ -2,11 +2,11 @@
   <div class="card card-narrow">
     <div class="card-header">
       <i class="fa fa-area-chart"></i>
-      Consumption data
+      Set parameters for chart
     </div>
     <div class="card-body">
       <% chart_vars = chart_cookies(entity) %>
-      <%= form_tag({remote: false}, method: "get", class: "form-inline") do %>
+      <%= form_tag('', class: "form-inline", remote: true, id: 'dates-form') do %>
         <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm ">
           <%= label_tag :type, "Chart Type: " %>
           <%= select_tag :type, options_for_select([ "Real-time", "Historical" ], chart_vars[:type]), id: 'type-selector', class: 'input-group input-sm mb-2 mr-sm-2 mb-sm-0 custom-select' %>
@@ -33,8 +33,8 @@
                                 class: 'input-group input-sm mb-2 mr-sm-2 mb-sm-0 custom-select') %>
         </div>
         <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm ">
-          <input type="submit" value="Set" class="input-sm btn btn-primary btn-sm"> |
-          <input type="reset" id="resetDates" value="Reset filter" class="input-sm btn btn-info btn-sm">
+          <input type="button" id="setDates" value="Set" class="input-sm btn btn-primary btn-sm"> |
+          <input type="button" id="resetDates" value="Reset filter" class="input-sm btn btn-info btn-sm">
         </div>
       <% end %>
       <ul>
@@ -65,10 +65,20 @@
   $( '#type-selector' ).change(function() {
     hide_and_show();
   });
-  var initParams = JSON.parse('<%= initParams(entity).to_json.html_safe -%>');
+  var initParams = JSON.parse('<%= format_datetime(initParams(entity)).to_json.html_safe -%>');
   var chart_vars = JSON.parse('<%= chart_vars.to_json.html_safe -%>');
-  <%# data_points = entity.getData(chart_vars) %>
-  // var data_points = JSON.parse('<%#= data_points.to_json.html_safe -%>')
+  App.ajax_params = [];
+
+  function refresh_charts(ch_params) {
+    console.log("ajax_params=", App.ajax_params);
+    for (let k in App.ajax_params) {
+      let v = App.ajax_params[k];
+      console.log("v=", v);
+      getdata(v.dom_id, v.entity, ch_params);
+    }
+    window.history.pushState('', '', "?" + $.param(ch_params));
+
+  }
 </script>
 
 
@@ -103,14 +113,30 @@
       <!--/div-->
       </div>
       <script>
-        // var lines= Object.keys(data_points[<%= community&.id || 0  -%>]).length;
-
-
-        getdata("<%= dom_id -%>", <%= (community ? {community: community.id} : {consumer: entity.id }).to_json.html_safe -%>, chart_vars);
-
-        // createChart("consumptionChart<%= community&.id || 0  -%>", data_points[<%= community&.id || 0  -%>], lines == 1 || lines > 5);
+        App.ajax_params.push({
+          dom_id: '<%= dom_id -%>',
+          entity: <%= (community ? {community: community.id} : {consumer: entity.id }).to_json.html_safe -%>
+        });
       </script>
     <% end %>
 
+    <script>
+      $("#setDates").click(function( event ) {
+        refresh_charts($("#dates-form").serializeArray().reduce(function (o,e) {o[e.name] = e.value;return o;},{}));
+      });
+      $("#resetDates").click(function () {
+        refresh_charts(initParams);
+        console.log("initParams=", initParams);
+        $('#dates-form *').filter(":input").each(function (k,v) {
+          let val = initParams[v.name];
+          if (val) {
+            console.log(val);
+            $(this).val(val);
+          }
+        });
+      });
+      refresh_charts(chart_vars);
+      hide_and_show();
+     </script>
 
 

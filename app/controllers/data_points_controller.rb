@@ -27,6 +27,7 @@ class DataPointsController < ApplicationController
 
         render json: (if params[:consumer]
           consumer = Consumer.find(params[:consumer])
+          helpers.chart_cookies(consumer) unless params[:nocookies]
           FetchData::FetchData.new([consumer], params).sync
           consumer.data_points.joins(:consumer).where(filter)
                        .group('consumers.name')
@@ -36,6 +37,7 @@ class DataPointsController < ApplicationController
                        .map{|d| [d.con, d.tims.zip(d.cons)] }.to_h
         else
           community = Community.find(params[:community])
+          helpers.chart_cookies(community) unless params[:nocookies]
           FetchData::FetchData.new(community.consumers, params).sync
 
           if Interval.find(params[:interval_id]&.to_i)
