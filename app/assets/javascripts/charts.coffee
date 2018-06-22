@@ -19,8 +19,8 @@ refresh_charts = (ch_params) ->
     getdata v.dom_id, v.entity, ch_params
   return
 
-get_search_path = ->
-  search_str = location.search.substring(1)
+get_search_path = (path_string) ->
+  search_str = path_string.split("?").pop()
   # console.log 'search_str:', search_str
   if search_str then JSON.parse('{"' + decodeURIComponent(search_str.replace(/"/g, '\"').replace(/&/g, '","').replace(RegExp('=', 'g'), '":"')) + '"}') else {}
 
@@ -39,7 +39,7 @@ equal_params = (current_search, ch_params) ->
 update_hisory = (ch_params) ->
   # console.log 'OLD state: ', window.location, 'New params:', ch_params
   new_params = '?' + $.param(ch_params)
-  current_search = get_search_path()
+  current_search = get_search_path(location.search)
   # console.log 'current_search:', current_search
   if _.isEqual(current_search, {})
     # console.log 'Replaced'
@@ -86,6 +86,11 @@ $(document).on 'turbolinks:load', ->
 
   $('#resetDates').click ->
     App.chart_view.change_location App.chart_view.initParams
+
+  $('a.no-reload').click ->
+    App.chart_view.change_location get_search_path $(this).attr("href")
+    return false
+
 
 App.chart_view.change_location = (chart_vars) ->
     refresh_charts chart_vars

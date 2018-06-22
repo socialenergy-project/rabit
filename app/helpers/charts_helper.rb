@@ -97,7 +97,7 @@ module ChartsHelper
     end.map do |link|
       {
         name: link[:name],
-        link: "javascript:App.chart_view.change_location(#{format_datetime(link[:params]).to_json.html_safe})"
+        link: path_for_entity(entity, link[:params])
       }
     end
   end

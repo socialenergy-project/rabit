@@ -28,12 +28,12 @@ window.subscribe_data_point = (consumers, chart_vars, domElementId) ->
         delete App.livecharts[k]
     ), 10000
 
-    console.log("Test", subscriptions, domElementId )
+    # console.log("Test", subscriptions, domElementId )
     if subscriptions[domElementId]?
       App.cable.subscriptions.remove(subscriptions[domElementId])
 
     subscriptions[domElementId] = App.cable.subscriptions.create({ channel: "DataPointChannel", consumers: consumers, interval_id: chart_vars['interval_id'] }, received: (data) ->
-      console.log "Just received datapoint", data
+      # console.log "Just received datapoint", data
       chart = App.livecharts[domElementId].chart
 #      chart = Chart.helpers.where(Chart.instances, (instance) ->
 #        instance.canvas.id == domElementId)[0]

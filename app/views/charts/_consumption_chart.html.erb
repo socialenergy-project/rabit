@@ -40,7 +40,7 @@
       Preset time range, intervals:
       <ul>
         <% quicklinks(entity).each do |link| %>
-          <li><%= link_to link[:name], link[:link]%></li>
+          <li><%= link_to link[:name], link[:link], class: 'no-reload'%></li>
         <% end %>
       </ul>
     </div>
