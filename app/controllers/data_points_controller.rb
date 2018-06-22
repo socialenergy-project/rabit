@@ -25,50 +25,62 @@ class DataPointsController < ApplicationController
             interval_id: params[:interval_id]&.to_i
         }
 
-        render json: (if params[:consumer]
-          consumer = Consumer.find(params[:consumer])
-          helpers.chart_cookies(consumer) unless params[:nocookies]
-          FetchData::FetchData.new([consumer], params).sync
-          consumer.data_points.joins(:consumer).where(filter)
-                       .group('consumers.name')
-                       .select('consumers.name as con',
-                               'array_agg(timestamp ORDER BY data_points.timestamp asc) as tims',
-                               'array_agg(consumption ORDER BY data_points.timestamp ASC) as cons')
-                       .map{|d| [d.con, d.tims.zip(d.cons)] }.to_h
-        else
-          community = Community.find(params[:community])
-          helpers.chart_cookies(community) unless params[:nocookies]
-          FetchData::FetchData.new(community.consumers, params).sync
+        timestamps_per_line = Interval.find(params[:interval_id]&.to_i)
+                                .timestamps(timerange.first, timerange.last).count
 
-          if Interval.find(params[:interval_id]&.to_i)
-                 .timestamps(timerange.first, timerange.last).count < 700
-            aggr = []
-            res = DataPoint.joins(consumer: :communities)
-                      .where(filter.merge 'communities.id': community.id)
-                      .group('communities.id')
-                      .group('consumers.name')
-                      .select('consumers.name as con',
-                              'array_agg(timestamp ORDER BY data_points.timestamp asc) as tims',
-                              'array_agg(consumption ORDER BY data_points.timestamp ASC) as cons')
-                      .map do |d|
-              aggr = d.tims.map{|t| [t,0]} if aggr.size == 0
-              aggr = aggr.zip(d.cons).map{|(a,b),d| [a,((b.nil? or d.nil?) ? nil : b+d)]}
-              [d.con, d.tims.zip(d.cons)]
-            end.to_h
-            res["aggregate"] = aggr
-            res
-          else
-            {
-                "aggregate" => DataPoint.joins(consumer: :communities)
-                                   .where(filter.merge 'communities.id': community.id)
-                                   .group('communities.id')
-                                   .group('timestamp')
-                                   .order(timestamp: :asc)
-                                   .select('communities.id as com, timestamp, case when sum(case when consumption is null then 1 else 0 end) > 0 then null else sum(consumption) end as cons')
-                                   .map{|d| [d.timestamp, d.cons] }
-            }
-          end
-        end)
+        timestamps_total = params[:consumer] ?
+                               timestamps_per_line :
+                               timestamps_per_line < 700 ?
+                                   Community.find(params[:community])&.consumers&.count * timestamps_per_line :
+                                   timestamps_per_line
+
+        if timestamps_total > 50 * 365
+          render json: { errors: "To many datapoints for single request"}, status: :bad_request
+        else
+          render json: (if params[:consumer]
+                      consumer = Consumer.find(params[:consumer])
+                      helpers.chart_cookies(consumer) unless params[:nocookies]
+                      FetchData::FetchData.new([consumer], params).sync
+                      consumer.data_points.joins(:consumer).where(filter)
+                          .group('consumers.name')
+                          .select('consumers.name as con',
+                                  'array_agg(timestamp ORDER BY data_points.timestamp asc) as tims',
+                                  'array_agg(consumption ORDER BY data_points.timestamp ASC) as cons')
+                          .map{|d| [d.con, d.tims.zip(d.cons)] }.to_h
+                    else
+                      community = Community.find(params[:community])
+                      helpers.chart_cookies(community) unless params[:nocookies]
+                      FetchData::FetchData.new(community.consumers, params).sync
+
+                      if timestamps_per_line < 700
+                        aggr = []
+                        res = DataPoint.joins(consumer: :communities)
+                                  .where(filter.merge 'communities.id': community.id)
+                                  .group('communities.id')
+                                  .group('consumers.name')
+                                  .select('consumers.name as con',
+                                          'array_agg(timestamp ORDER BY data_points.timestamp asc) as tims',
+                                          'array_agg(consumption ORDER BY data_points.timestamp ASC) as cons')
+                                  .map do |d|
+                          aggr = d.tims.map{|t| [t,0]} if aggr.size == 0
+                          aggr = aggr.zip(d.cons).map{|(a,b),d| [a,((b.nil? or d.nil?) ? nil : b+d)]}
+                          [d.con, d.tims.zip(d.cons)]
+                        end.to_h
+                        res["aggregate"] = aggr
+                        res
+                      else
+                        {
+                            "aggregate" => DataPoint.joins(consumer: :communities)
+                                               .where(filter.merge 'communities.id': community.id)
+                                               .group('communities.id')
+                                               .group('timestamp')
+                                               .order(timestamp: :asc)
+                                               .select('communities.id as com, timestamp, case when sum(case when consumption is null then 1 else 0 end) > 0 then null else sum(consumption) end as cons')
+                                               .map{|d| [d.timestamp, d.cons] }
+                        }
+                      end
+                        end)
+        end
       end
     end
   end

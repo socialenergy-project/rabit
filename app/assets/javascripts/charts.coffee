@@ -74,7 +74,7 @@ $(document).on 'turbolinks:load', ->
   $('#type-selector').change ->
   hide_and_show()
 
-  $('#setDates').click (event) ->
+  $('#dates-form').submit (event) ->
     params = $('#dates-form').serializeArray().reduce(((o, e) ->
       if e.name != 'utf8'
         o[e.name] = e.value
@@ -83,6 +83,7 @@ $(document).on 'turbolinks:load', ->
     # console.log "The params are ", params
     refresh_charts params
     update_hisory params
+    return false
 
   $('#resetDates').click ->
     App.chart_view.change_location App.chart_view.initParams

@@ -6,7 +6,7 @@
     </div>
     <div class="card-body">
       <% chart_vars = chart_cookies(entity) %>
-      <%= form_tag('', class: "form-inline", remote: true, id: 'dates-form') do %>
+      <%= form_tag('', method: 'get', class: "form-inline", remote: false, id: 'dates-form') do %>
         <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm ">
           <%= label_tag :type, "Chart Type: " %>
           <%= select_tag :type, options_for_select([ "Real-time", "Historical" ], chart_vars[:type]), id: 'type-selector', class: 'input-group input-sm mb-2 mr-sm-2 mb-sm-0 custom-select' %>
@@ -33,7 +33,7 @@
                                 class: 'input-group input-sm mb-2 mr-sm-2 mb-sm-0 custom-select') %>
         </div>
         <div class="input-group mb-2 mr-sm-2 mb-sm-0 input-sm ">
-          <input type="button" id="setDates" value="Set" class="input-sm btn btn-primary btn-sm"> |
+          <input type="submit" id="setDates" value="Set" class="input-sm btn btn-primary btn-sm"> |
           <input type="button" id="resetDates" value="Reset filter" class="input-sm btn btn-info btn-sm">
         </div>
       <% end %>
@@ -78,7 +78,7 @@
             </div>
             <div class="card-body">
               <canvas id="<%= dom_id -%>" width="100%" height="65"></canvas>
-              <div class="cell legend"></div>
+              <div class="cell legend alert"></div>
             </div>
             <div class="card-footer small text-muted">
             </div>

@@ -134,7 +134,7 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
 window.ajaxcache = {}
 
 window.getdata = (domElementId, consumers, chart_vars) ->
-  $('#' + domElementId).siblings('.legend').text('Data loading, please wait...')
+  $('#' + domElementId).siblings('.legend').removeClass('alert-danger').addClass('alert-info').text('Data loading, please wait...')
 
   if window.ajaxcache[domElementId]
     # console.log "Aborting request", window.ajaxcache[domElementId]
@@ -157,15 +157,19 @@ window.getdata = (domElementId, consumers, chart_vars) ->
 
       # console.log "Painting chart, duration:", duration
       createChart(domElementId, res, lines == 1 || lines > 5, true, duration)
-        
+      $('#' + domElementId).siblings('.legend').removeClass('alert-info alert-danger')
     else
-      $('#' + domElementId).siblings('.legend').text('No data points in range, select (or reset) the interval')
+      $('#' + domElementId).siblings('.legend').removeClass('alert-info').addClass('alert-danger').text('No data points in range, select (or reset) the interval')
 
 
-  request.fail (reason) ->
+  request.fail (reason, textStatus, errorThrown) ->
     if reason.statusText != "abort"
-      # console.log "Failed to load", reason
-      $('#' + domElementId).siblings('.legend').text('Data loading FAILED')
+      $('#' + domElementId).siblings('.legend').removeClass('alert-info').addClass('alert-danger').text("Data loading FAILED, #{errorThrown}")
+      if reason && reason.responseJSON && reason.responseJSON.errors
+        $('#' + domElementId).siblings('.legend').append(", #{reason.responseJSON.errors}")
+      console.log "Failed to load", reason, textStatus, errorThrown;
+
+
 
   if chart_vars['type'] == "Real-time"
     subscribe_data_point(consumers, chart_vars, domElementId)
