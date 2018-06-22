@@ -97,7 +97,7 @@ module ChartsHelper
     end.map do |link|
       {
         name: link[:name],
-        link: path_for_entity(entity, link[:params])
+        link: path_for_entity(entity, format_datetime(link[:params]))
       }
     end
   end

@@ -22,7 +22,7 @@ refresh_charts = (ch_params) ->
 get_search_path = (path_string) ->
   search_str = path_string.split("?").pop()
   # console.log 'search_str:', search_str
-  if search_str then JSON.parse('{"' + decodeURIComponent(search_str.replace(/"/g, '\"').replace(/&/g, '","').replace(RegExp('=', 'g'), '":"')) + '"}') else {}
+  if search_str then JSON.parse('{"' + decodeURIComponent(search_str.replace(/\+/g, ' ').replace(/"/g, '\"').replace(/&/g, '","').replace(RegExp('=', 'g'), '":"')) + '"}') else {}
 
 strip_date = (x) ->
   x.replace(/[ ]/, 'T').substring(0,16)
