@@ -1,5 +1,7 @@
 App.db_rooms ||= {}
 
+subscriptions = {}
+
 window.subscribe_data_point = (consumers, chart_vars, domElementId) ->
   # App.cable.subscriptions.remove(App.db_rooms[[consumers, interval_id]]) if App.db_rooms[[consumers, interval_id]]
     # unless App.db_rooms[[consumers, interval_id, domElementId]]
@@ -26,9 +28,15 @@ window.subscribe_data_point = (consumers, chart_vars, domElementId) ->
         delete App.livecharts[k]
     ), 10000
 
-    App.cable.subscriptions.create({ channel: "DataPointChannel", consumers: consumers, interval_id: chart_vars['interval_id'] }, received: (data) ->
-      chart = Chart.helpers.where(Chart.instances, (instance) ->
-        instance.canvas.id == domElementId)[0]
+    console.log("Test", subscriptions, domElementId )
+    if subscriptions[domElementId]?
+      App.cable.subscriptions.remove(subscriptions[domElementId])
+
+    subscriptions[domElementId] = App.cable.subscriptions.create({ channel: "DataPointChannel", consumers: consumers, interval_id: chart_vars['interval_id'] }, received: (data) ->
+      console.log "Just received datapoint", data
+      chart = App.livecharts[domElementId].chart
+#      chart = Chart.helpers.where(Chart.instances, (instance) ->
+#        instance.canvas.id == domElementId)[0]
       if !chart
 #        console.log "The subsciption is ", this
         this.unsubscribe()
@@ -47,11 +55,12 @@ window.subscribe_data_point = (consumers, chart_vars, domElementId) ->
 
         if count_elems == datasets_without_aggregate.length
           aggr_dataset = chart.data.datasets.find((d) -> d.label == 'aggregate')
-          aggr_last_time = aggr_dataset.data.slice(-1)[0].x
-          if new_time > last_time
-            sum_elems = datasets_without_aggregate.reduce( ((a, b) -> a + b.data.find( (d) -> d.x.getTime() == new_time.getTime()).y) , 0)
-            aggr_dataset.data.push({x: new_time, y: sum_elems})
-#           aggr_dataset.data.shift()
+          if aggr_dataset
+            aggr_last_time = aggr_dataset.data.slice(-1)[0].x
+            if new_time > last_time
+              sum_elems = datasets_without_aggregate.reduce( ((a, b) -> a + b.data.find( (d) -> d.x.getTime() == new_time.getTime()).y) , 0)
+              aggr_dataset.data.push({x: new_time, y: sum_elems})
+#             aggr_dataset.data.shift()
 
         chart.update()
       # console.log "We just received data:", data, "The chart is #{chart.canvas.id}", chart.data
