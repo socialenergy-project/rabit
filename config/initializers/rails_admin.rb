@@ -38,6 +38,13 @@ RailsAdmin.config do |config|
     # history_index
     # history_show
   end
+
+  config.model Consumer do
+    exclude_fields :data_points
+  end
+  config.model Interval do
+    exclude_fields :data_points
+  end
 end
 
 if defined?(WillPaginate)
