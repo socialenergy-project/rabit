@@ -5,11 +5,13 @@
       Consumer locations
     </div>
     <div class="card-body" style="padding: 0px; display: flex;  ">
-      <div id="map" style='min-height: 400px; width: 100%;'></div>
+      <div id="map-contailer" style='min-height: 400px; width: 100%;'>
+        <%= map(@hash) if @hash %>
+      </div>
     </div>
     <div class="card-footer small text-muted">
     </div>
-    <script>
+    <!--script>
       handler = Gmaps.build('Google');
       handler.buildMap({
           provider: {
@@ -21,7 +23,7 @@
           }
         },
         function () {
-          markers = handler.addMarkers(<%=raw @hash.to_json %>);
+          markers = handler.addMarkers(<%#=raw @hash.to_json %>);
           handler.bounds.extendWith(markers);
           handler.fitMapToBounds();
           if (markers.length == 1 ) {
@@ -33,6 +35,6 @@
           }
         }
       );
-    </script>
+    </script-->
   </div>
 </div>

@@ -72,7 +72,7 @@ $(document).on 'turbolinks:load', ->
   hide_and_show()
 
   $('#type-selector').change ->
-  hide_and_show()
+    hide_and_show()
 
   $('#dates-form').submit (event) ->
     params = $('#dates-form').serializeArray().reduce(((o, e) ->

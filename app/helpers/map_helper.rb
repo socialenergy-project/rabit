@@ -76,14 +76,30 @@ module MapHelper
   end
 
   def build_map(consumers, clustering=Clustering.first)
-    Gmaps4rails.build_markers(consumers&.select{|c| c.location_x.present? and c.location_y.present?}) do |consumer, marker|
-      marker.lat consumer.location_x
-      marker.lng consumer.location_y
-      marker.picture url: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=#{letter(consumer, clustering)}|#{color(consumer, clustering)}|000000", width: 32, height: 32
-      marker.title consumer.name
-      community = clustering.communities.joins(:consumers).find_by('consumers.id': consumer.id)
-      marker.infowindow "Consumer: #{view_context.link_to(consumer.name, consumer_path(consumer))}" +
-                            (community ? ", <BR> Community: #{view_context.link_to(community.name, community_path(community))}" : "")
+    map_data = consumers&.select{|c| c.location_x.present? and c.location_y.present?}.map do |c|
+      community = clustering.communities.joins(:consumers).find_by('consumers.id': c.id)
+      {
+        latlng: [c.location_x, c.location_y],
+        popup: "#{view_context.link_to(c.name, consumer_path(c))}" +
+                      (community ? ", <BR> Community: #{view_context.link_to(community.name, community_path(community))}" : ""),
+        icon: {
+          icon_url: "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=#{letter(c, clustering)}|#{color(c, clustering)}|000000",
+          icon_anchor: [10, 34],
+          popup_anchor: [0, -34]
+        }
+      }
+    end
+    if map_data.count > 0
+      {
+        :center => {
+          :latlng => map_data&.first[:latlng],
+          :zoom => 18
+        },
+        :markers => map_data,
+        fitbounds: map_data.map { |h| h[:latlng] },
+      }
+    else
+      nil
     end
   end
 

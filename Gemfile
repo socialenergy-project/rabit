@@ -114,3 +114,5 @@ gem 'rufus-scheduler', '~> 3.4.0'
 
 gem 'sidekiq'
 gem 'sidekiq-unique-jobs'
+
+gem 'leaflet-rails'
