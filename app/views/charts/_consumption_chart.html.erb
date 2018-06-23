@@ -51,7 +51,7 @@
 
 <script>
   App.chart_view.initParams = JSON.parse('<%= format_datetime(initParams(entity)).to_json.html_safe -%>');
-  App.chart_view.chart_vars = JSON.parse('<%= chart_vars.to_json.html_safe -%>');
+  App.chart_view.chart_vars = JSON.parse('<%= format_datetime(chart_vars).to_json.html_safe -%>');
   App.chart_view.ajax_params = []
 
 </script>
