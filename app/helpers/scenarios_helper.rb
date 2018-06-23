@@ -1,7 +1,7 @@
 module ScenariosHelper
   def format_datetime(obj)
-    if obj.class == DateTime
-      obj&.localtime&.strftime("%F %H:%M %Z")
+    if obj&.respond_to? :localtime
+      obj.localtime&.strftime("%F %H:%M %Z")
     elsif obj.class == Hash
       obj.map do |k,v|
         [k, format_datetime(v)]

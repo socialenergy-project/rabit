@@ -52,7 +52,7 @@ class DataPointsController < ApplicationController
                       helpers.chart_cookies(community) unless params[:nocookies]
                       FetchData::FetchData.new(community.consumers, params).sync
 
-                      if timestamps_per_line < 700
+                      if timestamps_total < 700
                         aggr = []
                         res = DataPoint.joins(consumer: :communities)
                                   .where(filter.merge 'communities.id': community.id)
