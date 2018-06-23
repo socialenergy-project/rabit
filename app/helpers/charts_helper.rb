@@ -6,7 +6,7 @@ module ChartsHelper
   end
 
   def initParams(entity = Clustering.first)
-    params = entity.initDates
+    entity.initDates
   end
 
   def quicklinks(entity)

@@ -18,9 +18,9 @@ class Clustering < ApplicationRecord
   def initDates
     if self.cl_scenario&.starttime and self.cl_scenario&.endtime and self.cl_scenario&.interval_id
       {
-          start_date: self.cl_scenario&.starttime,
-          end_date: self.cl_scenario&.endtime,
-          interval_id: self.cl_scenario&.interval_id,
+          start_date: self.cl_scenario.starttime.to_datetime,
+          end_date: self.cl_scenario.endtime.to_datetime,
+          interval_id: self.cl_scenario.interval_id,
           duration: nil,
           type: "Historical"
       }
