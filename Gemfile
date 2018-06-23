@@ -100,8 +100,7 @@ gem 'simple_token_authentication', '~> 1.0' # For API authentication
 # For coverage tests
 gem 'simplecov', require: false, group: :test
 
-gem 'gmaps4rails'
-gem 'underscore-rails' ## For maips
+gem 'underscore-rails'
 
 gem 'ruby-progressbar'
 gem 'upsert'

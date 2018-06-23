@@ -93,13 +93,18 @@ module MapHelper
       {
         :center => {
           :latlng => map_data&.first[:latlng],
-          :zoom => 18
+          :zoom => 9
         },
         :markers => map_data,
-        fitbounds: map_data.map { |h| h[:latlng] },
+        fitbounds: map_data.count > 1 ? map_data.map { |h| h[:latlng] } : nil,
       }
     else
-      nil
+      {
+        :center => {
+          :latlng => [46, 12],
+          :zoom => 4
+        }
+      }
     end
   end
 

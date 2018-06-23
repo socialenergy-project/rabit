@@ -26,6 +26,5 @@
 //= require bootstrap-datetimepicker
 //= require select2
 //= require underscore
-//= require gmaps/google
 //= require leaflet
 //= require_tree .
