@@ -6,6 +6,8 @@
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+eval $(ssh-agent)
+ssh-add ~/.ssh/id_rsa
 set -e
 
 # enter deploy directory
