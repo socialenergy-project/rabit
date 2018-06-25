@@ -32,7 +32,7 @@
                 <%= clustering.description-%>
               
             </td>
-                        <td><%= link_to 'Show', clustering_path(clustering, clustering.initDates), class: 'btn btn-info btn-sm' if can? :show, clustering%></td>
+                        <td><%= link_to 'Show', clustering_path(clustering, format_datetime(clustering.initDates)), class: 'btn btn-info btn-sm' if can? :show, clustering%></td>
             <td><%= link_to 'Edit', edit_clustering_path(clustering), class: 'btn btn-warning btn-sm' if can? :update, clustering %></td>
             <td><%= link_to 'Destroy', clustering, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' if can? :destroy, clustering %></td>
           </tr>

@@ -1,9 +1,9 @@
 App.map ||= {}
 App.map.register = (map_hash) ->
-  $.ready ->
-    $("#reset-map").click ->
-      if map_hash.fitBounds
-        map.fitBounds bounds
+  $(document).on "turbolinks:load", ->
+    $("#reset-map").off('click').click (event) ->
+      if map_hash.fitbounds
+        map.fitBounds map_hash.fitbounds
       else
-        map.setView new L.LatLng map_hash.center.latlng, map_hash.center.zoom
+        map.setView map_hash.center.latlng, map_hash.center.zoom
       false
