@@ -11,12 +11,14 @@ hide_and_show = ->
     $('.real-time').hide()
   return
 
-refresh_charts = (ch_params) ->
+refresh_charts = (ch_params, options) ->
   # console.log 'ajax_params=',  App.chart_view.ajax_params
   for k of  App.chart_view.ajax_params
     v = App.chart_view.ajax_params[k]
     # console.log 'v=', v
     getdata v.dom_id, v.entity, ch_params
+    if options.focus
+      $("##{v.dom_id}").siblings('.legend').focus()
   return
 
 get_search_path = (path_string) ->
@@ -81,7 +83,7 @@ $(document).on 'turbolinks:load', ->
       o
     ), {})
     # console.log "The params are ", params
-    refresh_charts params
+    refresh_charts params, focus: true
     update_hisory params
     return false
 
@@ -94,7 +96,7 @@ $(document).on 'turbolinks:load', ->
 
 
 App.chart_view.change_location = (chart_vars) ->
-    refresh_charts chart_vars
+    refresh_charts chart_vars, focus: true
     update_form chart_vars
     update_hisory chart_vars
     hide_and_show()
@@ -102,6 +104,6 @@ App.chart_view.change_location = (chart_vars) ->
 
 App.chart_view.init_graphs = (chart_vars) ->
   # console.log ("init_graphs  init_graphs init_graphs init_graphs init_graphs init_graphs init_graphs  CALLLED!!!")
-  refresh_charts chart_vars
+  refresh_charts chart_vars, focus: false
   hide_and_show()
   update_hisory chart_vars
