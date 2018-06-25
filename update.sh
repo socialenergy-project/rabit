@@ -37,7 +37,7 @@ passenger-config restart-app .
 
 
 # commit the new assets back to the repo
-git add .
-git commit -m "Asset precompile"
-git push
+# git add .
+# git commit -m "Asset precompile"
+# git push
 
