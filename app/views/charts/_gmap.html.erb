@@ -2,11 +2,15 @@
   <div class="card card-100">
     <div class="card-header">
       <i class="fa fa-area-chart"></i>
-      Consumer locations
+      Consumer locations (<a href="" id="reset-map">Reset map</a>)
     </div>
     <div class="card-body" style="padding: 0px; display: flex;  ">
       <div id="map-contailer" style='min-height: 400px; width: 100%;'>
+        <script>
+          App.map.register(<%= @hash.to_json.html_safe %>)
+        </script>
         <%= map(@hash) if @hash %>
+
       </div>
     </div>
     <div class="card-footer small text-muted">

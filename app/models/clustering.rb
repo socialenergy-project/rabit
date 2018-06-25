@@ -21,7 +21,7 @@ class Clustering < ApplicationRecord
           start_date: self.cl_scenario.starttime,
           end_date: self.cl_scenario.endtime,
           interval_id: self.cl_scenario.interval_id,
-          duration: nil,
+          duration: '',
           type: "Historical"
       }
     else
