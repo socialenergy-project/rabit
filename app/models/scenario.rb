@@ -60,4 +60,11 @@ class Scenario < ApplicationRecord
       end
     end
   end
+
+  def best_energy_program
+    best = self.results.group(:energy_program_id).sum(:user_welfare).max{|r| r[1]}
+    if best
+      EnergyProgram.find(best[0])
+    end
+  end
 end

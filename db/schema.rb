@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180521082231) do
+ActiveRecord::Schema.define(version: 20180625115034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -204,6 +204,7 @@ ActiveRecord::Schema.define(version: 20180521082231) do
     t.string "parameter"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "custom_message"
     t.index ["recommendation_type_id"], name: "index_recommendations_on_recommendation_type_id"
     t.index ["scenario_id"], name: "index_recommendations_on_scenario_id"
   end

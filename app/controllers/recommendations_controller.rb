@@ -15,7 +15,7 @@ class RecommendationsController < ApplicationController
 
   # GET /recommendations/new
   def new
-    @recommendation = Recommendation.new
+    @recommendation = Recommendation.new(params[:recommendation] ? recommendation_params : {})
   end
 
   # GET /recommendations/1/edit
@@ -118,6 +118,6 @@ class RecommendationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recommendation_params
-      params.require(:recommendation).permit(:status, :recommendation_type_id, :scenario_id, :parameter, consumer_ids: [])
+      params.require(:recommendation).permit(:status, :recommendation_type_id, :scenario_id, :parameter, :custom_message, consumer_ids: [])
     end
 end

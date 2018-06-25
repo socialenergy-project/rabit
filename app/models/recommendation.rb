@@ -12,7 +12,7 @@ class Recommendation < ApplicationRecord
       c.users.map do |u|
         {
             recipient: u,
-            message: recommendation_type.description % [c.name, parameter]
+            message: (custom_message.blank? ? recommendation_type.description : custom_message) % [c.name, parameter]
         }
       end
     end.flatten
