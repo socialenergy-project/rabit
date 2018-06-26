@@ -3,11 +3,13 @@
 one:
   status: 1
   recommendation_type: one
-  scenario: one
+  recommendable: one
+  recommendable_type: Scenario
   parameter: MyString
 
 two:
   status: 1
   recommendation_type: two
-  scenario: two
+  recommendable: two
+  recommendable_type: Scenario
   parameter: MyString

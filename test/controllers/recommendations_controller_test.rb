@@ -31,9 +31,10 @@ class RecommendationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create recommendation as admin" do
+
     sign_in_as_admin
     assert_difference('Recommendation.count') do
-      post recommendations_url, params: { recommendation: { parameter: @recommendation.parameter, recommendation_type_id: @recommendation.recommendation_type_id, scenario_id: @recommendation.scenario_id, status: @recommendation.status } }
+      post recommendations_url, params: { recommendation: { parameter: @recommendation.parameter, recommendation_type_id: @recommendation.recommendation_type_id, status: @recommendation.status, recommendable_id: @recommendation.recommendable_id, recommendable_type: @recommendation.recommendable_type } }
     end
 
     assert_redirected_to recommendation_url(Recommendation.last)
@@ -42,7 +43,7 @@ class RecommendationsControllerTest < ActionDispatch::IntegrationTest
   test "should NOT create recommendation as user" do
     sign_in_as_user
     assert_no_difference('Recommendation.count') do
-      post recommendations_url, params: { recommendation: { parameter: @recommendation.parameter, recommendation_type_id: @recommendation.recommendation_type_id, scenario_id: @recommendation.scenario_id, status: @recommendation.status } }
+      post recommendations_url, params: { recommendation: { parameter: @recommendation.parameter, recommendation_type_id: @recommendation.recommendation_type_id, status: @recommendation.status } }
     end
 
     assert_redirected_to root_path
@@ -75,13 +76,13 @@ class RecommendationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update recommendation as admin" do
     sign_in_as_admin
-    patch recommendation_url(@recommendation), params: { recommendation: { parameter: @recommendation.parameter, recommendation_type_id: @recommendation.recommendation_type_id, scenario_id: @recommendation.scenario_id, status: @recommendation.status } }
+    patch recommendation_url(@recommendation), params: { recommendation: { parameter: @recommendation.parameter, recommendation_type_id: @recommendation.recommendation_type_id, status: @recommendation.status } }
     assert_redirected_to recommendation_url(@recommendation)
   end
 
   test "should NOT update recommendation as user" do
     sign_in_as_user
-    patch recommendation_url(@recommendation), params: { recommendation: { parameter: @recommendation.parameter, recommendation_type_id: @recommendation.recommendation_type_id, scenario_id: @recommendation.scenario_id, status: @recommendation.status } }
+    patch recommendation_url(@recommendation), params: { recommendation: { parameter: @recommendation.parameter, recommendation_type_id: @recommendation.recommendation_type_id, status: @recommendation.status } }
     assert_redirected_to root_path
   end
 

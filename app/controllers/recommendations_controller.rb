@@ -83,6 +83,8 @@ class RecommendationsController < ApplicationController
             status: :sent
         }
       end)
+      @recommendation.status = :sent
+      @recommendation.save
       respond_to do |format|
         format.html { redirect_to @recommendation, notice: 'Messages were sent.' }
         format.json { render :show, status: :ok, location: @recommendation }
@@ -98,6 +100,8 @@ class RecommendationsController < ApplicationController
   def delete_messages
     if @recommendation.messages.count > 0
       @recommendation.messages.destroy_all
+      @recommendation.status = :created
+      @recommendation.save
       respond_to do |format|
         format.html { redirect_to @recommendation, notice: 'Messages were deleted.' }
         format.json { render :show, status: :ok, location: @recommendation }
@@ -118,6 +122,9 @@ class RecommendationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recommendation_params
-      params.require(:recommendation).permit(:status, :recommendation_type_id, :scenario_id, :parameter, :custom_message, consumer_ids: [])
+      if params[:recommendation][:recommendable_type].blank? and ! params[:recommendation][:recommendable_id].blank?
+        params[:recommendation][:recommendable_type], params[:recommendation][:recommendable_id] = params[:recommendation][:recommendable_id].split(/_/)
+      end
+      params.require(:recommendation).permit(:status, :recommendation_type_id, :recommendable_id, :recommendable_type, :parameter, :custom_message, consumer_ids: [])
     end
 end

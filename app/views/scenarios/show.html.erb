@@ -60,18 +60,64 @@
           <p class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <%= link_to 'Edit', edit_scenario_path(@scenario), class: 'btn btn-warning btn-sm' if can? :edit, @scenario %> |
             <%= link_to 'Clone', new_scenario_path({scenario: @scenario.attributes.merge(consumer_ids: @scenario.consumer_ids, energy_program_ids: @scenario.energy_program_ids)}), class: 'btn btn-success btn-sm' if can? :create, @scenario %> |
-            <%= link_to 'Create Recommendation', new_recommendation_path({recommendation: {
-                consumer_ids: @scenario.consumer_ids,
-                scenario_id: @scenario.id,
-                parameter: @scenario.best_energy_program&.name,
-                recommendation_type_id: RecommendationType.find_by(name: "Switch Energy Program")&.id,
-            } }), class: 'btn btn-danger btn-sm' if can? :create, :recommendation %> |
             <%= link_to 'New', new_scenario_path, class: 'btn btn-primary btn-sm' if can? :create, @scenario %> |
             <%= link_to 'All Scenarios', scenarios_path, class: 'btn btn-info btn-sm' %>
           </p>
         </div>
       </div>
 
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 d-flex">
+    <div class="card mb-3 card-100">
+      <div class="card-header">
+        <i class="fa fa-money"></i>
+        Recommendations
+      </div>
+      <div class="card-body">
+        <table class="table table-responsive table-striped table-bordered table-hover">
+          <thead>
+          <tr>
+            <th><%= sortable "status", "Status" -%></th>
+            <th><%= sortable "recommendation_type_id", "Recommendation type" -%></th>
+            <th><%= sortable "parameter", "Parameter" -%></th>
+            <th><%= sortable "custom_message", "Custom message" -%></th>
+            <th colspan="3"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @scenario.recommendations.each do |recommendation| %>
+            <tr>
+              <td>
+                <%= recommendation.status-%>
+              </td>
+              <td>
+                <%= link_to recommendation.recommendation_type&.name, recommendation_type_path(recommendation.recommendation_type) if recommendation.recommendation_type -%>
+              </td>
+              <td>
+                <%= recommendation.parameter -%>
+              </td>
+              <td>
+                <%= recommendation.custom_message -%>
+              </td>
+              <td><%= link_to 'Show', recommendation, class: 'btn btn-info btn-sm' if can? :show, recommendation%></td>
+              <td><%= link_to 'Edit', edit_recommendation_path(recommendation), class: 'btn btn-warning btn-sm' if can? :update, recommendation and recommendation.messages.count == 0 %></td>
+              <td><%= link_to 'Destroy', recommendation, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' if can? :destroy, recommendation and recommendation.messages.count == 0 %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <%= link_to 'Create Recommendation', new_recommendation_path({recommendation: {
+            consumer_ids: @scenario.consumer_ids,
+            recommendable_id: @scenario.id,
+            recommendable_type: @scenario.class,
+            parameter: @scenario.best_energy_program&.name,
+            recommendation_type_id: RecommendationType.find_by(name: "Switch Energy Program")&.id,
+        } }), class: 'btn btn-danger btn-sm' if can? :create, :recommendation %>
+      </div>
       <div class="card-footer small text-muted">
       </div>
     </div>

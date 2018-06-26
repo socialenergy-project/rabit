@@ -29,7 +29,7 @@
                 <%= link_to recommendation.recommendation_type&.name, recommendation_type_path(recommendation.recommendation_type) if recommendation.recommendation_type -%>
             </td>
             <td>
-                <%= link_to recommendation.scenario&.name, scenario_path(recommendation.scenario) if recommendation.scenario -%>
+                <%= link_to recommendation.recommendable&.name, recommendation.recommendable if recommendation.recommendable-%>
             </td>
             <td>
                 <%= recommendation.parameter -%>

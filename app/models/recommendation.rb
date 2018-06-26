@@ -1,6 +1,6 @@
 class Recommendation < ApplicationRecord
   belongs_to :recommendation_type
-  belongs_to :scenario
+  belongs_to :recommendable, polymorphic: true, required: false
 
   enum status: [:created, :sent, :notified]
 

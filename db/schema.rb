@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180625115034) do
+ActiveRecord::Schema.define(version: 20180625141635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -200,13 +200,14 @@ ActiveRecord::Schema.define(version: 20180625115034) do
   create_table "recommendations", force: :cascade do |t|
     t.integer "status", default: 0
     t.bigint "recommendation_type_id"
-    t.bigint "scenario_id"
+    t.bigint "recommendable_id"
     t.string "parameter"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "custom_message"
+    t.string "recommendable_type"
+    t.index ["recommendable_id"], name: "index_recommendations_on_recommendable_id"
     t.index ["recommendation_type_id"], name: "index_recommendations_on_recommendation_type_id"
-    t.index ["scenario_id"], name: "index_recommendations_on_scenario_id"
   end
 
   create_table "results", force: :cascade do |t|
@@ -302,7 +303,7 @@ ActiveRecord::Schema.define(version: 20180625115034) do
   add_foreign_key "messages", "users", column: "recipient_id"
   add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "recommendations", "recommendation_types"
-  add_foreign_key "recommendations", "scenarios"
+  add_foreign_key "recommendations", "scenarios", column: "recommendable_id"
   add_foreign_key "results", "energy_programs"
   add_foreign_key "results", "scenarios"
   add_foreign_key "scenarios", "ecc_types"
