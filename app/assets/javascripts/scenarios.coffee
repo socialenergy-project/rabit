@@ -38,7 +38,7 @@ prepareData = (dataset) ->
       pointRadius: if showPoints then 5 else 0,
       pointBackgroundColor: getColor(k, 0.2 ),
       pointBorderColor: getColor(k, 1),
-      pointHoverRadius: 5,
+      pointHoverRadius: if showPoints then 5 else 0,
       pointHoverBackgroundColor: getColor(k, 0.2),
       pointHitRadius: 20,
       pointBorderWidth: 2,
@@ -116,7 +116,8 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
       }
       tooltips: {
         enabled: true,
-        mode: 'single',
+        mode: 'nearest',
+        position: 'nearest',
         callbacks: {
           label: (tooltipItems, data) ->
             [data.datasets[tooltipItems.datasetIndex].label, new Date(tooltipItems.xLabel), tooltipItems.yLabel]
