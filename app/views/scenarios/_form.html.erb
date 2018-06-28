@@ -27,7 +27,15 @@
       </div>
     <% end %>
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <div class="form-group row">
+      <%= form.label :description, class: "col-sm-3 col-form-label" %>
+      <div class="col-sm-9">
+        <%= form.text_area :description, class: "form-control" %>
+      </div>
+    </div>
+
+
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
         <a class="nav-link active" id="stepone-tab" data-toggle="tab" href="#stepone" role="tab" aria-controls="stepone" aria-selected="true">Step
           1</a>

@@ -13,6 +13,7 @@
           <tr>
             <th><%= sortable "name", "Name" -%></th>
             <th><%= sortable "user_id", "User" -%></th>
+            <th><%= sortable "description", "Description" -%></th>
             <th><%= sortable "starttime", "Starttime" -%></th>
             <th><%= sortable "endtime", "Endtime" -%></th>
             <th><%= sortable "interval_id", "Interval" -%></th>
@@ -35,6 +36,9 @@
                 </td>
                 <td>
                   <%= scenario.user&.name -%>
+                </td>
+                <td>
+                  <%= scenario.description -%>
                 </td>
                 <td>
                   <%= scenario.starttime -%>

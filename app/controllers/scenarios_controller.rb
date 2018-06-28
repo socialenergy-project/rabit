@@ -103,7 +103,7 @@ class ScenariosController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def scenario_params
-    permitted = [:name, :starttime, :endtime, :interval_id, :ecc_type_id, :energy_cost_parameter, :profit_margin_parameter, :flexibility_id, :number_of_clusters, :gamma_parameter, {energy_program_ids: []}, {consumer_ids: []}]
+    permitted = [:name, :description, :starttime, :endtime, :interval_id, :ecc_type_id, :energy_cost_parameter, :profit_margin_parameter, :flexibility_id, :number_of_clusters, :gamma_parameter, {energy_program_ids: []}, {consumer_ids: []}]
     permitted.push(:user_id) if current_user.has_role? :admin
     params.require(:scenario).permit(*permitted)
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180625141635) do
+ActiveRecord::Schema.define(version: 20180628121920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -253,6 +253,7 @@ ActiveRecord::Schema.define(version: 20180625141635) do
     t.bigint "user_id"
     t.string "error_message"
     t.integer "number_of_clusters"
+    t.text "description"
     t.index ["ecc_type_id"], name: "index_scenarios_on_ecc_type_id"
     t.index ["flexibility_id"], name: "index_scenarios_on_flexibility_id"
     t.index ["interval_id"], name: "index_scenarios_on_interval_id"
