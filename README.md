@@ -26,7 +26,7 @@ Please adapt accordingly for other distributions/OSs.
 
 3.  Install postgres, create database user for rat, and setup a password:
 
-        sudo apt install postgresql-common
+        sudo apt install postgresql postgresql-contrib
         sudo apt install libpq-dev
 
         sudo -u postgres createuser rat -s
