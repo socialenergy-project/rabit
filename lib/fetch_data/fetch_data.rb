@@ -70,6 +70,20 @@ module FetchData
       Rails.logger.debug "We got this data #{res}"
       now = DateTime.now
 
+      consumer_hash = {}
+      interval_id = @interval.id
+      DataPoint.bulk_insert ignore: true, values: (res.map do |r|
+        consumer_hash[r["mac"]] ||= Consumer.find_by(edms_id: r["mac"]).id
+        {
+            consumer_id: consumer_hash[r["mac"]],
+            timestamp: r["timestamp"],
+            interval_id: interval_id,
+            consumption: r['kwhinterval'],
+        }
+      end)
+
+
+=begin
       ActiveRecord::Base.connection_pool.with_connection do |conn|
         Upsert.batch(conn, DataPoint.table_name) do |upsert|
           consumer_hash = {}
@@ -87,6 +101,7 @@ module FetchData
           end
         end
       end
+=end
 
     end
 

@@ -114,4 +114,8 @@ gem 'rufus-scheduler', '~> 3.4.0'
 gem 'sidekiq'
 gem 'sidekiq-unique-jobs'
 
+# For openstreetmaps
 gem 'leaflet-rails'
+
+# For quicker db batch updates
+gem 'bulk_insert'
