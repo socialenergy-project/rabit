@@ -1,5 +1,5 @@
 <div class="col-md-6 d-flex mb-3">
-  <div class="card card-narrow">
+  <div class="card card-100">
     <div class="card-header">
       <i class="fa fa-area-chart"></i>
       Set parameters for chart
@@ -65,11 +65,11 @@
                      dom_id = "consumptionChart_#{com_or_con_id}_#{chart_vars[:interval_id]}"
                %>
       <% if entity.class.name == "Clustering" %>
-        <div class="col-md-6 col-sm-12 mb-3  " >
-          <div class="card">
+        <div class="col-md-6 col-sm-12 mb-3 d-flex " >
+          <div class="card card-100">
       <% else %>
-        <div class="col-lg-6 col-sm-12 mb-3">
-          <div class="card">
+        <div class="col-lg-6 col-sm-12 mb-3  d-flex ">
+          <div class="card card-100">
       <% end %>
       <!--div class="card flex-fill card-wide"-->
             <div class="card-header">
