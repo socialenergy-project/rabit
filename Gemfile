@@ -113,6 +113,7 @@ gem 'rufus-scheduler', '~> 3.4.0'
 
 gem 'sidekiq'
 gem 'sidekiq-unique-jobs'
+gem 'redis-namespace'
 
 # For openstreetmaps
 gem 'leaflet-rails'
