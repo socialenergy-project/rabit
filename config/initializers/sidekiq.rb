@@ -16,14 +16,12 @@ Sidekiq.default_worker_options = {
 
 Sidekiq.configure_server do |config|
   config.redis = {
-    url: 'redis://localhost:6379',
-    namespace: 'rat_production'
+    url: "redis://localhost:6379/rat_production"
   }
 end
 
 Sidekiq.configure_client do |config|
   config.redis = {
-    url: 'redis://localhost:6379',
-    namespace: 'rat_production'
+    url: "redis://localhost:6379/rat_production"
   }
 end

@@ -25,7 +25,7 @@ class Clustering < ApplicationRecord
           type: "Historical"
       }
     else
-      (self.communities&.first.consumers&.first || Consumer.first)&.initDates
+      (self.communities&.first&.consumers&.first || Consumer.first)&.initDates
     end
   end
 end
