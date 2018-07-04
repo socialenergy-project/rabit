@@ -15,7 +15,7 @@ class MonitorRedisJob < ApplicationJob
         data_point = {
             interval_id: Interval.find_by(duration: data["interval"]).id,
             timestamp: data["timestamp"].to_datetime.to_s,
-            consumer: Consumer.find_by(edms_id: data['mac']).reload,
+            consumer: Consumer.find_by(edms_id: data['mac']),
             consumption: data["kwhinterval"]
         }
 

@@ -34,7 +34,7 @@ window.subscribe_data_point = (consumers, chart_vars, domElementId) ->
 
     subscriptions[domElementId] = App.cable.subscriptions.create({ channel: "DataPointChannel", consumers: consumers, interval_id: chart_vars['interval_id'] }, received: (data) ->
       # console.log "Just received datapoint", data
-      chart = App.livecharts[domElementId].chart
+      chart = App.livecharts[domElementId].chart if App.livecharts[domElementId]
 #      chart = Chart.helpers.where(Chart.instances, (instance) ->
 #        instance.canvas.id == domElementId)[0]
       if !chart
