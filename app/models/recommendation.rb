@@ -5,7 +5,8 @@ class Recommendation < ApplicationRecord
   enum status: [:created, :sent, :notified]
 
   has_and_belongs_to_many :consumers
-  has_many :messages
+  has_many :messages, dependent: :restrict_with_exception
+
 
   def draft_messages
     consumers.map do |c|

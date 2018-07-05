@@ -8,11 +8,13 @@ class Scenario < ApplicationRecord
 
   has_and_belongs_to_many :consumers
   has_and_belongs_to_many :energy_programs
-  has_many :recommendations, dependent: :nullify, as: :recommendable
 
   has_many :results, dependent: :destroy
 
   attr_reader :python_exception
+
+  include Recommendable
+
 
   after_commit on: [:create, :update] do
     transaction do

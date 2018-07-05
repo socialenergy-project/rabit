@@ -4,7 +4,7 @@ one:
   status: 1
   recommendation_type: one
   recommendable: one
-  recommendable_type: Scenario
+  recommendable_type: Community
   parameter: MyString
 
 two:

@@ -18,7 +18,12 @@
         </p>
         <p>
           <strong>Scenario:</strong>
-          <%= link_to @recommendation.recommendable&.name, @recommendation.recommendable if @recommendation.recommendable -%>
+          <%= case @recommendation.recommendable
+              when Community
+                link_to @recommendation.recommendable&.clustering&.cl_scenario&.name, @recommendation.recommendable&.clustering&.cl_scenario
+              when Scenario
+                link_to @recommendation.recommendable&.name, @recommendation.recommendable
+              end -%>
         </p>
         <p>
           <strong>Parameter:</strong>

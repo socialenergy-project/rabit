@@ -9,6 +9,17 @@ class ClScenario < ApplicationRecord
   has_and_belongs_to_many :consumers
   has_and_belongs_to_many :energy_programs
 
+
+  validate :dont_change_when_there_are_communities_with_messages
+
+  private
+
+  def dont_change_when_there_are_communities_with_messages
+    if clustering&.communities&.sum{|c| c.recommendations.count } > 0
+      errors.add(:recommendation_id, "Cannot modify scenarios with active recommendations")
+    end
+  end
+
   after_commit do
     transaction do
 

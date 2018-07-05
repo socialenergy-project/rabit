@@ -1,8 +1,11 @@
 class Community < ApplicationRecord
   belongs_to :clustering
   has_and_belongs_to_many :consumers
+  has_many :recommendations, dependent: :restrict_with_exception, as: :recommendable
 
   validate :consumer_belongs_to_only_one_community_per_clustering
+
+  include Recommendable
 
   def consumer_belongs_to_only_one_community_per_clustering
     (clustering.communities - [self]).each do |community|

@@ -13,7 +13,11 @@ class Consumer < ApplicationRecord
   scope :with_locations, -> { where("location_x IS NOT NULL and location_y IS NOT NULL") }
 
 
-  validates_associated :communities, message: ->(_class_obj, obj){ p "consumer OBJ is ", obj[:value]; obj[:value].map(&:errors).map(&:full_messages).join(',') }
+=begin
+  validates_associated :communities, message: ->(_class_obj, obj) {
+    p "consumer OBJ is #{_class_obj} #{obj}", obj[:value]; obj[:value].map(&:errors).map(&:full_messages).join(',')
+  }
+=end
 
   def realtime
     consumer_category&.name == "ICCS"

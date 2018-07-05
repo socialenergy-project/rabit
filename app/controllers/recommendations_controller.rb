@@ -64,7 +64,7 @@ class RecommendationsController < ApplicationController
     respond_to do |format|
       begin
         @recommendation.destroy
-        format.html { redirect_to recommendations_url, notice: 'Recommendation was successfully destroyed.' }
+        format.html { redirect_to params[:redirect] || recommendations_url, notice: 'Recommendation was successfully destroyed.' }
         format.json { head :no_content }
       rescue Exception => e
         format.html { redirect_to recommendations_url, alert: 'Recommendation was NOT successfully destroyed. Reason is ' + e.message }
