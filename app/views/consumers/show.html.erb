@@ -21,6 +21,10 @@
           <%= @consumer.edms_id-%>
         </div>
         <div>
+          <strong>Energy program:</strong>
+          <%= link_to @consumer.energy_program&.name, energy_program_path(@consumer.energy_program) if @consumer.energy_program -%>
+        </div>
+        <div>
           <strong>Building type:</strong>
           <%= link_to @consumer.building_type&.name, building_type_path(@consumer.building_type) if @consumer.building_type -%>
         </div>

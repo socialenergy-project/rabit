@@ -33,6 +33,13 @@
   </div>
 
   <div class="form-group row">
+    <%= form.label :energy_program_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.collection_select :energy_program_id, EnergyProgram.order(name: :asc), :id, :name, { prompt: true }, class: "form-control custom-select", id: 'consumer_energy_program_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
     <%= form.label :building_type_id, class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
        <%= form.collection_select :building_type_id, BuildingType.order(name: :asc), :id, :name, { prompt: true }, class: "form-control custom-select", id: 'consumer_building_type_id'  %>

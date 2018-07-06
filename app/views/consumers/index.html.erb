@@ -14,6 +14,7 @@
             <th><%= sortable "name", "Name" -%></th>
             <th><%= sortable "location", "Location" -%></th>
             <th><%= sortable "edms_id", "Edms" -%></th>
+            <th><%= sortable "energy_program_id", "Energy program" -%></th>
             <th><%= sortable "building_type_id", "Building type" -%></th>
             <th><%= sortable "connection_type_id", "Connection type" -%></th>
             <th><%= sortable "location_x", "Location x" -%></th>
@@ -34,6 +35,9 @@
             </td>
             <td>
                 <%= consumer.edms_id-%>
+            </td>
+            <td>
+              <%= link_to consumer.energy_program&.name, energy_program_path(consumer.energy_program) if consumer.energy_program -%>
             </td>
             <td>
                 <%= link_to consumer.building_type&.name, building_type_path(consumer.building_type) if consumer.building_type -%>

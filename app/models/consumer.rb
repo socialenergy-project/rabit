@@ -4,6 +4,7 @@ class Consumer < ApplicationRecord
   belongs_to :building_type, optional: true
   belongs_to :connection_type, optional: true
   belongs_to :consumer_category
+  belongs_to :energy_program, optional: true
   has_and_belongs_to_many :communities
   has_and_belongs_to_many :users
   has_and_belongs_to_many :recommendations

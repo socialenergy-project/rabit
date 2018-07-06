@@ -80,7 +80,7 @@ class ConsumersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def consumer_params
-      params.require(:consumer).permit(:name, :location, :edms_id, :building_type_id, :connection_type_id, :location_x, :location_y, :feeder_id, :consumer_category_id, user_ids: [])
+      params.require(:consumer).permit(:name, :location, :edms_id, :energy_program_id, :building_type_id, :connection_type_id, :location_x, :location_y, :feeder_id, :consumer_category_id, user_ids: [])
     end
 
     def category_name(category)
