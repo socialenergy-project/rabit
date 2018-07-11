@@ -42,8 +42,11 @@ class ApplicationController < ActionController::Base
       return super
     end
 
-    sign_in_url = url_for(:action => 'new', :controller => 'sessions', :only_path => false, :protocol => 'http')
-    if request.referer == sign_in_url
+    sign_in_path = Rails.application.routes.recognize_path(new_user_session_path) rescue nil
+    referer_path = Rails.application.routes.recognize_path(request.referer) rescue nil
+    logger.debug "1: #{request.referer.inspect} referer: #{referer_path.inspect}, sign_in_url: #{sign_in_path}"
+    if referer_path == sign_in_path
+      logger.debug "paths are equal"
       super
     else
       stored_location_for(resource) || request.referer || root_path
