@@ -24,10 +24,10 @@ $(document).on "turbolinks:load", ->
     window.location.href
 
   clipboard.on 'success', (e) ->
-    addPopup("#all-links", "URL copied to clipboard", "alert-success")
+    addPopup "#all-links", "URL copied to clipboard", "alert-success"
 
   clipboard.on 'error', (e) ->
-    addPopup("#all-links", "URL NOT copied to clipboard", "alert-danger")
+    addPopup "#all-links", "URL NOT copied to clipboard", "alert-danger"
 
 getColor = (label, opacity) ->
   switch label
