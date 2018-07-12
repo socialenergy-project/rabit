@@ -27,4 +27,5 @@
 //= require select2
 //= require underscore
 //= require leaflet
+//= require filterrific/filterrific-jquery
 //= require_tree .

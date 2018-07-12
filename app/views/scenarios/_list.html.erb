@@ -1,0 +1,77 @@
+<div id="filterrific_results">
+
+  <div>
+    <%= page_entries_info scenarios %>
+  </div>
+
+  <table id="mainTable" class="table table-responsive table-striped table-bordered table-hover">
+    <tr>
+      <th><%= filterrific_sorting_link(@filterrific, :name) -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :user)  -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :description) -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :start_time) -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :end_time) -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :interval) -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :ecc_type) -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :energy_cost_parameter) -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :profit_margin_parameter) -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :flexibility_factor) -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :number_of_clusters) -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :gamma_parameter) -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :created_at) -%></th>
+      <th><%= filterrific_sorting_link(@filterrific, :updated_at) -%></th>
+      <th colspan="3"></th>
+    </tr>
+    <% scenarios.each do |scenario| %>
+      <tr>
+        <td>
+          <%= scenario.name -%>
+        </td>
+        <td>
+          <%= scenario.user&.name -%>
+        </td>
+        <td>
+          <%= scenario.description -%>
+        </td>
+        <td>
+          <%= scenario.starttime -%>
+        </td>
+        <td>
+          <%= scenario.endtime -%>
+        </td>
+        <td>
+          <%= link_to scenario.interval&.name, interval_path(scenario.interval) if scenario.interval -%>
+        </td>
+        <td>
+          <%= link_to scenario.ecc_type&.name, ecc_type_path(scenario.ecc_type) if scenario.ecc_type -%>
+        </td>
+        <td>
+          <%= scenario.energy_cost_parameter -%>
+        </td>
+        <td>
+          <%= scenario.profit_margin_parameter -%>
+        </td>
+        <td>
+          <%= link_to scenario.flexibility&.name, flexibility_path(scenario.flexibility) if scenario.flexibility -%>
+        </td>
+        <td>
+          <%= scenario.number_of_clusters -%>
+        </td>
+        <td>
+          <%= scenario.gamma_parameter -%>
+        </td>
+        <td>
+          <%= scenario.created_at -%>
+        </td>
+        <td>
+          <%= scenario.updated_at -%>
+        </td>
+        <td><%= link_to 'Show', scenario, class: 'btn btn-info btn-sm' if can? :show, scenario %></td>
+        <td><%= link_to 'Edit', edit_scenario_path(scenario), class: 'btn btn-warning btn-sm' if can? :update, scenario %></td>
+        <td><%= link_to 'Destroy', scenario, method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger btn-sm' if can? :destroy, scenario %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+<%= will_paginate scenarios %>

@@ -120,3 +120,6 @@ gem 'leaflet-rails'
 
 # For quicker db batch updates
 gem 'bulk_insert'
+
+# For filtering the scenarios
+gem 'filterrific'

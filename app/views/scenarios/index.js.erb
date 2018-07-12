@@ -1,0 +1,17 @@
+<% js = escape_javascript(
+  render(partial: 'scenarios/list', locals: { scenarios: @scenarios })
+) %>
+$("#filterrific_results").html("<%= js %>");
+
+<% if params[:filterrific][:sorted_by] %>
+  (function (container, element){
+    var elementLeft = $(element).offset().left;
+    var elementRight = elementLeft + $(element).outerWidth();
+    var viewportLeft = $(container).scrollLeft();
+    var viewportRight = viewportLeft + $(container).width();
+
+    if (elementRight > viewportRight || elementLeft < viewportLeft ) {
+      $(container).scrollTo(element);
+    }
+  })('#mainTable', '.filterrific_current_sort_column')
+<% end %>

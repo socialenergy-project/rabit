@@ -5,8 +5,24 @@ class ScenariosController < ApplicationController
   # GET /scenarios
   # GET /scenarios.json
   def index
-    @scenarios = Scenario.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @filterrific = initialize_filterrific(
+        Scenario,
+        params[:filterrific],
+        persistence_id: 'shared_key',
+        default_filter_params: {},
+    ) or return
+    @scenarios = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  rescue ActiveRecord::RecordNotFound => e
+    # There is an issue with the persisted param_set. Reset it.
+    puts "Had to reset filterrific params: #{ e.message }"
+    redirect_to(reset_filterrific_url(format: :html)) and return
   end
+
 
   def stderr
     send_data(@scenario.stderr,
@@ -42,8 +58,8 @@ class ScenariosController < ApplicationController
   def new
     init = view_context.chart_cookies
     @scenario = Scenario.new(params[:scenario] ? scenario_params : {starttime: init[:start_date],
-        endtime: init[:end_date],
-        interval_id: init[:interval_id]})
+                                                                    endtime: init[:end_date],
+                                                                    interval_id: init[:interval_id]})
   end
 
   # GET /scenarios/1/edit
@@ -57,11 +73,11 @@ class ScenariosController < ApplicationController
 
     respond_to do |format|
       if @scenario.save
-        format.html { redirect_to @scenario, notice: 'Scenario was successfully created.' }
-        format.json { show; render :show, status: :created, location: @scenario }
+        format.html {redirect_to @scenario, notice: 'Scenario was successfully created.'}
+        format.json {show; render :show, status: :created, location: @scenario}
       else
-        format.html { render :new}
-        format.json { render json: @scenario.errors, status: :unprocessable_entity }
+        format.html {render :new}
+        format.json {render json: @scenario.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -71,11 +87,11 @@ class ScenariosController < ApplicationController
   def update
     respond_to do |format|
       if @scenario.update(scenario_params)
-        format.html { redirect_to @scenario, notice: 'Scenario was successfully updated.' }
-        format.json { show; render :show, status: :ok, location: @scenario }
+        format.html {redirect_to @scenario, notice: 'Scenario was successfully updated.'}
+        format.json {show; render :show, status: :ok, location: @scenario}
       else
-        format.html { render :edit }
-        format.json { render json: @scenario.errors, status: :unprocessable_entity }
+        format.html {render :edit}
+        format.json {render json: @scenario.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -96,6 +112,7 @@ class ScenariosController < ApplicationController
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_scenario
     @scenario = Scenario.find(params[:id])

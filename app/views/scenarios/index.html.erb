@@ -8,79 +8,127 @@
         All Scenarios
       </div>
       <div class="card-body">
-        <table class="table table-responsive table-striped table-bordered table-hover">
-          <thead>
-          <tr>
-            <th><%= sortable "name", "Name" -%></th>
-            <th><%= sortable "user_id", "User" -%></th>
-            <th><%= sortable "description", "Description" -%></th>
-            <th><%= sortable "starttime", "Starttime" -%></th>
-            <th><%= sortable "endtime", "Endtime" -%></th>
-            <th><%= sortable "interval_id", "Interval" -%></th>
-            <th><%= sortable "ecc_type_id", "Ecc type" -%></th>
-            <th><%= sortable "energy_cost_parameter", "Energy cost parameter" -%></th>
-            <th><%= sortable "profit_margin_parameter", "Profit margin parameter" -%></th>
-            <th><%= sortable "flexibility_factor", "Flexibility factor" -%></th>
-            <th><%= sortable "number_of_clusters", "Number of clusters" -%></th>
-            <th><%= sortable "gamma_parameter", "Gamma parameter" -%></th>
-            <th><%= sortable "created_at", "Created at" -%></th>
-            <th><%= sortable "updated_at", "Updated at" -%></th>
-            <th colspan="3"></th>
-          </tr>
-          </thead>
-          <tbody>
-          <% @scenarios.each do |scenario| %>
-              <tr>
-                <td>
-                  <%= scenario.name -%>
-                </td>
-                <td>
-                  <%= scenario.user&.name -%>
-                </td>
-                <td>
-                  <%= scenario.description -%>
-                </td>
-                <td>
-                  <%= scenario.starttime -%>
-                </td>
-                <td>
-                  <%= scenario.endtime -%>
-                </td>
-                <td>
-                  <%= link_to scenario.interval&.name, interval_path(scenario.interval) if scenario.interval -%>
-                </td>
-                <td>
-                  <%= link_to scenario.ecc_type&.name, ecc_type_path(scenario.ecc_type) if scenario.ecc_type -%>
-                </td>
-                <td>
-                  <%= scenario.energy_cost_parameter -%>
-                </td>
-                <td>
-                  <%= scenario.profit_margin_parameter -%>
-                </td>
-                <td>
-                  <%= link_to scenario.flexibility&.name, flexibility_path(scenario.flexibility) if scenario.flexibility -%>
-                </td>
-                <td>
-                  <%= scenario.number_of_clusters -%>
-                </td>
-                <td>
-                  <%= scenario.gamma_parameter -%>
-                </td>
-                <td>
-                  <%= scenario.created_at -%>
-                </td>
-                <td>
-                  <%= scenario.updated_at -%>
-                </td>
-                <td><%= link_to 'Show', scenario, class: 'btn btn-info btn-sm' if can? :show, scenario %></td>
-                <td><%= link_to 'Edit', edit_scenario_path(scenario), class: 'btn btn-warning btn-sm' if can? :update, scenario %></td>
-                <td><%= link_to 'Destroy', scenario, method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger btn-sm' if can? :destroy, scenario %></td>
-              </tr>
-          <% end %>
-          </tbody>
-        </table>
-        <%= will_paginate @collection, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+
+        <%#   Filterrific adds the `form_for_filterrific` view helper:
+            * adds dom id 'filterrific_filter'
+            * applies javascript behaviors:
+            * AJAX form submission on change
+            * AJAX spinner while AJAX request is being processed
+            * sets form_for options like :url, :method and input name prefix
+        %>
+        <%= form_for_filterrific @filterrific, html: {class: "form-inline"} do |f| %>
+          <div class="p-1">
+            <%= f.label :search_query, class: "form-label no-flex"  %>
+            <%= f.text_field(
+                    :search_query,
+                    class: 'filterrific-periodically-observed form-control',
+                    size: 40
+                ) %>
+          </div>
+          <div class="p-1">
+            <%= f.label :with_user_id, 'User', class: "form-label no-flex"  %>
+            <%= f.select(
+                    :with_user_id,
+                    User.order(name: :asc).pluck(:name, :id),
+                    { include_blank: '- Any -' }, class: "form-control"
+                ) %>
+          </div>
+          <div class="p-1">
+            <%= f.label :with_starttime, 'Start time', class: "form-label no-flex"  %>
+            <%= f.fields_for :with_starttime do |fields| %>
+              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker" %>
+              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker" %>
+            <% end %>
+          </div>
+          <div class="p-1">
+            <%= f.label :with_endtime, 'End time', class: "form-label no-flex"  %>
+            <%= f.fields_for :with_endtime do |fields| %>
+              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker" %>
+              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker" %>
+            <% end %>
+          </div>
+          <div class="p-1">
+            <%= f.label :with_interval_id, 'Interval', class: "form-label no-flex"  %>
+            <%= f.select(
+                    :with_interval_id,
+                    Interval.order(duration: :asc).pluck(:name, :id),
+                    { include_blank: '- Any -' }, class: "form-control"
+                ) %>
+          </div>
+          <div class="p-1">
+            <%= f.label :with_ecc_type_id, 'Ecc type', class: "form-label no-flex" %>
+            <%= f.select(
+                    :with_ecc_type_id,
+                    EccType.order(name: :asc).pluck(:name, :id),
+                    { include_blank: '- Any -' }, class: "form-control"
+                ) %>
+          </div>
+          <div class="p-1">
+            <%= f.label :with_energy_cost_parameter, 'Energy cost parameter', class: "form-label no-flex" %>
+            <%= f.fields_for :with_energy_cost_parameter do |fields| %>
+              <%= fields.number_field :above, min: 0, step: 0.01, class: "form-control col-sm-2" %>
+              <%= fields.number_field :below, min: 0, step: 0.01, class: "form-control col-sm-2" %>
+            <% end %>
+          </div>
+          <div class="p-1">
+            <%= f.label :with_profit_margin_parameter, 'Profit margin parameter', class: "form-label no-flex" %>
+            <%= f.fields_for :with_profit_margin_parameter do |fields| %>
+              <%= fields.number_field :above, min: 0, step: 0.01, class: "form-control col-sm-2" %>
+              <%= fields.number_field :below, min: 0, step: 0.01, class: "form-control col-sm-2" %>
+            <% end %>
+          </div>
+          <div class="p-1">
+            <%= f.label :with_flexibility_id, 'Flexibility', class: "form-label no-flex" %>
+            <%= f.select(
+                    :with_flexibility_id,
+                    Flexibility.order(name: :asc).pluck(:name, :id),
+                    { include_blank: '- Any -' }, class: "form-control"
+                ) %>
+          </div>
+          <div class="p-1">
+            <%= f.label :with_number_of_clusters, 'Number of clusters', class: "form-label no-flex" %>
+            <%= f.fields_for :with_number_of_clusters do |fields| %>
+              <%= fields.number_field :above, min: 0, step: 1, class: "form-control col-sm-2" %>
+              <%= fields.number_field :below, min: 0, step: 1, class: "form-control col-sm-2" %>
+            <% end %>
+          </div>
+          <div class="p-1">
+            <%= f.label :with_gamma_parameter, 'Gamma parameter', class: "form-label no-flex" %>
+            <%= f.fields_for :with_gamma_parameter do |fields| %>
+              <%= fields.number_field :above, min: 0, step: 0.01, class: "form-control col-sm-2" %>
+              <%= fields.number_field :below, min: 0, step: 0.01, class: "form-control col-sm-2" %>
+            <% end %>
+          </div>
+          <div class="p-1">
+            <%= f.label :with_created_at, 'Created at', class: "form-label no-flex"  %>
+            <%= f.fields_for :with_created_at do |fields| %>
+              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker" %>
+              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker" %>
+            <% end %>
+          </div>
+          <div class="p-1">
+            <%= f.label :with_updated_at, 'Updated at', class: "form-label no-flex"  %>
+            <%= f.fields_for :with_updated_at do |fields| %>
+              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker" %>
+              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker" %>
+            <% end %>
+          </div>
+
+          <div>
+            <%= link_to(
+                    'Reset filters',
+                    reset_filterrific_url,
+                    ) %>
+          </div>
+          <%# add an automated spinner to your form when the list is refreshed %>
+          <%= render_filterrific_spinner %>
+        <% end %>
+
+        <%= render(
+                partial: 'scenarios/list',
+                locals: { scenarios: @scenarios }
+            ) %>
+
         <br>
         <%= link_to 'New Scenario', new_scenario_path, class: 'btn btn-primary btn-sm' if can? :create, Scenario %>
       </div>
