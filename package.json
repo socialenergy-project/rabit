@@ -1,5 +1,7 @@
 {
   "name": "rat",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "clipboard": "^2.0.1"
+  }
 }

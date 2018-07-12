@@ -2,6 +2,14 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+addPopup = (element, text, cssclass) ->
+    $(element).prepend("<div class='alert #{cssclass} alert-dismissible fade show col-xs-4'>
+                          #{text}
+                          <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                            <span aria-hidden=\"true\">&times;</span>
+                          </button>\
+                        </div>")
+
 $(document).on "turbolinks:load", ->
   $("input.datetimepicker").datetimepicker({
     format: 'yyyy-mm-dd hh:ii z',
@@ -11,6 +19,15 @@ $(document).on "turbolinks:load", ->
   $("#run_algorithm").click (e) ->
     $(this).html("<i class=\"fa fa-spinner\" aria-hidden=\"true\"></i> Running algorithm, please wait...").prop('disabled', true)
     $(this).parents('form').submit()
+
+  clipboard = new ClipboardJS '#share_button', text: () ->
+    window.location.href
+
+  clipboard.on 'success', (e) ->
+    addPopup("#all-links", "URL copied to clipboard", "alert-success")
+
+  clipboard.on 'error', (e) ->
+    addPopup("#all-links", "URL NOT copied to clipboard", "alert-danger")
 
 getColor = (label, opacity) ->
   switch label

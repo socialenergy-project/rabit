@@ -28,4 +28,5 @@
 //= require underscore
 //= require leaflet
 //= require filterrific/filterrific-jquery
+//= require clipboard/dist/clipboard
 //= require_tree .
