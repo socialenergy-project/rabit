@@ -22,8 +22,9 @@
             <%= f.text_field(
                     :search_query,
                     class: 'filterrific-periodically-observed form-control',
-                    size: 40
-                ) %>
+                    size: 40,
+                    placeholder: "Search in name and description "
+                    ) %>
           </div>
           <div class="p-1">
             <%= f.label :with_user_id, 'User', class: "form-label no-flex"  %>
@@ -36,15 +37,15 @@
           <div class="p-1">
             <%= f.label :with_starttime, 'Start time', class: "form-label no-flex"  %>
             <%= f.fields_for :with_starttime do |fields| %>
-              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker" %>
-              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker" %>
+              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker", placeholder: 'after' %>
+              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker", placeholder: 'before'  %>
             <% end %>
           </div>
           <div class="p-1">
             <%= f.label :with_endtime, 'End time', class: "form-label no-flex"  %>
             <%= f.fields_for :with_endtime do |fields| %>
-              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker" %>
-              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker" %>
+              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker", placeholder: 'after' %>
+              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker", placeholder: 'before' %>
             <% end %>
           </div>
           <div class="p-1">
@@ -66,15 +67,15 @@
           <div class="p-1">
             <%= f.label :with_energy_cost_parameter, 'Energy cost parameter', class: "form-label no-flex" %>
             <%= f.fields_for :with_energy_cost_parameter do |fields| %>
-              <%= fields.number_field :above, min: 0, step: 0.01, class: "form-control col-sm-2" %>
-              <%= fields.number_field :below, min: 0, step: 0.01, class: "form-control col-sm-2" %>
+              <%= fields.number_field :above, min: 0, step: 0.01, class: "form-control col-sm-2", placeholder: 'above' %>
+              <%= fields.number_field :below, min: 0, step: 0.01, class: "form-control col-sm-2", placeholder: 'below' %>
             <% end %>
           </div>
           <div class="p-1">
             <%= f.label :with_profit_margin_parameter, 'Profit margin parameter', class: "form-label no-flex" %>
             <%= f.fields_for :with_profit_margin_parameter do |fields| %>
-              <%= fields.number_field :above, min: 0, step: 0.01, class: "form-control col-sm-2" %>
-              <%= fields.number_field :below, min: 0, step: 0.01, class: "form-control col-sm-2" %>
+              <%= fields.number_field :above, min: 0, step: 0.01, class: "form-control col-sm-2", placeholder: 'above' %>
+              <%= fields.number_field :below, min: 0, step: 0.01, class: "form-control col-sm-2", placeholder: 'below' %>
             <% end %>
           </div>
           <div class="p-1">
@@ -88,36 +89,36 @@
           <div class="p-1">
             <%= f.label :with_number_of_clusters, 'Number of clusters', class: "form-label no-flex" %>
             <%= f.fields_for :with_number_of_clusters do |fields| %>
-              <%= fields.number_field :above, min: 0, step: 1, class: "form-control col-sm-2" %>
-              <%= fields.number_field :below, min: 0, step: 1, class: "form-control col-sm-2" %>
+              <%= fields.number_field :above, min: 0, step: 1, class: "form-control col-sm-2", placeholder: 'above' %>
+              <%= fields.number_field :below, min: 0, step: 1, class: "form-control col-sm-2", placeholder: 'below' %>
             <% end %>
           </div>
           <div class="p-1">
             <%= f.label :with_gamma_parameter, 'Gamma parameter', class: "form-label no-flex" %>
             <%= f.fields_for :with_gamma_parameter do |fields| %>
-              <%= fields.number_field :above, min: 0, step: 0.01, class: "form-control col-sm-2" %>
-              <%= fields.number_field :below, min: 0, step: 0.01, class: "form-control col-sm-2" %>
+              <%= fields.number_field :above, min: 0, step: 0.01, class: "form-control col-sm-2", placeholder: 'above' %>
+              <%= fields.number_field :below, min: 0, step: 0.01, class: "form-control col-sm-2", placeholder: 'below' %>
             <% end %>
           </div>
           <div class="p-1">
             <%= f.label :with_created_at, 'Created at', class: "form-label no-flex"  %>
             <%= f.fields_for :with_created_at do |fields| %>
-              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker" %>
-              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker" %>
+              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker", placeholder: 'before' %>
+              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker", placeholder: 'after' %>
             <% end %>
           </div>
           <div class="p-1">
             <%= f.label :with_updated_at, 'Updated at', class: "form-label no-flex"  %>
             <%= f.fields_for :with_updated_at do |fields| %>
-              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker" %>
-              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker" %>
+              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker", placeholder: 'before' %>
+              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker", placeholder: 'after' %>
             <% end %>
           </div>
 
           <div>
             <%= link_to(
                     'Reset filters',
-                    reset_filterrific_url,
+                    reset_filterrific_url, class: 'btn btn-info btn-sm'
                     ) %>
           </div>
           <%# add an automated spinner to your form when the list is refreshed %>
