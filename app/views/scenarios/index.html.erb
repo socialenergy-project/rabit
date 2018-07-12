@@ -103,15 +103,15 @@
           <div class="p-1">
             <%= f.label :with_created_at, 'Created at', class: "form-label no-flex"  %>
             <%= f.fields_for :with_created_at do |fields| %>
-              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker", placeholder: 'before' %>
-              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker", placeholder: 'after' %>
+              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker", placeholder: 'after' %>
+              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker", placeholder: 'before' %>
             <% end %>
           </div>
           <div class="p-1">
             <%= f.label :with_updated_at, 'Updated at', class: "form-label no-flex"  %>
             <%= f.fields_for :with_updated_at do |fields| %>
-              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker", placeholder: 'before' %>
-              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker", placeholder: 'after' %>
+              <%= fields.text_field :after, size: 20, class: "form-control datetimepicker", placeholder: 'after' %>
+              <%= fields.text_field :before, size: 20, class: "form-control datetimepicker", placeholder: 'before' %>
             <% end %>
           </div>
 
