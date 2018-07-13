@@ -72,6 +72,6 @@
       </tr>
     <% end %>
   </table>
-</div>
 
-<%= will_paginate scenarios %>
+  <%= will_paginate scenarios, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+</div>
