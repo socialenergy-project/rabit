@@ -1,4 +1,4 @@
-<%= form_with(model: ecc_type, local: true) do |form| %>
+<%= form_with(model: setup_ecc_type(ecc_type), local: true) do |form| %>
     <% if ecc_type.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(ecc_type.errors.count, "error") %> prohibited this ecc_type from being saved:</h2>
@@ -17,6 +17,38 @@
         <%= form.text_field :name, id: :ecc_type_name, class: "form-control" %>
       </div>
     </div>
+
+    <%= form.fields_for :ecc_terms do |ff| %>
+      <div>
+        <%= ff.fields_for :ecc_factors do |fff| %>
+          <div class="form-inline">
+            <div class="p-1">
+              <%= fff.label :period, class: "form-label no-flex" %>
+              <%= fff.select :period, EccFactor.periods.keys.map { |w| [w.humanize, w] }, {prompt: "Not set"}, class: "form-control"  %>
+            </div>
+            <div class="p-1">
+              <%= fff.label :start, class: "form-label no-flex"  %>
+              <%= fff.number_field :start, class: "form-control"  %>
+            </div>
+            <div class="p-1">
+              <%= fff.label :stop, class: "form-label no-flex"  %>
+              <%= fff.number_field :stop, class: "form-control"  %>
+            </div>
+            <div class="p-1">
+              <% if fff.object.persisted? %>
+                <%= fff.check_box :_destroy, class: "form-control"  %>
+                <%= fff.label :_destroy, "Destroy", class: "form-label no-flex" %>
+              <% end %>
+            </div>
+          </div>
+      <% end %>
+        <% if ff.object.persisted? %>
+          <%= ff.check_box :_destroy %>
+          <%= ff.label :_destroy, "Destroy" %>
+        <% end %>
+      </div>
+      <hr>
+    <% end %>
 
     <div class="actions">
       <%= form.submit class: "btn btn-primary btn-sm" %>

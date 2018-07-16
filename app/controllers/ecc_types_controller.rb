@@ -75,6 +75,6 @@ class EccTypesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def ecc_type_params
-    params.require(:ecc_type).permit(:name)
+    params.require(:ecc_type).permit(:name, ecc_terms_attributes: [ :id, :_destroy, ecc_factors_attributes: [:id, :_destroy, :period, :start, :stop] ])
   end
 end
