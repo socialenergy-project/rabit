@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  period: 1
+  start: 1
+  stop: 1
+  ecc_term: one
+
+two:
+  period: 1
+  start: 1
+  stop: 1
+  ecc_term: two

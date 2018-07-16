@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180706075435) do
+ActiveRecord::Schema.define(version: 20180716075801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,6 +145,23 @@ ActiveRecord::Schema.define(version: 20180706075435) do
     t.index ["timestamp", "consumer_id"], name: "index_data_points_on_timestamp_and_consumer_id"
     t.index ["timestamp", "interval_id"], name: "index_data_points_on_timestamp_and_interval_id"
     t.index ["timestamp"], name: "index_data_points_on_timestamp"
+  end
+
+  create_table "ecc_factors", force: :cascade do |t|
+    t.integer "period"
+    t.integer "start"
+    t.integer "stop"
+    t.bigint "ecc_term_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ecc_term_id"], name: "index_ecc_factors_on_ecc_term_id"
+  end
+
+  create_table "ecc_terms", force: :cascade do |t|
+    t.bigint "ecc_type_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ecc_type_id"], name: "index_ecc_terms_on_ecc_type_id"
   end
 
   create_table "ecc_types", force: :cascade do |t|
@@ -303,6 +320,8 @@ ActiveRecord::Schema.define(version: 20180706075435) do
   add_foreign_key "consumers", "energy_programs"
   add_foreign_key "data_points", "consumers"
   add_foreign_key "data_points", "intervals"
+  add_foreign_key "ecc_factors", "ecc_terms"
+  add_foreign_key "ecc_terms", "ecc_types"
   add_foreign_key "messages", "recommendations"
   add_foreign_key "messages", "users", column: "recipient_id"
   add_foreign_key "messages", "users", column: "sender_id"
