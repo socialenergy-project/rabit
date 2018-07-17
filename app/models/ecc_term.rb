@@ -7,4 +7,9 @@ class EccTerm < ApplicationRecord
                                 :allow_destroy => true,
                                 :reject_if     => :all_blank
 
+  def get_valid_timestamps(timestamps)
+    ecc_factors.inject(timestamps) do |t, ecc_factor|
+      ecc_factor.get_valid_timestamps(t)
+    end
+  end
 end

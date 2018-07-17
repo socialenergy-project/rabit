@@ -61,7 +61,7 @@
            entity.class.name == "Community" ?
                [ entity ]:
                [ nil ]).each do |community| 
-                     com_or_con_id = community&.id ? "com_" + community.id.to_s : "con_" + @consumer.id.to_s
+                     com_or_con_id = community&.id ? "com_" + community.id.to_s : @consumer ? "con_" + @consumer.id.to_s : "ecc_#{@ecc_type&.id}"
                      dom_id = "consumptionChart_#{com_or_con_id}_#{chart_vars[:interval_id]}"
                %>
       <% if entity.class.name == "Clustering" %>
@@ -88,7 +88,7 @@
       <script>
         App.chart_view.ajax_params.push({
           dom_id: '<%= dom_id -%>',
-          entity: <%= (community ? {community: community.id} : {consumer: entity.id }).to_json.html_safe -%>
+          entity: <%= (community ? {community: community.id} : @consumer ? {consumer: entity.id } : {ecc_type: entity.id}).to_json.html_safe -%>
         });
       </script>
     <% end %>

@@ -45,9 +45,12 @@ class ScenariosController < ApplicationController
       end
     end
 
+    timestamps = @scenario.interval.timestamps(@scenario.starttime, @scenario.endtime)
+
     @plot_data = [:energy_cost, :user_welfare, :retailer_profit, :total_welfare, :total_bill, :total_consumption].map do |column|
       [column, @scenario.energy_programs.map do |ep|
-        [ep.name, @scenario.results.where(energy_program_id: ep.id).order(timestamp: :asc).pluck(:timestamp, column)]
+        results = @scenario.results.where(energy_program_id: ep.id).order(timestamp: :asc).pluck(:timestamp, column).map{|t,c| [t.to_datetime, c]}.to_h
+        [ep.name, timestamps.map {|t| [t, results[t]]}]
       end.to_h]
     end.to_h
     # @plot_data = {energy_cost: @scenario.results.order(timestamp: :asc).pluck(:timestamp, :energy_cost)}

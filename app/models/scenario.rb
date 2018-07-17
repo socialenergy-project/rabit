@@ -174,14 +174,16 @@ class Scenario < ApplicationRecord
       self.results&.delete_all
       self.update_columns stderr: nil, error_message: nil
       begin
+        valid_timestamps = self.ecc_type.get_valid_timestamps(self.interval.timestamps(self.starttime, self.endtime))
+
         result = PythonWrapper.run_pricing({"consumer_ids": self.consumers.map.with_index{|c,i| (i+1).to_s}, #   ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],
                                             "consumers_data": self.consumers.map.with_index do |c,i|
                                               [(i+1).to_s, [c.data_points.where(
                                                   interval: self.interval,
-                                                  timestamp: self.starttime .. self.endtime
+                                                  timestamp: valid_timestamps
                                               ).order(timestamp: :asc).pluck(:consumption).map{|v| v == 0 ? 0.0001 : v}  ]]
                                             end.to_h,
-                                            "number_of_runs": self.interval.timestamps(self.starttime, self.endtime).count,
+                                            "number_of_runs": valid_timestamps.count,
                                             "cost": self.energy_cost_parameter,
                                             "profit": self.profit_margin_parameter,
                                             "weight_flexibility": 0.9,
@@ -199,7 +201,7 @@ class Scenario < ApplicationRecord
             # puts res['AUWF']
             {
                 scenario: self,
-                timestamp: self.starttime + self.interval.duration * offset,
+                timestamp: valid_timestamps[offset],
                 energy_program_id: energy_program.id,
                 energy_cost: res['Cost'],
                 user_welfare: res['AUWF'],

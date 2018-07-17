@@ -121,6 +121,8 @@ module ChartsHelper
       community_path(entity, params)
     when Consumer
       consumer_path(entity, params)
+    when EccType
+      ecc_type_path(entity, params)
     end
   end
 end

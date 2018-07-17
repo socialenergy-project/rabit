@@ -17,10 +17,10 @@
             Active periods:
             <ul>
             <% @ecc_type.ecc_terms.each_with_index do |ecc_term, index| %>
-              <li><%= "OR" if index > 0 %> <%= ecc_term.id %>:</li>
+              <li><%= "OR" if index > 0 %></li>
                 <ul>
                   <% ecc_term.ecc_factors.each_with_index do |ecc_factor, index| %>
-                    <li><%= "AND" if index > 0 %> <%= ecc_factor.period.humanize %>, <%= ecc_factor.period.humanize.split[-1].pluralize   %>: <%= ecc_factor.start %> up to <%= ecc_factor.start %></li>
+                    <li><%= "AND" if index > 0 %> <%= ecc_factor.period.humanize %>, <%= ecc_factor.period.humanize.split[-1].pluralize   %>: <%= ecc_factor.start %> up to <%= ecc_factor.stop %></li>
 
                   <% end %>
                 </ul>
@@ -38,5 +38,7 @@
       </div>
     </div>
   </div>
+
+  <%= render partial: "charts/consumption_chart", locals: {entity: @ecc_type} %>
 </div>
 
