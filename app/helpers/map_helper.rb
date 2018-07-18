@@ -76,7 +76,7 @@ module MapHelper
   end
 
   def build_map(consumers, clustering=Clustering.first)
-    map_data = consumers&.select{|c| c.location_x.present? and c.location_y.present?}.map do |c|
+    map_data = consumers&.select{|c| c.location_x.present? and c.location_y.present?}&.map do |c|
       community = clustering.communities.joins(:consumers).find_by('consumers.id': c.id)
       {
         latlng: [c.location_x, c.location_y],
@@ -89,7 +89,7 @@ module MapHelper
         }
       }
     end
-    if map_data.count > 0
+    if map_data and map_data.count > 0
       {
         :center => {
           :latlng => map_data&.first[:latlng],
