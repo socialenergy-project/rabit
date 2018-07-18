@@ -48,13 +48,19 @@ module OmniAuth
         response = RestClient.post('https://socialauth.intelen.com/resource.php', "access_token=#{token}")
         result = JSON.parse response.body
         Rails.logger.debug "The results is #{result}"
-
+        Rails.logger.debug "Comparison #{email.inspect}"
         if result["success"] and result["email"] == email
           user = User.find_by(email: email, provider: 'Gsrn', uid: result['user_id'])
+          Rails.logger.debug "User #{user.inspect}"
           if user == nil
+            Rails.logger.debug "User in nil"
             pass = SecureRandom.hex
             user = User.new(email: email, provider: 'Gsrn', uid: result['user_id'], name: result['username'], password: pass, password_confirmation: pass)
-            user.save!
+            Rails.logger.debug "Trying to save #{user.inspect}"
+            if ! user.save
+              Rails.logger.debug "Failed to create user, reason: #{user.errors.inspect}"
+              raise "Failed to create user"
+            end
           end
           return user
         end
