@@ -1,12 +1,10 @@
-class MonitorRedisJob < ApplicationJob
-  queue_as :default
+class MonitorRedisWorker
+  include Sidekiq::Worker
 
-#  rescue_from(StandardError) do
-#    retry_job wait: 30.seconds
-#  end
+  sidekiq_options unique: :until_executed
 
   def perform(*args)
-    p "Starting monitor redis job"
+    p "Starting monitor redis worker"
     redis = Redis.new
     redis.subscribe('dp_channel_all', 'ruby-lang') do |on|
       on.message do |channel, msg|
@@ -27,7 +25,7 @@ class MonitorRedisJob < ApplicationJob
         else
           p "Received data for unregistered consumer"
         end
-       end
+      end
     end
   end
 end

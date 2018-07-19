@@ -19,10 +19,10 @@ module Rat
       g.scaffold_stylesheet false
     end
 
-    config.active_job.queue_adapter = :sidekiq
+    # config.active_job.queue_adapter = :sidekiq
     config.after_initialize do
-      Sidekiq.redis { |conn| conn.flushdb }
-      MonitorRedisJob.perform_later
+      # Sidekiq.redis { |conn| conn.flushdb }
+      MonitorRedisWorker.perform_async
     end
 
   end
