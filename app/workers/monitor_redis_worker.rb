@@ -1,7 +1,11 @@
 class MonitorRedisWorker
   include Sidekiq::Worker
 
-  sidekiq_options unique: :until_executed
+  sidekiq_options unique: :until_and_while_executing, queue: "default", unique_args: :unique_args
+
+  def self.unique_args(args)
+    [ name ]
+  end
 
   def perform(*args)
     p "Starting monitor redis worker"
