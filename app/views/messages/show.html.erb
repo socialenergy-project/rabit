@@ -28,6 +28,10 @@
           <strong>Status:</strong>
           <%= @message.status-%>
         </p>
+        <p>
+          <strong>Status:</strong>
+          <%= @message.gsrn_status-%>
+        </p>
 
         <%= link_to 'Edit', edit_message_path(@message), class: 'btn btn-warning btn-sm' if can? :edit, @message %> |
         <%= link_to 'All Alerts', messages_path, class: 'btn btn-info btn-sm' %>

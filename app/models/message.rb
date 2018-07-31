@@ -4,5 +4,6 @@ class Message < ApplicationRecord
   belongs_to :recipient, class_name: 'User'
 
   enum status: [:created, :sent, :notified, :read]
+  enum gsrn_status: [:not_posted, :posted, :failed]
 
 end
