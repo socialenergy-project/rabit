@@ -13,7 +13,7 @@ module FetchData
           dateFrom: DateTime.now.utc.to_i,
           dateTo: (DateTime.now + 3.years).utc.to_i,
       }
-      p "The result is #{result}"
+      Rails.logger.debug "The result is #{result}"
 
       if (JSON.parse(result)["status"] == "Recommendation added successfully." rescue false)
         message.update_attributes gsrn_status: :posted
