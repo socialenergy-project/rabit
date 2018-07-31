@@ -1,3 +1,5 @@
+require 'fetch_data/recommendation_client'
+
 class RecommendationsController < ApplicationController
   load_and_authorize_resource
   before_action :set_recommendation, only: [:show, :edit, :update, :destroy, :send_messages, :delete_messages]
@@ -85,6 +87,10 @@ class RecommendationsController < ApplicationController
       end)
       @recommendation.status = :sent
       @recommendation.save
+
+      rcl = FetchData::RecommendationClient.new
+      rcl.post_recommendation(@recommendation)
+
       respond_to do |format|
         format.html { redirect_to @recommendation, notice: 'Messages were sent.' }
         format.json { render :show, status: :ok, location: @recommendation }
