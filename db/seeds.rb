@@ -57,10 +57,10 @@ def initialize_with_id_and_name(hash, model)
   end
 end
 
-initialize_with_id_and_name({ 1 => "By building type", 2 => "ICCS", 3 => "compare energy and power" }, Clustering)
+initialize_with_id_and_name({ 1 => "By building type", 2 => "ICCS", 3 => "compare energy and power", 4=> "Emulated" }, Clustering)
 puts "Created #{Clustering.all.count} clusterings"
 
-initialize_with_id_and_name({ 1 => "Hedno", 2 => "ICCS" }, ConsumerCategory)
+initialize_with_id_and_name({ 1 => "Hedno", 2 => "ICCS", 3 => "Emulated" }, ConsumerCategory)
 puts "Created #{ConsumerCategory.all.count} consumer categories"
 
 initialize_with_id_and_name({
@@ -85,8 +85,18 @@ initialize_with_id_and_name({
                                 4 => "hem (kwh by power sensor)",
                                 5 => "smart plug (kwh by energy meter)",
                                 6 => "hem (kwh by energy meter)",
+                                7 => "DEMO smart plug (kwh by power meter)",
+                                8 => "DEMO smart plug (kwh by energy meter)",
                             }, Community) do |community|
   community.clustering_id = 3
+end
+
+initialize_with_id_and_name({
+                                9 => "Emulated Community 1",
+                                10 => "Emulated Community 2",
+                                11 => "Emulated Community 3",
+                            }, Community) do |community|
+  community.clustering_id = 4
 end
 
 puts "Created #{Community.all.count} Communities"
@@ -154,8 +164,8 @@ initialize_with_id_and_name({
 puts "Created #{Flexibility.all.count} Flexibilities"
 
 
-["Consumer", "Community::HABTM_Consumers", "DataPoint"].each do |tbl_name|
-# ["Consumer", "Community::HABTM_Consumers"].each do |tbl_name|
+# ["Consumer", "Community::HABTM_Consumers", "DataPoint"].each do |tbl_name|
+["Consumer", "Community::HABTM_Consumers"].each do |tbl_name|
   dbconn = ActiveRecord::Base.connection_pool.checkout
   raw  = dbconn.raw_connection
   begin

@@ -13,7 +13,7 @@ class EccType < ApplicationRecord
     end.flatten.sort.uniq
   end
 
-  def realtime
+  def realtime?
     false
   end
 

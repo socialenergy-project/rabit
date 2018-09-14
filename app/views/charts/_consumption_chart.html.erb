@@ -57,7 +57,7 @@
 </script>
 
     <% (entity.class.name == "Clustering" ?
-           entity.communities :
+           entity.communities.order(name: :asc) :
            entity.class.name == "Community" ?
                [ entity ]:
                [ nil ]).each do |community| 

@@ -90,7 +90,7 @@ module ChartsHelper
                             }
                         }]
 
-    if entity.realtime
+    if entity.realtime?
       realtime_links
     else
       historical_links

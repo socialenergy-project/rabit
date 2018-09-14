@@ -4,7 +4,7 @@ module FetchData
 
     def initialize(consumers, chart_cookies)
       @interval = Interval.find(chart_cookies[:interval_id]&.to_i)
-      @consumers = consumers.select {|c| c&.consumer_category&.name == "ICCS"}
+      @consumers = consumers.select {|c| c&.realtime?}
       start = chart_cookies[:duration] ?
           DateTime.now - chart_cookies[:duration].to_i.seconds :
           chart_cookies[:start_date].to_datetime

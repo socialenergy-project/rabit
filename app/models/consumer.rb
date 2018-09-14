@@ -20,12 +20,12 @@ class Consumer < ApplicationRecord
   }
 =end
 
-  def realtime
-    consumer_category&.name == "ICCS"
+  def realtime?
+    ["ICCS", "Emulated"].include? consumer_category&.name
   end
 
   def initDates
-    if realtime
+    if realtime?
       { duration: 1.week.to_i, start_date: nil, end_date: nil, type: "Real-time" }
     else
       start = (DateTime.now - 1.week).change(year: 2015)
