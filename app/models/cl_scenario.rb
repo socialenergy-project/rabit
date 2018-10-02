@@ -12,10 +12,13 @@ class ClScenario < ApplicationRecord
 
   validate :dont_change_when_there_are_communities_with_messages
 
+  validates :kappa, :numericality => { :greater_than_or_equal_to => 1 }
+
+
   private
 
   def dont_change_when_there_are_communities_with_messages
-    if clustering&.communities&.sum{|c| c.recommendations.count } > 0
+    if clustering&.communities and clustering&.communities&.sum{|c| c.recommendations.count } > 0
       errors.add(:recommendation_id, "Cannot modify scenarios with active recommendations")
     end
   end
