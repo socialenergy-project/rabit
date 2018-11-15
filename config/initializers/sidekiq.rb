@@ -21,9 +21,9 @@ Sidekiq.configure_server do |config|
     url: "redis://localhost:6379/8"
   }
   config.on(:startup) do
-    p "ON STARTUP CODE"
+    Rails.logger.debug "ON STARTUP CODE"
     workers = Sidekiq::Workers.new
-    p "The scheduledSet is #{workers .inspect}"
+    Rails.logger.debug "The scheduledSet is #{workers .inspect}"
     redis_workers = workers.select do |process_id, thread_id, work|
       work['payload']['class'] == "MonitorRedisWorker"
     end # .each &:delete
@@ -34,7 +34,7 @@ Sidekiq.configure_server do |config|
 
     scheduled = Sidekiq::ScheduledSet.new.select {|job| job.klass == "MonitorRedisWorker" }
 
-    p "We have #{scheduled.count} scheduled, #{in_queue.count} in queue, and #{redis_workers.count} workers."
+    Rails.logger.debug "We have #{scheduled.count} scheduled, #{in_queue.count} in queue, and #{redis_workers.count} workers."
 
     already_scheduled = scheduled.count + in_queue.count + redis_workers.count
     MonitorRedisWorker.perform_async if already_scheduled == 0
