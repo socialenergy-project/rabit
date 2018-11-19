@@ -45,7 +45,6 @@ prepareData = (dataset) ->
     {
       label: k,
       data: dataset[k].map (d) ->
-        # console.log("x=",d[0],"y=",d[1])
         {x: new Date(d[0]), y: d[1]}
       fill: false
       lineTension: 0.3,
@@ -61,7 +60,7 @@ prepareData = (dataset) ->
       pointBorderWidth: 2,
     }).reverse()
 
-window.createChart = (domElementId, dataset, legendId = null, startFromZero = true, duration = 0) ->
+window.createChart = (domElementId, dataset, legendId = null, startFromZero = true, duration = 0, yaxistext= "Consumption (kWh)") ->
   return unless Object.keys(dataset).length > 0
   ctx = document.getElementById(domElementId)
   unless ctx
@@ -99,20 +98,25 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
     options: {
       scales: {
         xAxes: [{
-          display: false,
+          display: true,
           time: {
             unit: 'date'
           },
           gridLines: {
-            display: false
+            display: true,
+          },
+          scaleLabel: {
+            display: true,
+            labelString: "Time (UTC)",
+            fontSize: '15',
           },
           ticks: Object.assign {
 #            min: Date.parse("2017-10-10T12:00:00.000Z"),
 #           max: Date.parse("2017-10-18T11:00:00.000Z"),
-      #       maxTicksLimit: 15,
+            maxTicksLimit: 5,
             userCallback: (label, index, labels) ->
-               new Date(label).toISOString()
-          }, limits
+               new Date(label).toISOString().split("T")
+          },limits
         }],
         yAxes: [{
           ticks: if startFromZero then   {
@@ -125,6 +129,11 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
           },
           gridLines: {
             color: "rgba(0, 0, 0, .125)",
+          },
+          scaleLabel: {
+            display: true,
+            labelString: yaxistext,
+            fontSize: '15',
           }
         }],
       },
@@ -137,7 +146,7 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
         position: 'nearest',
         callbacks: {
           label: (tooltipItems, data) ->
-            [data.datasets[tooltipItems.datasetIndex].label, new Date(tooltipItems.xLabel), tooltipItems.yLabel]
+            [data.datasets[tooltipItems.datasetIndex].label, new Date(tooltipItems.xLabel).toISOString().split("T"), tooltipItems.yLabel].flat()
         }
       },
     }
