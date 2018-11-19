@@ -21,17 +21,24 @@ Please adapt accordingly for other distributions/OSs.
         git clone https://github.com/socialenergy-project/rat.git
         cd rat/
 
-2.  Install `ruby` version `2.4.1`, using `rbenv`. Installation instructions for
+2.  Install `ruby` version `2.5.1`, using `rbenv`. Installation instructions for
     `rbenv` may be found here https://github.com/rbenv/rbenv#installation
 
-3.  Install postgres, create database user for rat, and setup a password:
+3.  Install postgres, redis, create database user for rat, and setup a password:
 
-        sudo apt install postgresql postgresql-contrib
+        sudo apt install postgresql postgresql-contrib redis
         sudo apt install libpq-dev
 
         sudo -u postgres createuser rat -s
         sudo -u postgres psql
         postgres=# \password rat
+
+    You may need to edit the `pg_hba.conf` file in your postgres installation
+    to enable md5 authentication for user `rat`.
+    Add the following lines near the beginning of the file:
+
+        local   all             rat                                     md5
+
 
 4.  Setup the environment variables for the project. First create a `.env` file,
     using the provided sample:
@@ -53,22 +60,30 @@ Please adapt accordingly for other distributions/OSs.
       to gmail to send emails. Different mail servers may be added by editing file
       `config/initializers/smtp_settings.rb`
 
-5.  Install the required gems:
+5.  Install bundler if not already present
+
+        gem install bundler
+
+6.  Install the required gems:
 
         bundle install
 
-6.  Create the project database
+7.  Create the project database
 
         rails db:create
         rails db:migrate
 
-7.  Now you can start the server with the command
+8.  Install javascript dependencies
+
+        npm install
+
+9.  Now you can start the server with the command
 
         rails s
 
     You can then visit the site by opening a browser at http://localhost:3000/
 
-8.  In order to be able to run the algorithms, you need to install the
+10. In order to be able to run the algorithms, you need to install the
     "pricing algorithms" submodule
     https://bitbucket.org/socialenergy-iccs/crtp_prtp_rtp,
     in a direct subdirectory of this repo, with the default name.
@@ -76,7 +91,7 @@ Please adapt accordingly for other distributions/OSs.
     Ensure that the submodule is installed correctly, by following the instruction
     in the corresponding README file.
 
-9.  Ensure that the tests pass, with:
+11. Ensure that the tests pass, with:
 
         rails test
 
@@ -86,6 +101,21 @@ In order to use the RAT platform as a standalone platform, an admin user must be
 created, and the database needs to be initialized with consumers and other objects.
 Finally consumption data for the consumers must be added to the database.
 The steps for this follow:
+
+### Database initialization
+
+1.  Decompress the file with consumption data:
+
+        bunzip2 --keep db/initdata/DataPoint.csv.bz2
+
+    A file named `db/initdata/DataPoint.csv` should be created.
+
+2.  Run the script to seed the database with initial data:
+
+        rails db:seed
+
+    After this command, navigating to https://localhost:3000/, you should be able to see consumers,
+    with consumption data for the dates from 1/1/2015 to 30/9/2016
 
 ### Register admin user
 
@@ -104,21 +134,6 @@ The steps for this follow:
     In the prompt that appears execute the command:
 
         User.find_by(email: 'YOUR_EMAIL').add_role :admin
-
-### Database initialization
-
-1.  Decompress the file with consumption data:
-
-        bunzip2 --keep db/initdata/DataPoint.csv.bz2
-
-    A file named `db/initdata/DataPoint.csv` should be created.
-
-2.  Run the script to seed the database with initial data:
-
-        rails db:seed
-
-    After this command, navigating to https://localhost:3000/, you should be able to see consumers,
-    with consumption data for the dates from 1/1/2015 to 30/9/2016
 
 
 ## Navigation and visualization
