@@ -114,6 +114,8 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
 #            min: Date.parse("2017-10-10T12:00:00.000Z"),
 #           max: Date.parse("2017-10-18T11:00:00.000Z"),
             maxTicksLimit: 5,
+            maxRotation: 0,
+            minRotation: 0,
             userCallback: (label, index, labels) ->
                new Date(label).toISOString().split("T")
           },limits
