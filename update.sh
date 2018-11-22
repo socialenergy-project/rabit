@@ -14,9 +14,9 @@ set -e
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 # pull new code
-git pull # --recurse-submodules
-# git submodule update --recursive --remote
-# git submodule foreach git pull
+git pull --recurse-submodules
+git submodule update --recursive --remote
+git submodule foreach git pull
 
 # git pull 
 
