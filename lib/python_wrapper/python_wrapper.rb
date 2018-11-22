@@ -45,7 +45,7 @@ class PythonWrapper
   end
 
   def self.run_pricing(input, directory='pricing_algorithms')
-    Dir.chdir(directory) do
+    Dir.chdir(Rails.root.join directory) do
 
       friendships = {
           "nodes_dictionary":[

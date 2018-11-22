@@ -113,13 +113,16 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
           afterTickToLabelConversion: (scaleInstance) ->
             # set the first and last tick to null so it does not display
             # note, ticks[0] is the last tick and ticks[length - 1] is the first
-            scaleInstance.ticks[0] = null;
-            scaleInstance.ticks[scaleInstance.ticks.length - 1] = null;
-
             # need to do the same thing for this similiar array which is used internally
-            scaleInstance.ticksAsNumbers[0] = null;
-            scaleInstance.ticksAsNumbers[scaleInstance.ticksAsNumbers.length - 1] = null;
-          
+            console.log scaleInstance
+            if scaleInstance.ticksAsNumbers[0] == scaleInstance.min
+              scaleInstance.ticks[0] = null
+              scaleInstance.ticksAsNumbers[0] = null
+
+            if scaleInstance.ticksAsNumbers[scaleInstance.ticks.length - 1] == scaleInstance.max
+              scaleInstance.ticks[scaleInstance.ticks.length - 1] = null
+              scaleInstance.ticksAsNumbers[scaleInstance.ticksAsNumbers.length - 1] = null
+
           ticks: Object.assign {
 #            min: Date.parse("2017-10-10T12:00:00.000Z"),
 #           max: Date.parse("2017-10-18T11:00:00.000Z"),
