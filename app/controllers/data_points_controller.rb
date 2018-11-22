@@ -34,7 +34,7 @@ class DataPointsController < ApplicationController
                                    Community.find(params[:community])&.consumers&.count * timestamps_per_line.count :
                                    timestamps_per_line.count
 
-        if timestamps_total > 50 * 365
+        if timestamps_per_line.count > 50 * 365
           render json: {errors: "To many datapoints for single request"}, status: :bad_request
         else
           render json: if params[:consumer]
@@ -59,7 +59,7 @@ class DataPointsController < ApplicationController
                          helpers.chart_cookies(community) unless params[:nocookies]
                          FetchData::FetchData.new(community.consumers, params).sync
 
-                         if timestamps_total < 700
+                         if timestamps_total < 6000
                            aggr = []
                            res = DataPoint.joins(consumer: :communities)
                                      .where(filter.merge 'communities.id': community.id)

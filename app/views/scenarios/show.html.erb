@@ -193,7 +193,7 @@
     console.log("Turbolinks called");
 
     createChart("energyCostChart", <%= @plot_data[:energy_cost].to_json.html_safe -%>, null, true, 0, "System Energy Cost (€)");
-    createChart("userWellfareChart", <%= @plot_data[:user_welfare].to_json.html_safe -%>, null, false, 0, "Aggregated Users’ Welfare (€)");
+    createChart("userWellfareChart", <%= @plot_data[:user_welfare].to_json.html_safe -%>, null, false, 0, "Aggregated Users’ Welfare");
     createChart("retailerProfitChart", <%= @plot_data[:retailer_profit].to_json.html_safe -%>, null, true, 0, "Business profits (€)");
     createChart("totalConsumptionChart", <%= @plot_data[:total_consumption].to_json.html_safe -%>, null, true, 0, "Total Energy Consumption (kWh)");
     createChart("totalBillChart", <%= @plot_data[:total_bill].to_json.html_safe -%>, null, true, 0, "Total Consumer Bills (€)");

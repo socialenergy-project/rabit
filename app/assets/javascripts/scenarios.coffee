@@ -40,7 +40,7 @@ getColor = (label, opacity) ->
 
 prepareData = (dataset) ->
   keys = Object.keys(dataset)
-  showPoints = dataset[keys[0]].length < 60
+  showPoints = dataset[keys[0]].length < 60 && dataset[keys[0]].length * keys.length < 300
   keys.map((k) ->
     {
       label: k,
