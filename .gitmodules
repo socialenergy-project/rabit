@@ -4,3 +4,4 @@
 [submodule "crtp_prtp_rtp"]
 	path = crtp_prtp_rtp
 	url = git@bitbucket.org:socialenergy-iccs/crtp_prtp_rtp.git
+	branch = master
