@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  totalScore: 1
+  user: one
+  dailyScore: 1
+  gameDuration: 1
+  timestampUserLoggediIn: 2019-02-06 16:16:04
+  energyProgram: MyString
+  levelGame: MyString
+
+two:
+  totalScore: 1
+  user: two
+  dailyScore: 1
+  gameDuration: 1
+  timestampUserLoggediIn: 2019-02-06 16:16:04
+  energyProgram: MyString
+  levelGame: MyString

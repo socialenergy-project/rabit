@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180731124821) do
+ActiveRecord::Schema.define(version: 20190206141604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -189,6 +189,20 @@ ActiveRecord::Schema.define(version: 20180731124821) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "game_activities", force: :cascade do |t|
+    t.integer "totalScore"
+    t.bigint "user_id"
+    t.integer "dailyScore"
+    t.integer "gameDuration"
+    t.datetime "timestampUserLoggediIn"
+    t.string "energyProgram"
+    t.string "levelGame"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "timestampUserLoggediIn", "totalScore", "dailyScore", "gameDuration", "energyProgram", "levelGame"], name: "game_act_uniq", unique: true
+    t.index ["user_id"], name: "index_game_activities_on_user_id"
+  end
+
   create_table "intervals", force: :cascade do |t|
     t.string "name"
     t.integer "duration"
@@ -323,6 +337,7 @@ ActiveRecord::Schema.define(version: 20180731124821) do
   add_foreign_key "data_points", "intervals"
   add_foreign_key "ecc_factors", "ecc_terms"
   add_foreign_key "ecc_terms", "ecc_types"
+  add_foreign_key "game_activities", "users"
   add_foreign_key "messages", "recommendations"
   add_foreign_key "messages", "users", column: "recipient_id"
   add_foreign_key "messages", "users", column: "sender_id"
