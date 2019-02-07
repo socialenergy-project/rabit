@@ -53,6 +53,33 @@ module FetchData
         end.reject {|r| r[:user_id].nil? || r[:topic].nil? || r[:graded_at].nil?})
       end
 
+      if json['returnobjectLcmsScore']&.size > 0
+        LcmsScore.bulk_insert ignore: true, values: (json['returnobjectLcmsScore'].each_with_object({}) do |r,h|
+          if r['username']
+            user = get_user(r['username'])
+            h[user] ||= {}
+            competence = r['Name'].scan(/\d+/)&.last&.to_i
+            h[user][competence] ||= {}
+            h[user][competence][
+              case r['Name']
+              when / total score$/
+                :current_score
+              when /^Last week's total score for competence /
+                :last_week_score
+              when /^Last month's total score for competence /
+                :last_month_score            
+              end
+            ] = r['Value'].to_f
+          end
+        end.to_a.map  do |user,v1|
+          v1.to_a.map do |comp,v|
+            v.merge competence: comp
+          end.map do |v|
+            v.merge user_id: user
+          end
+        end.flatten)
+      end
+
 
 =begin
       if (JSON.parse(result)["status"] == "Recommendation added successfully." rescue false)

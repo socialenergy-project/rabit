@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190207093115) do
+ActiveRecord::Schema.define(version: 20190207163921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -235,8 +235,20 @@ ActiveRecord::Schema.define(version: 20190207093115) do
     t.float "grade_pass"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id", "topic", "level", "numeric", "graded_at", "current_grade", "grade_min", "grade_max"], name: "lcms_courses_uniq", unique: true
+    t.index ["user_id", "topic", "level", "numeric", "graded_at", "current_grade", "time_spent_seconds", "grade_min", "grade_max", "grade_pass"], name: "lcms_courses_uniq", unique: true
     t.index ["user_id"], name: "index_lcms_courses_on_user_id"
+  end
+
+  create_table "lcms_scores", force: :cascade do |t|
+    t.integer "competence"
+    t.float "current_score"
+    t.float "last_week_score"
+    t.float "last_month_score"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "competence", "current_score", "last_week_score", "last_month_score"], name: "lcms_scores_uniq", unique: true
+    t.index ["user_id"], name: "index_lcms_scores_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -369,6 +381,7 @@ ActiveRecord::Schema.define(version: 20190207093115) do
   add_foreign_key "game_activities", "users"
   add_foreign_key "lcms_badges", "users"
   add_foreign_key "lcms_courses", "users"
+  add_foreign_key "lcms_scores", "users"
   add_foreign_key "messages", "recommendations"
   add_foreign_key "messages", "users", column: "recipient_id"
   add_foreign_key "messages", "users", column: "sender_id"
