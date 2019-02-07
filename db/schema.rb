@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190206141604) do
+ActiveRecord::Schema.define(version: 20190207093115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -210,6 +210,35 @@ ActiveRecord::Schema.define(version: 20190206141604) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "lcms_badges", force: :cascade do |t|
+    t.string "topic"
+    t.string "level"
+    t.float "numeric"
+    t.bigint "user_id"
+    t.date "date_given"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "topic", "level", "numeric", "date_given"], name: "lcms_badge_uniq", unique: true
+    t.index ["user_id"], name: "index_lcms_badges_on_user_id"
+  end
+
+  create_table "lcms_courses", force: :cascade do |t|
+    t.string "topic"
+    t.string "level"
+    t.float "numeric"
+    t.bigint "user_id"
+    t.datetime "graded_at"
+    t.float "current_grade"
+    t.integer "time_spent_seconds"
+    t.float "grade_min"
+    t.float "grade_max"
+    t.float "grade_pass"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "topic", "level", "numeric", "graded_at", "current_grade", "time_spent_seconds", "grade_min", "grade_max", "grade_pass"], name: "lcms_courses_uniq", unique: true
+    t.index ["user_id"], name: "index_lcms_courses_on_user_id"
+  end
+
   create_table "messages", force: :cascade do |t|
     t.bigint "sender_id"
     t.bigint "recipient_id"
@@ -338,6 +367,8 @@ ActiveRecord::Schema.define(version: 20190206141604) do
   add_foreign_key "ecc_factors", "ecc_terms"
   add_foreign_key "ecc_terms", "ecc_types"
   add_foreign_key "game_activities", "users"
+  add_foreign_key "lcms_badges", "users"
+  add_foreign_key "lcms_courses", "users"
   add_foreign_key "messages", "recommendations"
   add_foreign_key "messages", "users", column: "recipient_id"
   add_foreign_key "messages", "users", column: "sender_id"

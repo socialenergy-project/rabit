@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  topic: MyString
+  level: MyString
+  numeric: 1.5
+  user: one
+  graded_at: 2019-02-07 11:31:15
+  current_grade: 1.5
+  time_spent_seconds: 1
+  grade_min: 1.5
+  grade_max: 1.5
+  grade_pass: MyString
+  float: MyString
+
+two:
+  topic: MyString
+  level: MyString
+  numeric: 1.5
+  user: two
+  graded_at: 2019-02-07 11:31:15
+  current_grade: 1.5
+  time_spent_seconds: 1
+  grade_min: 1.5
+  grade_max: 1.5
+  grade_pass: MyString
+  float: MyString

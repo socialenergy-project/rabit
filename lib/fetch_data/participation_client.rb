@@ -15,8 +15,9 @@ module FetchData
 
       json = JSON.parse result
 
+      user_hash = {}
+
       if json['returnobjectGameActivity']&.size > 0
-        user_hash = {}
         GameActivity.bulk_insert ignore: true, values: (json['returnobjectGameActivity'].map do |r|
           user_hash[r['username']] ||= User.find_by(provider: 'Gsrn', uid: r['username'])&.id
           {
@@ -30,6 +31,58 @@ module FetchData
           }
         end.reject {|r| r[:user_id].nil?})
       end
+
+
+      if json['returnobjectLcmsBadges']&.size > 0
+        LcmsBadge.bulk_insert ignore: true, values: (json['returnobjectLcmsBadges'].map do |r|
+          user_hash[r['username']] ||= User.find_by(provider: 'Gsrn', uid: r['username'])&.id
+          split_name = r['BadgeName']&.split('-')
+          if split_name&.size == 2
+            {
+
+              topic: split_name[0]&.strip,
+              level: split_name[1]&.split('(')[0]&.strip,
+              numeric: r['BadgeName']&.scan(/[\d.]+/)&.last&.to_f,
+              user_id: user_hash[r['username']],
+              date_given: r['DateGiven']&.to_date,
+            }
+          else
+            {}
+          end
+        end.reject {|r| r[:user_id].nil?})
+      end
+
+      if json['returnobjectLcmsCourses']&.size > 0
+        LcmsCourse.bulk_insert ignore: true, values: (json['returnobjectLcmsCourses'].map do |r|
+          user_hash[r['username']] ||= User.find_by(provider: 'Gsrn', uid: r['username'])&.id
+          split_name = r['CourseName']&.split('-')
+          if split_name&.size == 2
+            {
+
+              topic: split_name[0]&.strip,
+              level: split_name[1]&.split('(')[0]&.strip,
+              numeric: r['BadgeName']&.scan(/[\d.]+/)&.last&.to_f,
+              user_id: user_hash[r['username']],
+              date_given: r['DateGiven']&.to_date,
+            }
+          else
+            {}
+          end
+        end.reject {|r| r[:user_id].nil?})
+      end
+
+
+
+
+
+
+
+
+
+
+      :user_id, :topic, :level, :numeric, :graded_at,
+                              :current_grade, :time_spent_seconds, :grade_min,
+                              :grade_max,  :grade_pass
 
 
 =begin

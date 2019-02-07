@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  topic: MyString
+  level: MyString
+  numeric: 1.5
+  user: one
+  date_given: 2019-02-06
+
+two:
+  topic: MyString
+  level: MyString
+  numeric: 1.5
+  user: two
+  date_given: 2019-02-06
