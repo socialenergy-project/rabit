@@ -235,7 +235,7 @@ ActiveRecord::Schema.define(version: 20190207093115) do
     t.float "grade_pass"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id", "topic", "level", "numeric", "graded_at", "current_grade", "time_spent_seconds", "grade_min", "grade_max", "grade_pass"], name: "lcms_courses_uniq", unique: true
+    t.index ["user_id", "topic", "level", "numeric", "graded_at", "current_grade", "grade_min", "grade_max"], name: "lcms_courses_uniq", unique: true
     t.index ["user_id"], name: "index_lcms_courses_on_user_id"
   end
 

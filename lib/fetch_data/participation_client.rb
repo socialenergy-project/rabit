@@ -7,22 +7,19 @@ module FetchData
     end
 
     def get_stats(user = nil)
-      result = RestClient.post @gsrn_participation_url , {
-        username: user
+      result = RestClient.post @gsrn_participation_url, {
+          username: user
       }
 
-      Rails.logger.debug "The result is #{result}"
+      # Rails.logger.debug "The result is #{result}"
 
       json = JSON.parse result
 
-      user_hash = {}
-
       if json['returnobjectGameActivity']&.size > 0
         GameActivity.bulk_insert ignore: true, values: (json['returnobjectGameActivity'].map do |r|
-          user_hash[r['username']] ||= User.find_by(provider: 'Gsrn', uid: r['username'])&.id
           {
               totalScore: r['totalScore']&.to_i,
-              user_id: user_hash[r['username']],
+              user_id: get_user(r['username']),
               dailyScore: r['dailyScore']&.to_i,
               gameDuration: r['gameDuration']&.to_i,
               timestampUserLoggediIn: Time.at(r['timestampUserLoggediIn'].to_i)&.to_datetime,
@@ -35,54 +32,26 @@ module FetchData
 
       if json['returnobjectLcmsBadges']&.size > 0
         LcmsBadge.bulk_insert ignore: true, values: (json['returnobjectLcmsBadges'].map do |r|
-          user_hash[r['username']] ||= User.find_by(provider: 'Gsrn', uid: r['username'])&.id
-          split_name = r['BadgeName']&.split('-')
-          if split_name&.size == 2
-            {
-
-              topic: split_name[0]&.strip,
-              level: split_name[1]&.split('(')[0]&.strip,
-              numeric: r['BadgeName']&.scan(/[\d.]+/)&.last&.to_f,
-              user_id: user_hash[r['username']],
+          {
+              user_id: get_user(r['username']),
               date_given: r['DateGiven']&.to_date,
-            }
-          else
-            {}
-          end
-        end.reject {|r| r[:user_id].nil?})
+          }.merge(extract_topic_level_numeric(r['BadgeName']))
+        end.reject {|r| r[:user_id].nil? || r[:topic].nil?})
       end
 
       if json['returnobjectLcmsCourses']&.size > 0
         LcmsCourse.bulk_insert ignore: true, values: (json['returnobjectLcmsCourses'].map do |r|
-          user_hash[r['username']] ||= User.find_by(provider: 'Gsrn', uid: r['username'])&.id
-          split_name = r['CourseName']&.split('-')
-          if split_name&.size == 2
-            {
-
-              topic: split_name[0]&.strip,
-              level: split_name[1]&.split('(')[0]&.strip,
-              numeric: r['BadgeName']&.scan(/[\d.]+/)&.last&.to_f,
-              user_id: user_hash[r['username']],
-              date_given: r['DateGiven']&.to_date,
-            }
-          else
-            {}
-          end
-        end.reject {|r| r[:user_id].nil?})
+          {
+              user_id: get_user(r['username']),
+              graded_at: get_graded_at(r['DateGraded']),
+              current_grade: r['CurrentGrade']&.to_f,
+              time_spent_seconds: get_time_spent_seconds(r['TimeSpent']),
+              grade_min: r['Grademin']&.to_f,
+              grade_max: r['Grademax']&.to_f,
+              grade_pass: r['Grademass']&.to_f,
+          }.merge(extract_topic_level_numeric(r['CourseName']))
+        end.reject {|r| r[:user_id].nil? || r[:topic].nil? || r[:graded_at].nil?})
       end
-
-
-
-
-
-
-
-
-
-
-      :user_id, :topic, :level, :numeric, :graded_at,
-                              :current_grade, :time_spent_seconds, :grade_min,
-                              :grade_max,  :grade_pass
 
 
 =begin
@@ -93,6 +62,42 @@ module FetchData
       end
 =end
       json
+    end
+
+    private
+
+    def get_user(username)
+      @user_hash ||= {}
+      uuid = SecureRandom.uuid
+      @user_hash[username] ||= User.create_with(email: "#{SecureRandom.uuid}@test.com",
+                                                password: uuid, password_confirmation: uuid)
+                                   .find_or_create_by(provider: 'Gsrn', uid: username)&.id
+
+    end
+
+    def get_graded_at(date_graded)
+      date_graded&.to_datetime
+    rescue
+      Time.at(date_graded&.to_i)
+    end
+
+    def get_time_spent_seconds(time)
+      (Time.parse("00:" + time) - Time.parse('00:00'))
+    rescue
+      nil
+    end
+
+    def extract_topic_level_numeric(description)
+      split_name = description&.split('-')
+      if split_name&.size == 2
+        {
+            topic: split_name[0]&.strip&.split("Level")[0]&.strip&.remove('.'),
+            level: split_name[1]&.split('(')[0]&.strip,
+            numeric: description&.scan(/[\d.]+/)&.last&.to_f,
+        }
+      else
+        {}
+      end
     end
 
   end

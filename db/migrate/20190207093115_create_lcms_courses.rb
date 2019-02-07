@@ -16,8 +16,8 @@ class CreateLcmsCourses < ActiveRecord::Migration[5.1]
     end
 
     add_index :lcms_courses, [:user_id, :topic, :level, :numeric, :graded_at,
-                              :current_grade, :time_spent_seconds, :grade_min,
-                              :grade_max,  :grade_pass],
+                              :current_grade, :grade_min,
+                              :grade_max],
               unique: true,  name: :lcms_courses_uniq
 
   end
