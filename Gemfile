@@ -43,6 +43,10 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'rails-controller-testing'
 
+  # for moching in tests
+  gem 'webmock'
+  gem 'test-unit'
+
 end
 
 group :development do
