@@ -10,8 +10,7 @@ one:
   time_spent_seconds: 1
   grade_min: 1.5
   grade_max: 1.5
-  grade_pass: MyString
-  float: MyString
+  grade_pass: 1.5
 
 two:
   topic: MyString
@@ -23,5 +22,4 @@ two:
   time_spent_seconds: 1
   grade_min: 1.5
   grade_max: 1.5
-  grade_pass: MyString
-  float: MyString
+  grade_pass: 1.5

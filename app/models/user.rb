@@ -17,6 +17,13 @@ class User < ApplicationRecord
   has_many :sent_messages, class_name: 'Message', foreign_key: :sender_id, dependent: :nullify
   has_many :received_messages, class_name: 'Message', foreign_key: :recipient_id, dependent: :nullify
 
+  has_many :game_activities, dependent: :destroy
+  has_many :lcms_badges, dependent: :destroy
+  has_many :lcms_courses, dependent: :destroy
+  has_many :lcms_scores, dependent: :destroy
+
+
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email

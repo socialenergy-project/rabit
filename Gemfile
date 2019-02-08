@@ -123,3 +123,6 @@ gem 'bulk_insert'
 
 # For filtering the scenarios
 gem 'filterrific'
+
+# for k-means clustering
+gem 'kmeans-clusterer'

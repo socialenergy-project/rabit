@@ -1,15 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  compeltence: 1
+  competence: 1
   current_score: 1.5
   last_week_score: 1.5
-  last_month: 
+  last_month_score: 1.5
   user: one
 
 two:
-  compeltence: 1
+  competence: 1
   current_score: 1.5
   last_week_score: 1.5
-  last_month: 
+  last_month_score: 1.5
   user: two
