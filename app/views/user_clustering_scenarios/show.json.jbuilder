@@ -1,0 +1,1 @@
+json.partial! "user_clustering_scenarios/user_clustering_scenario", user_clustering_scenario: @user_clustering_scenario

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :user_clustering_scenarios
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   resources :messages
   resources :recommendations do

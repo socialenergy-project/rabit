@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190207163921) do
+ActiveRecord::Schema.define(version: 20190208151127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -335,6 +335,34 @@ ActiveRecord::Schema.define(version: 20190207163921) do
     t.index ["user_id"], name: "index_scenarios_on_user_id"
   end
 
+  create_table "user_clustering_parameters", force: :cascade do |t|
+    t.bigint "user_clustering_scenario_id"
+    t.bigint "user_id"
+    t.string "paramtype"
+    t.float "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_clustering_scenario_id"], name: "index_user_clustering_parameters_on_user_clustering_scenario_id"
+    t.index ["user_id"], name: "index_user_clustering_parameters_on_user_id"
+  end
+
+  create_table "user_clustering_results", force: :cascade do |t|
+    t.bigint "user_clustering_scenario_id"
+    t.bigint "user_id"
+    t.integer "cluster"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_clustering_scenario_id"], name: "index_user_clustering_results_on_user_clustering_scenario_id"
+    t.index ["user_id"], name: "index_user_clustering_results_on_user_id"
+  end
+
+  create_table "user_clustering_scenarios", force: :cascade do |t|
+    t.integer "kappa"
+    t.float "silhouette"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -392,4 +420,8 @@ ActiveRecord::Schema.define(version: 20190207163921) do
   add_foreign_key "scenarios", "flexibilities"
   add_foreign_key "scenarios", "intervals"
   add_foreign_key "scenarios", "users"
+  add_foreign_key "user_clustering_parameters", "user_clustering_scenarios"
+  add_foreign_key "user_clustering_parameters", "users"
+  add_foreign_key "user_clustering_results", "user_clustering_scenarios"
+  add_foreign_key "user_clustering_results", "users"
 end

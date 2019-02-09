@@ -6,8 +6,9 @@ module ClusteringModule
 
     class UserClustering
 
-        def initialize(kappa = 5)
+        def initialize(kappa = 5, values = nil)
             @kappa = kappa
+            @values = values || UserClustering.parameterTypes.keys
 
             pc = FetchData::ParticipationClient.new
 
@@ -15,16 +16,19 @@ module ClusteringModule
 
         end
 
+        def run
+            clusters = cluster_simple
+            clusters.map do |c| 
+                c.points.map(&:label)
+            end
+        end
+
         def cluster_simple
             labels = User.where(provider: 'Gsrn').pluck :id
             data = labels.map do |u|
-                [
-                    GameActivity.get_current_score(u),
-                    GameActivity.get_total_time_played(u),
-                    LcmsBadge.where(user_id: u).count,
-                    LcmsCourse.where(user_id: u).count,
-                    LcmsScore.get_current_score(u),
-                ]
+                @values.map do |v|
+                    UserClustering.parameterTypes[v.to_sym].call(u)
+                end
             end
 
             p "The data is #{[data, labels]}"
@@ -44,6 +48,26 @@ module ClusteringModule
             # Clustering quality score. Value between -1.0..1.0 (1.0 is best)
             puts "\nSilhouette score: #{kmeans.silhouette.round(2)}"
             kmeans.clusters
+        end
+
+        def self.parameterTypes
+            {
+                game_score: ->(u) {
+                    GameActivity.get_current_score(u)
+                },
+                game_activity: ->(u) {
+                    GameActivity.get_total_time_played(u)
+                },
+                lcms_badge_count: ->(u) {
+                    LcmsBadge.where(user_id: u).count
+                },
+                lcms_activity: ->(u) {
+                    LcmsCourse.where(user_id: u).count
+                },
+                lcms_score: ->(u) {
+                    LcmsScore.get_current_score(u)
+                },
+            }
         end
 
     end

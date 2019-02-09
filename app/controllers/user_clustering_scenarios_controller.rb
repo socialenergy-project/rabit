@@ -1,0 +1,117 @@
+require 'clustering/user_clustering.rb'
+
+class UserClusteringScenariosController < ApplicationController
+  load_and_authorize_resource
+  before_action :set_user_clustering_scenario, only: [:show, :edit, :update, :destroy]
+
+  # GET /user_clustering_scenarios
+  # GET /user_clustering_scenarios.json
+  def index
+    @user_clustering_scenarios = UserClusteringScenario.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+  end
+
+  # GET /user_clustering_scenarios/1
+  # GET /user_clustering_scenarios/1.json
+  def show
+    @user_params = @user_clustering_scenario.get_params
+    if @user_params.keys.size > 0
+      @param_keys = @user_params.first[1].keys
+    end
+  end
+
+  # GET /user_clustering_scenarios/new
+  def new
+    @user_clustering_scenario = UserClusteringScenario.new
+  end
+
+  # GET /user_clustering_scenarios/1/edit
+  def edit
+  end
+
+  # POST /user_clustering_scenarios
+  # POST /user_clustering_scenarios.json
+  def create
+    @user_clustering_scenario = UserClusteringScenario.new(user_clustering_scenario_params)
+
+    respond_to do |format|
+      if @user_clustering_scenario.save && update_parameter_values
+        format.html { redirect_to @user_clustering_scenario, notice: 'User clustering scenario was successfully created.' }
+        format.json { render :show, status: :created, location: @user_clustering_scenario }
+      else
+        format.html { render :new }
+        format.json { render json: @user_clustering_scenario.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /user_clustering_scenarios/1
+  # PATCH/PUT /user_clustering_scenarios/1.json
+  def update
+    respond_to do |format|
+      if @user_clustering_scenario.update(user_clustering_scenario_params) && update_parameter_values
+        format.html { redirect_to @user_clustering_scenario, notice: 'User clustering scenario was successfully updated.' }
+        format.json { render :show, status: :ok, location: @user_clustering_scenario }
+      else
+        format.html { render :edit }
+        format.json { render json: @user_clustering_scenario.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /user_clustering_scenarios/1
+  # DELETE /user_clustering_scenarios/1.json
+  def destroy
+    respond_to do |format|
+      begin
+        @user_clustering_scenario.destroy
+        format.html { redirect_to user_clustering_scenarios_url, notice: 'User clustering scenario was successfully destroyed.' }
+        format.json { head :no_content }
+      rescue Exception => e
+        format.html { redirect_to user_clustering_scenarios_url, alert: 'User clustering scenario was NOT successfully destroyed. Reason is ' + e.message }
+        format.json { render json: e, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user_clustering_scenario
+      @user_clustering_scenario = UserClusteringScenario.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def user_clustering_scenario_params
+      params.require(:user_clustering_scenario).permit(:kappa, :silhouette )
+    end
+
+    def update_parameter_values # (user_clustering_scenario_params)
+      ActiveRecord::Base.transaction do
+      
+        uc = ClusteringModule::UserClustering.new(
+            @user_clustering_scenario.kappa,
+            @user_clustering_scenario.get_params&.first[1]&.keys
+        )
+
+        UserClusteringParameter.where(user_clustering_scenario: @user_clustering_scenario).delete_all
+        UserClusteringParameter.create params[:user_clustering_scenario]['parameters'].reject(&:blank?).product(User.where(provider: 'Gsrn')).map { |parameter, user| 
+            {
+              user: user,
+              user_clustering_scenario: @user_clustering_scenario,
+              paramtype: parameter,
+              value: ClusteringModule::UserClustering.parameterTypes[parameter.to_sym].call(user.id),
+            }
+        }
+
+        UserClusteringResult.create uc.run&.map.with_index { |cluster, i|
+          cluster.map do |user|
+            {
+              user: User.find(user),
+              user_clustering_scenario: @user_clustering_scenario,
+              cluster: i,
+            }
+          end
+        }.flatten
+          
+      end
+    end
+end

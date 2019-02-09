@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_clustering_scenario: one
+  user: one
+  paramtype: MyString
+  value: 1.5
+
+two:
+  user_clustering_scenario: two
+  user: two
+  paramtype: MyString
+  value: 1.5
