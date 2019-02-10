@@ -22,6 +22,9 @@ class User < ApplicationRecord
   has_many :lcms_courses, dependent: :destroy
   has_many :lcms_scores, dependent: :destroy
 
+  has_many :user_clustering_parameters, dependent: :destroy
+  has_many :user_clustering_results, dependent: :destroy
+
 
 
   def self.from_omniauth(auth)

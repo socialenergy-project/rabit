@@ -9,7 +9,7 @@ module FetchData
     def get_stats(user = nil)
       result = RestClient.post @gsrn_participation_url, {
           username: user
-      }
+      }, timeout: 10
 
       # Rails.logger.debug "The result is #{result}"
 

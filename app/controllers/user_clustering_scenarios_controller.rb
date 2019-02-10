@@ -17,6 +17,14 @@ class UserClusteringScenariosController < ApplicationController
     if @user_params.keys.size > 0
       @param_keys = @user_params.first[1].keys
     end
+
+    @results = @param_keys&.combination(2)&.map do |key1, key2|
+       {
+         x_label: key1,
+         y_label: key2,
+         dataset: @user_clustering_scenario.get_results_for_plot(key1, key2)
+       }
+    end
   end
 
   # GET /user_clustering_scenarios/new
@@ -87,13 +95,8 @@ class UserClusteringScenariosController < ApplicationController
     def update_parameter_values # (user_clustering_scenario_params)
       ActiveRecord::Base.transaction do
       
-        uc = ClusteringModule::UserClustering.new(
-            @user_clustering_scenario.kappa,
-            @user_clustering_scenario.get_params&.first[1]&.keys
-        )
-
         UserClusteringParameter.where(user_clustering_scenario: @user_clustering_scenario).delete_all
-        UserClusteringParameter.create params[:user_clustering_scenario]['parameters'].reject(&:blank?).product(User.where(provider: 'Gsrn')).map { |parameter, user| 
+        UserClusteringParameter.create params[:user_clustering_scenario]['parameters']&.reject(&:blank?)&.product(User.where(provider: 'Gsrn'))&.map { |parameter, user|
             {
               user: user,
               user_clustering_scenario: @user_clustering_scenario,
@@ -102,16 +105,28 @@ class UserClusteringScenariosController < ApplicationController
             }
         }
 
-        UserClusteringResult.create uc.run&.map.with_index { |cluster, i|
-          cluster.map do |user|
-            {
-              user: User.find(user),
-              user_clustering_scenario: @user_clustering_scenario,
-              cluster: i,
-            }
-          end
-        }.flatten
-          
+        UserClusteringResult.where(user_clustering_scenario: @user_clustering_scenario).delete_all
+        params123 = @user_clustering_scenario&.get_params&.first
+
+        if params123 && params123.size > 1 && @user_clustering_scenario.kappa
+          uc = ClusteringModule::UserClustering.new(
+            @user_clustering_scenario.kappa,
+            params123[1]&.keys
+          )
+
+          UserClusteringResult.create uc.run&.map.with_index { |cluster, i|
+            cluster.map do |user|
+              {
+                user: User.find(user),
+                user_clustering_scenario: @user_clustering_scenario,
+                cluster: i,
+              }
+            end
+          }.flatten
+        else
+          true
+        end
+
       end
     end
 end

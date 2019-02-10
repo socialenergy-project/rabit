@@ -18,6 +18,21 @@ class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   setup do
     host! "localhost:3000"
+
+    WebMock.stub_request(:post, "https://socialenergy.intelen.com/index.php/webservices/activitylcmsgame")
+           .with(
+              body: {"username"=>nil},
+              headers: {
+                'Accept'=>'*/*',
+                'Accept-Encoding'=>'gzip, deflate',
+                'Content-Length'=>'8',
+                'Content-Type'=>'application/x-www-form-urlencoded',
+                'Host'=>'socialenergy.intelen.com',
+                'Timeout'=>'10',
+                'User-Agent'=>'rest-client/2.0.2 (linux-gnu x86_64) ruby/2.5.1p57'
+              }
+            ).to_return(status: 200, body: "", headers: {})
+
   end
 
   def sign_in_as_admin
