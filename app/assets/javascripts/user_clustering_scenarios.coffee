@@ -63,6 +63,15 @@ window.createScatterChart = (domElementId, dataset, xaxistext = "Time (UTC)", ya
                     },
                 }]
 
+            },
+            tooltips: {
+                enabled: true,
+                mode: 'nearest',
+                position: 'nearest',
+                callbacks: {
+                    label: (tooltipItems, data) ->
+                        data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index].label
+                }
             }
         }
     })

@@ -33,7 +33,7 @@
               <tbody>
                 <% @user_params.keys.sort_by{|k| @user_clustering_scenario.cluster_for(k)}.each do |u|  %>
                   <tr>
-                    <th><%= u %></th>
+                    <th><%= User.find(u)&.uid %></th>
                       <% @param_keys.each do |k| %>
                         <td><%= @user_params[u][k] %></td>
                       <% end %>

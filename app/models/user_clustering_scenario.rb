@@ -24,8 +24,9 @@ class UserClusteringScenario < ApplicationRecord
                data: self.user_clustering_parameters
                          .where(paramtype: [param1, param2], user_id: users)
                          .group(:user_id)
-                         .select('user_id, array_agg(paramtype ORDER BY paramtype ASC) as types, array_agg(value ORDER BY paramtype ASC) as values')
-                         .map{|ucp| {x: ucp.values[0],  y: ucp.values[1]} },
+                         .select('user_id, array_agg(paramtype ORDER BY paramtype ASC) as types,'\
+                                 'array_agg(value ORDER BY paramtype ASC) as values')
+                         .map{|ucp| {x: ucp.values[ucp.types.index(param1)],  y: ucp.values[ucp.types.index(param2)], label: ucp.user.uid } },
            }
 
         end
