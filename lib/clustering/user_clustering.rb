@@ -20,15 +20,15 @@ module ClusteringModule
 
         end
 
-        def run
-            clusters = cluster_simple
+        def run(user_ids)
+            clusters = cluster_simple user_ids
             clusters.map do |c| 
                 c.points.map(&:label)
             end
         end
 
-        def cluster_simple
-            labels = User.where(provider: 'Gsrn').pluck :id
+        def cluster_simple(user_ids)
+            labels = user_ids
             data = labels.map do |u|
                 @values.map do |v|
                     UserClustering.parameterTypes[v.to_sym].call(u)

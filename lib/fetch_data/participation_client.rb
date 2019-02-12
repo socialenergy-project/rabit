@@ -26,7 +26,7 @@ module FetchData
               energyProgram: r['energyProgram'],
               levelGame: r['levelGame'],
           }
-        end.reject {|r| r[:user_id].nil?})
+        end.reject {|r| r[:user_id].blank?})
       end
 
 
@@ -36,7 +36,7 @@ module FetchData
               user_id: get_user(r['username']),
               date_given: r['DateGiven']&.to_date,
           }.merge(extract_topic_level_numeric(r['BadgeName']))
-        end.reject {|r| r[:user_id].nil? || r[:topic].nil?})
+        end.reject {|r| r[:user_id].blank? || r[:topic].nil?})
       end
 
       if json['returnobjectLcmsCourses']&.size > 0
@@ -50,7 +50,7 @@ module FetchData
               grade_max: r['Grademax']&.to_f,
               grade_pass: r['Grademass']&.to_f,
           }.merge(extract_topic_level_numeric(r['CourseName']))
-        end.reject {|r| r[:user_id].nil? || r[:topic].nil? || r[:graded_at].nil?})
+        end.reject {|r| r[:user_id].blank? || r[:topic].nil? || r[:graded_at].nil?})
       end
 
       if json['returnobjectLcmsScore']&.size > 0
@@ -77,7 +77,7 @@ module FetchData
           end.map do |v|
             v.merge user_id: user
           end
-        end.flatten)
+        end.flatten.reject{|r| r[:user_id].blank?})
       end
 
 

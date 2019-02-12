@@ -95,13 +95,20 @@ class UserClusteringScenariosController < ApplicationController
     def update_parameter_values # (user_clustering_scenario_params)
       ActiveRecord::Base.transaction do
       
+        uc = ClusteringModule::UserClustering.new(
+          @user_clustering_scenario.kappa,
+          params[:user_clustering_scenario]['parameters']&.reject(&:blank?)
+        )
+
+        user_ids = (GameActivity.distinct.pluck(:user_id) + LcmsScore.distinct.pluck(:user_id)).uniq
+
         UserClusteringParameter.where(user_clustering_scenario: @user_clustering_scenario).delete_all
-        UserClusteringParameter.create params[:user_clustering_scenario]['parameters']&.reject(&:blank?)&.product(User.where(provider: 'Gsrn'))&.map { |parameter, user|
+        UserClusteringParameter.create params[:user_clustering_scenario]['parameters']&.reject(&:blank?)&.product(user_ids)&.map { |parameter, user_id|
             {
-              user: user,
+              user_id: user_id,
               user_clustering_scenario: @user_clustering_scenario,
               paramtype: parameter,
-              value: ClusteringModule::UserClustering.parameterTypes[parameter.to_sym].call(user.id),
+              value: ClusteringModule::UserClustering.parameterTypes[parameter.to_sym].call(user_id),
             }
         }
 
@@ -109,12 +116,7 @@ class UserClusteringScenariosController < ApplicationController
         params123 = @user_clustering_scenario&.get_params&.first
 
         if params123 && params123.size > 1 && @user_clustering_scenario.kappa
-          uc = ClusteringModule::UserClustering.new(
-            @user_clustering_scenario.kappa,
-            params123[1]&.keys
-          )
-
-          UserClusteringResult.create uc.run&.map.with_index { |cluster, i|
+          UserClusteringResult.create uc.run(user_ids)&.map.with_index { |cluster, i|
             cluster.map do |user|
               {
                 user: User.find(user),
