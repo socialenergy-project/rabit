@@ -17,11 +17,11 @@
           <%= link_to @recommendation.recommendation_type&.name, recommendation_type_path(@recommendation.recommendation_type) if @recommendation.recommendation_type -%>
         </p>
         <p>
-          <strong>Scenario:</strong>
+          <strong><%= @recommendation.recommendable_type %> :</strong>
           <%= case @recommendation.recommendable
               when Community
                 link_to @recommendation.recommendable&.clustering&.cl_scenario&.name, @recommendation.recommendable&.clustering&.cl_scenario
-              when Scenario
+              when Scenario, UserClusteringScenario
                 link_to @recommendation.recommendable&.name, @recommendation.recommendable
               end -%>
         </p>
