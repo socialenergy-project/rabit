@@ -46,6 +46,12 @@ RecommendationType.where(id: 1).first_or_initialize.tap do |recommendation_type|
   recommendation_type.save!
 end
 
+RecommendationType.where(id: 2).first_or_initialize.tap do |recommendation_type|
+  recommendation_type.name = "Demand Response Event"
+  recommendation_type.description = "Please reduce your energy consumption at consumer %s for the next %s hours, by as much as possible."
+  recommendation_type.save!
+end
+
 def initialize_with_id_and_name(hash, model)
   puts "Hash is #{hash}, model is #{model}"
   hash.each do |k,v|
@@ -164,8 +170,8 @@ initialize_with_id_and_name({
 puts "Created #{Flexibility.all.count} Flexibilities"
 
 
-["Consumer", "Community::HABTM_Consumers", "DataPoint"].each do |tbl_name|
-# ["Consumer", "Community::HABTM_Consumers"].each do |tbl_name|
+# ["Consumer", "Community::HABTM_Consumers", "DataPoint"].each do |tbl_name|
+["Consumer", "Community::HABTM_Consumers"].each do |tbl_name|
   dbconn = ActiveRecord::Base.connection_pool.checkout
   raw  = dbconn.raw_connection
   begin
