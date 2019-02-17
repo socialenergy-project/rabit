@@ -89,7 +89,7 @@ class UserClusteringScenariosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_clustering_scenario_params
-      params.require(:user_clustering_scenario).permit(:kappa, :silhouette )
+      params.require(:user_clustering_scenario).permit(:name, :kappa, :silhouette )
     end
 
     def update_parameter_values # (user_clustering_scenario_params)

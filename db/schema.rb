@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190208151127) do
+ActiveRecord::Schema.define(version: 20190217150108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -235,7 +235,7 @@ ActiveRecord::Schema.define(version: 20190208151127) do
     t.float "grade_pass"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id", "topic", "level", "numeric", "graded_at", "current_grade", "grade_min", "grade_max"], name: "lcms_courses_uniq", unique: true
+    t.index ["user_id", "topic", "level", "numeric", "graded_at", "current_grade", "time_spent_seconds", "grade_min", "grade_max", "grade_pass"], name: "lcms_courses_uniq", unique: true
     t.index ["user_id"], name: "index_lcms_courses_on_user_id"
   end
 
@@ -283,6 +283,13 @@ ActiveRecord::Schema.define(version: 20190208151127) do
     t.string "recommendable_type"
     t.index ["recommendable_id"], name: "index_recommendations_on_recommendable_id"
     t.index ["recommendation_type_id"], name: "index_recommendations_on_recommendation_type_id"
+  end
+
+  create_table "recommendations_users", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "recommendation_id", null: false
+    t.index ["recommendation_id", "user_id"], name: "index_recommendations_users_on_recommendation_id_and_user_id"
+    t.index ["user_id", "recommendation_id"], name: "index_recommendations_users_on_user_id_and_recommendation_id"
   end
 
   create_table "results", force: :cascade do |t|
@@ -361,6 +368,7 @@ ActiveRecord::Schema.define(version: 20190208151127) do
     t.float "silhouette"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
   end
 
   create_table "users", force: :cascade do |t|

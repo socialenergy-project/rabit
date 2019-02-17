@@ -30,12 +30,12 @@
     <div class="col-sm-9">
       <%#= @recommendation.recommendable&.name %>
        <%= form.collection_select :recommendable_id,
-                                  Scenario.all + Community.all,
+                                  Scenario.all + Community.all + UserClusteringScenario.all,
                                   lambda { |x| recommendable_id(x) },
                                   lambda { |x| recommendable_display_name(x) },
                                   {prompt: true, selected: recommendable_id(@recommendation.recommendable), include_blank: 'None' },
                                   class: "form-control custom-select",
-                                  id: 'recommendation_scenario_id' %>
+                                  id: 'recommendation_recommendable_id' %>
     </div>
   </div>
 
@@ -47,14 +47,21 @@
   </div>
 
   <div class="form-group row">
-    <%= form.label :consumer_ids, class: "col-sm-3 col-form-label" %>
+    <%= form.label :user_ids, class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
-      <%= form.collection_select :consumer_ids, Consumer.order(name: :asc), :id, :name, {prompt: true}, class: "form-control custom-select", id: 'scenario_consumer_ids', multiple: true, size: 20%>
+      <%= form.collection_select :user_ids, User.order(uid: :asc), :id, :uid, {prompt: true}, class: "form-control custom-select", id: 'recommendation_user_ids', multiple: true, size: 20%>
     </div>
   </div>
 
   <div class="form-group row">
-    <%= form.label :custom_message, class: "col-sm-2 col-form-label" %>
+    <%= form.label :consumer_ids, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.collection_select :consumer_ids, Consumer.order(name: :asc), :id, :name, {prompt: true}, class: "form-control custom-select", id: 'recommendation_consumer_ids', multiple: true, size: 20%>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :'custom-message-input', "Custom message", class: "col-sm-2 col-form-label" %>
     <div class="col-sm-1 ">
       <%= form.check_box '', id: 'custom-message-checkbox', class: 'form-control', checked: ! @recommendation.custom_message.blank?, name: nil %>
 <!--    <input type="checkbox" id="custom-message-checkbox" class="col-sm-1 col-form-label">-->
@@ -62,7 +69,7 @@
     <div class="col-sm-9" >
       <%= form.text_area :custom_message,
                           class: "form-control",
-                          id: "custom-message-input",
+                          id: "recommendation_custom-message-input",
                           disabled: @recommendation.custom_message.blank?,
                           value: @recommendation.custom_message.blank? ? @recommendation.recommendation_type&.description : @recommendation.custom_message %>
     </div>

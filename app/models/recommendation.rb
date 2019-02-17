@@ -5,6 +5,7 @@ class Recommendation < ApplicationRecord
   enum status: [:created, :sent, :notified]
 
   has_and_belongs_to_many :consumers
+  has_and_belongs_to_many :users
   has_many :messages, dependent: :restrict_with_exception
 
 
@@ -16,7 +17,12 @@ class Recommendation < ApplicationRecord
             message: (custom_message.blank? ? recommendation_type.description : custom_message) % [c.name, parameter]
         }
       end
-    end.flatten
+    end.flatten + users.map do |u|
+      {
+          recipient: u,
+          message: (custom_message.blank? ? recommendation_type.description : custom_message) % [nil, parameter]
+      }
+    end
   end
 
   validate :dont_change_when_there_are_messages

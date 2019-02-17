@@ -97,7 +97,7 @@ module FetchData
       return if  username.blank? || username == "0"
       @user_hash ||= {}
       uuid = SecureRandom.uuid
-      @user_hash[username] ||= User.create_with(email: "#{SecureRandom.uuid}@test.com",
+      @user_hash[username] ||= User.create_with(email: "#{username}@test.com",
                                                 password: uuid, password_confirmation: uuid)
                                    .find_or_create_by(provider: 'Gsrn', uid: username)&.id
 

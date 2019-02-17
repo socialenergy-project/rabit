@@ -131,6 +131,6 @@ class RecommendationsController < ApplicationController
       if params[:recommendation][:recommendable_type].blank? and ! params[:recommendation][:recommendable_id].blank?
         params[:recommendation][:recommendable_type], params[:recommendation][:recommendable_id] = params[:recommendation][:recommendable_id].split(/_/)
       end
-      params.require(:recommendation).permit(:status, :recommendation_type_id, :recommendable_id, :recommendable_type, :parameter, :custom_message, consumer_ids: [])
+      params.require(:recommendation).permit(:status, :recommendation_type_id, :recommendable_id, :recommendable_type, :parameter, :custom_message, consumer_ids: [], user_ids: [])
     end
 end

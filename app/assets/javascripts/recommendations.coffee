@@ -4,10 +4,10 @@
 
 $(document).on 'turbolinks:load', ->
   $('#custom-message-checkbox').off().change ->
-    $('#custom-message-input').prop 'disabled', !this.checked
+    $('#recommendation_custom-message-input').prop 'disabled', !this.checked
 
   $('#rec-form').off().submit ->
     unless $('#custom-message-checkbox').is ":checked"
-      $('#custom-message-input').prop 'disabled', false
-      $('#custom-message-input').val('')
+      $('#recommendation_custom-message-input').prop 'disabled', false
+      $('#recommendation_custom-message-input').val('')
     return true
