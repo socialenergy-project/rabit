@@ -66,7 +66,7 @@ module ClusteringModule
                     LcmsBadge.where(user_id: u).count
                 },
                 lcms_activity: ->(u) {
-                    LcmsCourse.where(user_id: u).count
+                    LcmsCourse.get_total_time_played(u)
                 },
                 lcms_score: ->(u) {
                     LcmsScore.get_current_score(u)
