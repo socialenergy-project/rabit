@@ -67,20 +67,31 @@
       </div>
       <div class="card-body">
 
-        <%= render partial: 'recommendations/partial_index', locals: {recommendations: @user_clustering_scenario.recommendations} %>
 
-        <%= link_to 'Create Recommendation', new_recommendation_path({recommendation: {
-            user_ids: @user_clustering_scenario.get_clusters.first[1],
-            recommendable_id: @user_clustering_scenario.id,
-            recommendable_type: @user_clustering_scenario.class,
-            parameter: "",
-            recommendation_type_id: RecommendationType.find_by(name: "Switch Energy Program")&.id,
-        } }), class: 'btn btn-danger btn-sm' if can? :create, :recommendation %>
+        <% @user_clustering_scenario.get_clusters.each do |cluster, members| %>
+          <hr>
+          <div>
+            Cluster <%= cluster %>, members: <%= User.where(id: members).pluck(:name).join(", ") %>
+
+            <%= render partial: 'recommendations/partial_index', locals: {
+              recommendations: @user_clustering_scenario.recommendations.joins(:recommendations_users).where('recommendations_users.user_id': members).distinct
+            } %>
+
+            <%= link_to 'Create Recommendation', new_recommendation_path({recommendation: {
+                user_ids: members,
+                recommendable_id: @user_clustering_scenario.id,
+                recommendable_type: @user_clustering_scenario.class,
+                parameter: "",
+                recommendation_type_id: RecommendationType.find_by(name: "Switch Energy Program")&.id,
+            } }), class: 'btn btn-danger btn-sm' if can? :create, :recommendation %>
+          </div>
+        <% end %>
       </div>
       <div class="card-footer small text-muted">
       </div>
     </div>
   </div>
+
 
   <% @results&.each do |r| %>
   <div class="col-lg-6 align-items-stretch">

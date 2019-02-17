@@ -16,6 +16,7 @@ class UserClusteringScenario < ApplicationRecord
         self.user_clustering_results
             .group(:cluster)
             .select('array_agg(user_id) as users', :cluster)
+            .order(cluster: :asc)
             .map{|ucr| [ucr.cluster, ucr.users]}.to_h
     end
 

@@ -1,32 +1,35 @@
-<table class="table table-responsive table-striped table-bordered table-hover">
-  <thead>
-  <tr>
-    <th><%= sortable "status", "Status" -%></th>
-    <th><%= sortable "recommendation_type_id", "Recommendation type" -%></th>
-    <th><%= sortable "parameter", "Parameter" -%></th>
-    <th><%= sortable "custom_message", "Custom message" -%></th>
-    <th colspan="3"></th>
-  </tr>
-  </thead>
-  <tbody>
-  <% recommendations.each do |recommendation| %>
+<% if recommendations.count > 0 %>
+
+  <table class="table table-responsive table-striped table-bordered table-hover">
+    <thead>
     <tr>
-      <td>
-        <%= recommendation.status-%>
-      </td>
-      <td>
-        <%= link_to recommendation.recommendation_type&.name, recommendation_type_path(recommendation.recommendation_type) if recommendation.recommendation_type -%>
-      </td>
-      <td>
-        <%= recommendation.parameter -%>
-      </td>
-      <td>
-        <%= recommendation.custom_message -%>
-      </td>
-      <td><%= link_to 'Show', recommendation, class: 'btn btn-info btn-sm' if can? :show, recommendation%></td>
-      <td><%= link_to 'Edit', edit_recommendation_path(recommendation), class: 'btn btn-warning btn-sm' if can? :update, recommendation and recommendation.messages.count == 0 %></td>
-      <td><%= link_to 'Destroy', recommendation_path(recommendation, {redirect: request.fullpath}), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' if can? :destroy, recommendation and recommendation.messages.count == 0 %></td>
+      <th><%= sortable "status", "Status" -%></th>
+      <th><%= sortable "recommendation_type_id", "Recommendation type" -%></th>
+      <th><%= sortable "parameter", "Parameter" -%></th>
+      <th><%= sortable "custom_message", "Custom message" -%></th>
+      <th colspan="3"></th>
     </tr>
-  <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+    <% recommendations.each do |recommendation| %>
+      <tr>
+        <td>
+          <%= recommendation.status-%>
+        </td>
+        <td>
+          <%= link_to recommendation.recommendation_type&.name, recommendation_type_path(recommendation.recommendation_type) if recommendation.recommendation_type -%>
+        </td>
+        <td>
+          <%= recommendation.parameter -%>
+        </td>
+        <td>
+          <%= recommendation.custom_message -%>
+        </td>
+        <td><%= link_to 'Show', recommendation, class: 'btn btn-info btn-sm' if can? :show, recommendation%></td>
+        <td><%= link_to 'Edit', edit_recommendation_path(recommendation), class: 'btn btn-warning btn-sm' if can? :update, recommendation and recommendation.messages.count == 0 %></td>
+        <td><%= link_to 'Destroy', recommendation_path(recommendation, {redirect: request.fullpath}), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' if can? :destroy, recommendation and recommendation.messages.count == 0 %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
