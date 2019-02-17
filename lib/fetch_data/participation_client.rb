@@ -94,6 +94,7 @@ module FetchData
     private
 
     def get_user(username)
+      return if  username.blank? || username == "0"
       @user_hash ||= {}
       uuid = SecureRandom.uuid
       @user_hash[username] ||= User.create_with(email: "#{SecureRandom.uuid}@test.com",
