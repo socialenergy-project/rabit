@@ -28,8 +28,7 @@ class UserClusteringScenario < ApplicationRecord
                                  'array_agg(value ORDER BY paramtype ASC) as values')
                          .map{|ucp| {x: ucp.values[ucp.types.index(param1)],  y: ucp.values[ucp.types.index(param2)], label: ucp.user.uid } },
            }
-
-        end
+        end.sort_by{|v| v[:label]}
     end
 
 end
