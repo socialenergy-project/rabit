@@ -1,3 +1,5 @@
+require 'clustering/user_clustering.rb'
+
 class UsersController < ApplicationController
   load_and_authorize_resource
   before_action :set_user, only: [:show, :edit, :update, :destroy]
@@ -11,6 +13,14 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @parameter_values = ClusteringModule::UserClustering
+                        .parameterTypes
+                        .each_with_object({}) do |(k,v),r|
+                            r["#{v[:group]}_#{v[:header]}"] ||= {}
+                            r["#{v[:group]}_#{v[:header]}"][k] = v
+                        end
+
+
   end
 
   # GET /users/new

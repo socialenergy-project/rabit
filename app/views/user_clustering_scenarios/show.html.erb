@@ -37,7 +37,7 @@
               <tbody>
                 <% @user_params.keys.sort_by{|k| @user_clustering_scenario.cluster_for(k)}.each do |u|  %>
                   <tr>
-                    <th><%= User.find(u)&.uid %></th>
+                    <th><%= link_to User.find(u).name, User.find(u) %></th>
                       <% @param_keys.each do |k| %>
                         <td><%= @user_params[u][k] %></td>
                       <% end %>
@@ -71,7 +71,10 @@
         <% @user_clustering_scenario.get_clusters.each do |cluster, members| %>
           <hr>
           <div>
-            Cluster <%= cluster %>, members: <%= User.where(id: members).pluck(:name).join(", ") %>
+            Cluster <%= cluster %>, members: 
+            <% User.where(id: members).each do |u| %>
+              <%= link_to u.name, u %>,
+            <% end %>
 
             <%= render partial: 'recommendations/partial_index', locals: {
               recommendations: @user_clustering_scenario.recommendations.joins(:recommendations_users).where('recommendations_users.user_id': members).distinct

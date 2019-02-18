@@ -1,33 +1,23 @@
 <%= content_for :title, 'User' %>
 
 <div class="row">
-  <div class="col-lg-12">
+  <div class="col-lg-6">
     <div class="card mb-3">
       <div class="card-header">
         <i class="fa fa-area-chart"></i>
         user properties
       </div>
       <div class="card-body">
-                    <p>
-              <strong>Email:</strong>
-              
-                  <%= @user.email-%>
-              
+        <p><strong>Email:</strong> <%= @user.email-%></p>
+        <p><strong>Name:</strong> <%= @user.name-%></p>
+        <p><strong>Provider:</strong> <%= @user.provider-%></p>
+        <p><strong>uid:</strong> <%= @user.uid-%></p>
 
-            </p>
-
-                    <p>
-              <strong>Name:</strong>
-              
-                  <%= @user.name-%>
-              
-
-            </p>
         <p class="max-height-200px">
           <strong>Consumers:</strong>
           <%= @user.consumers.map{|c| link_to c.name, consumer_path(c)}.join(" | ").html_safe -%>
         </p>
-        
+
         <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-warning btn-sm' if can? :edit, @user %> |
         <%= link_to 'All Users', users_path, class: 'btn btn-info btn-sm' %>
 
@@ -36,5 +26,23 @@
       </div>
     </div>
   </div>
-</div>
 
+  <% @parameter_values.each do |header, hash| %>
+  <div class="col-lg-6 ">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        <%= header %>
+      </div>
+      <div class="card-body">
+        <% hash.each do |k,v| %>
+           <p><strong><%= k.to_s.humanize %></strong> <%= v[:callback].call(@user.id)-%></p>
+        <% end %>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+
+  <% end %>
+</div>
