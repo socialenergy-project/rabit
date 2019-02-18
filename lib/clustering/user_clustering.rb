@@ -31,7 +31,7 @@ module ClusteringModule
             labels = user_ids
             data = labels.map do |u|
                 @values.map do |v|
-                    UserClustering.parameterTypes[v.to_sym].call(u)
+                    UserClustering.parameterTypes[v.to_sym][:callback].call(u)
                 end
             end
 
@@ -56,20 +56,173 @@ module ClusteringModule
 
         def self.parameterTypes
             {
-                game_score: ->(u) {
-                    GameActivity.get_current_score(u)
+                game_score: {
+                    callback: ->(u) {
+                        GameActivity.get_current_score(u)
+                    },
+                    group: :game,
+                    header: :score,
                 },
-                game_activity: ->(u) {
-                    GameActivity.get_total_time_played(u)
+                game_activity: {
+                    callback: ->(u) {
+                        GameActivity.get_total_time_played(u)
+                    },
+                    group: :game,
+                    header: :activity,
                 },
-                lcms_badge_count: ->(u) {
-                    LcmsBadge.where(user_id: u).count
+                game_credits: {
+                    callback: ->(u) {
+                        GameReward.get_current_gredits(u)
+                    },
+                    group: :game,
+                    header: :rewards,
                 },
-                lcms_activity: ->(u) {
-                    LcmsCourse.get_total_time_played(u)
+                game_cash: {
+                    callback: ->(u) {
+                        GameReward.get_cash(u)
+                    },
+                    group: :game,
+                    header: :rewards,
                 },
-                lcms_score: ->(u) {
-                    LcmsScore.get_current_score(u)
+                game_ex_points: {
+                    callback: ->(u) {
+                        GameReward.get_ex_points(u)
+                    },
+                    group: :game,
+                    header: :rewards,
+                },
+                lcms_score: {
+                    callback: ->(u) {
+                        LcmsScore.get_current_score(u)
+                    },
+                    group: :lcms,
+                    header: :score,
+                },
+                lcms_last_week_score: {
+                    callback: ->(u) {
+                        LcmsScore.get_last_week_score(u)
+                    },
+                    group: :lcms,
+                    header: :score,
+                },
+                lcms_last_month_score: {
+                    callback: ->(u) {
+                        LcmsScore.get_last_month_score(u)
+                    },
+                    group: :lcms,
+                    header: :score,
+                },
+                lcms_score_competence_1: {
+                    callback: ->(u) {
+                        LcmsScore.get_current_score_competence(u, 1)
+                    },
+                    group: :lcms,
+                    header: :score,
+                },
+                lcms_score_competence_2: {
+                    callback: ->(u) {
+                        LcmsScore.get_current_score_competence(u, 2)
+                    },
+                    group: :lcms,
+                    header: :score,
+                },
+                lcms_score_competence_3: {
+                    callback: ->(u) {
+                        LcmsScore.get_current_score_competence(u, 3)
+                    },
+                    group: :lcms,
+                    header: :score,
+                },
+                lcms_score_competence_4: {
+                    callback: ->(u) {
+                        LcmsScore.get_current_score_competence(u, 4)
+                    },
+                    group: :lcms,
+                    header: :score,
+                },
+                lcms_score_competence_5: {
+                    callback: ->(u) {
+                        LcmsScore.get_current_score_competence(u, 5)
+                    },
+                    group: :lcms,
+                    header: :score,
+                },
+                lcms_score_competence_6: {
+                    callback: ->(u) {
+                        LcmsScore.get_current_score_competence(u, 6)
+                    },
+                    group: :lcms,
+                    header: :score,
+                },
+                lcms_score_competence_7: {
+                    callback: ->(u) {
+                        LcmsScore.get_current_score_competence(u, 7)
+                    },
+                    group: :lcms,
+                    header: :score,
+                },
+                lcms_level_competence_1: {
+                    callback: ->(u) {
+                        LcmsBadge.get_level(u, "Energy efficient electric appliances")
+                    },
+                    group: :lcms,
+                    header: :reward,
+                },
+                lcms_level_competence_2: {
+                    callback: ->(u) {
+                        LcmsBadge.get_level(u, "EU Energy Labelling")
+                    },
+                    group: :lcms,
+                    header: :reward,
+                },
+                lcms_level_competence_3: {
+                    callback: ->(u) {
+                        LcmsBadge.get_level(u, "Energy Metrics")
+                    },
+                    group: :lcms,
+                    header: :reward,
+                },
+                lcms_level_competence_4: {
+                    callback: ->(u) {
+                        LcmsBadge.get_level(u, "Demand Response")
+                    },
+                    group: :lcms,
+                    header: :reward,
+                },
+                lcms_level_competence_5: {
+                    callback: ->(u) {
+                        LcmsBadge.get_level(u, "Smart Grid")
+                    },
+                    group: :lcms,
+                    header: :reward,
+                },
+                lcms_level_competence_6: {
+                    callback: ->(u) {
+                        LcmsBadge.get_level(u, "Pricing Schemes")
+                    },
+                    group: :lcms,
+                    header: :reward,
+                },
+                lcms_level_competence_7: {
+                    callback: ->(u) {
+                        LcmsBadge.get_level(u, "Energy Communities")
+                    },
+                    group: :lcms,
+                    header: :reward,
+                },
+                lcms_badge_count: {
+                    callback: ->(u) {
+                        LcmsBadge.where(user_id: u).count
+                    },
+                    group: :lcms,
+                    header: :activity,
+                },
+                lcms_activity: {
+                    callback: ->(u) {
+                        LcmsCourse.get_total_time_played(u)
+                    },
+                    group: :lcms,
+                    header: :activity,
                 },
             }
         end

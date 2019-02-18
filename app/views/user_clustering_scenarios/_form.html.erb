@@ -26,15 +26,29 @@
   </div>
 
   <div class="form-group row">
-     <%= form.label :parameters, "Parameters: " %>
-     
-     
-     <%= form.select(
-                    :parameters,
-                    ClusteringModule::UserClustering.parameterTypes.keys.map{|k| [k.to_s.humanize, k]},
-                    {selected: @user_clustering_scenario.user_clustering_parameters.pluck(:paramtype).uniq}, class: "form-control", multiple: true, size: 5, 
-     ) %>
+    <%= form.label :parameters, "Parameters: " %>
+
+    <div class="input-group">
     
+        <%= form.select(
+                  :parameters,
+                  grouped_options_for_select(
+                     ClusteringModule::UserClustering.parameterTypes.each_with_object({}) { |(k,v),r| r[v[:group]] ||= {};r[v[:group]][v[:header]] ||= []; r[v[:group]][v[:header]].push [k.to_s.humanize, k] }[:game],
+                     {selected: @user_clustering_scenario.user_clustering_parameters.pluck(:paramtype).uniq},
+                  ),
+                  {},  class: "form-control", multiple: true, size: 22
+        ) %>
+        <span>  </span>
+        <%= form.select(
+                  :parameters,
+                  grouped_options_for_select(
+                     ClusteringModule::UserClustering.parameterTypes.each_with_object({}) { |(k,v),r| r[v[:group]] ||= {};r[v[:group]][v[:header]] ||= []; r[v[:group]][v[:header]].push [k.to_s.humanize, k] }[:lcms],
+                     {selected: @user_clustering_scenario.user_clustering_parameters.pluck(:paramtype).uniq},
+                  ),
+                  {},class: "form-control", multiple: true, size: 22,
+        ) %>
+    </div>
+
   </div>
 
   <div class="actions">

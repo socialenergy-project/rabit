@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  total_credits: 1
+  total_cash: 1
+  total_ex_points: 1
+  user: one
+
+two:
+  total_credits: 1
+  total_cash: 1
+  total_ex_points: 1
+  user: two

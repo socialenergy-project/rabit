@@ -108,7 +108,7 @@ class UserClusteringScenariosController < ApplicationController
               user_id: user_id,
               user_clustering_scenario: @user_clustering_scenario,
               paramtype: parameter,
-              value: ClusteringModule::UserClustering.parameterTypes[parameter.to_sym].call(user_id),
+              value: ClusteringModule::UserClustering.parameterTypes[parameter.to_sym][:callback].call(user_id),
             }
         }
 

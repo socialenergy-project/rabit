@@ -12,6 +12,6 @@ class UserClusteringTest < ActionDispatch::IntegrationTest
     end
 
     test "clustering simple should work" do
-        assert_equal(5, @uc.cluster_simple.count, "We should create 5 clusters")
+        assert_equal(5, @uc.cluster_simple(User.where('uid IS NOT NULL')).count, "We should create 5 clusters")
     end
 end

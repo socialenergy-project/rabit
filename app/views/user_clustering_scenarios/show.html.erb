@@ -29,7 +29,7 @@
                 <tr>
                     <th>User</th>
                     <% @param_keys.each do |k| %>
-                      <th><%= k %></th>
+                      <th><%= k.humanize %></th>
                     <% end %>
                     <th>cluster</th>
                 </tr>

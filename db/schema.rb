@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190217150108) do
+ActiveRecord::Schema.define(version: 20190218083938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -201,6 +201,17 @@ ActiveRecord::Schema.define(version: 20190217150108) do
     t.datetime "updated_at", null: false
     t.index ["user_id", "timestampUserLoggediIn", "totalScore", "dailyScore", "gameDuration", "energyProgram", "levelGame"], name: "game_act_uniq", unique: true
     t.index ["user_id"], name: "index_game_activities_on_user_id"
+  end
+
+  create_table "game_rewards", force: :cascade do |t|
+    t.integer "total_credits"
+    t.integer "total_cash"
+    t.integer "total_ex_points"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "total_credits", "total_cash", "total_ex_points"], name: "game_rewards_uniq", unique: true
+    t.index ["user_id"], name: "index_game_rewards_on_user_id"
   end
 
   create_table "intervals", force: :cascade do |t|
@@ -415,6 +426,7 @@ ActiveRecord::Schema.define(version: 20190217150108) do
   add_foreign_key "ecc_factors", "ecc_terms"
   add_foreign_key "ecc_terms", "ecc_types"
   add_foreign_key "game_activities", "users"
+  add_foreign_key "game_rewards", "users"
   add_foreign_key "lcms_badges", "users"
   add_foreign_key "lcms_courses", "users"
   add_foreign_key "lcms_scores", "users"
