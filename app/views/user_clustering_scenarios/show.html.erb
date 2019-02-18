@@ -92,6 +92,27 @@
     </div>
   </div>
 
+  <div class="col-lg-6 align-items-stretch">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        Select parameters for chart
+      </div>
+      <div class="card-body">
+        <%= form_tag("#", method: "get") do %>
+          <%= label_tag(:plots, "Parameters in plot:") %>
+          <%= select_tag(:plots,
+                        options_for_select(@param_keys,
+                        selected: @selected_params),
+                        class: "form-control", multiple: true, size: 5,
+              ) %>
+          <%= submit_tag("Filter") %>
+        <% end %>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
 
   <% @results&.each do |r| %>
   <div class="col-lg-6 align-items-stretch">

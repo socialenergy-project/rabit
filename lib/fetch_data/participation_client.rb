@@ -29,11 +29,8 @@ module FetchData
         end.reject {|r| r[:user_id].blank?})
       end
 
-      p "BEFORE returnobjectGameRewards"
       if json['returnobjectGameRewards']&.size > 0
-        p "AT returnobjectGameRewards"
         GameReward.bulk_insert ignore: true, values: (json['returnobjectGameRewards'].map do |r|
-          p "r= ", r
           {
             total_credits: r['totalCredits']&.to_i,
             total_cash: r['totalCash']&.to_i,
@@ -41,9 +38,7 @@ module FetchData
             user_id: get_user(r['userName']),
           }
         end.reject {|r| r[:user_id].blank?})
-        p "AFTERIN returnobjectGameRewards"
       end
-      p "AFTEROUT returnobjectGameRewards"
 
       if json['returnobjectLcmsBadges']&.size > 0
         LcmsBadge.bulk_insert ignore: true, values: (json['returnobjectLcmsBadges'].map do |r|

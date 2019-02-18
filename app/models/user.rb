@@ -18,6 +18,7 @@ class User < ApplicationRecord
   has_many :received_messages, class_name: 'Message', foreign_key: :recipient_id, dependent: :nullify
 
   has_many :game_activities, dependent: :destroy
+  has_many :game_rewards, dependent: :destroy
   has_many :lcms_badges, dependent: :destroy
   has_many :lcms_courses, dependent: :destroy
   has_many :lcms_scores, dependent: :destroy

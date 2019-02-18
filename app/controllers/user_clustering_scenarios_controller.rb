@@ -16,14 +16,16 @@ class UserClusteringScenariosController < ApplicationController
     @user_params = @user_clustering_scenario.get_params
     if @user_params.keys.size > 0
       @param_keys = @user_params.first[1].keys
-    end
+      @selected_params = params[:plots]&.count ? params[:plots] :
+                         @param_keys.size <= 15 ? @param_keys : []
 
-    @results = @param_keys&.combination(2)&.map do |key1, key2|
-       {
-         x_label: key1,
-         y_label: key2,
-         dataset: @user_clustering_scenario.get_results_for_plot(key1, key2)
-       }
+      @results = @selected_params&.combination(2)&.map do |key1, key2|
+        {
+          x_label: key1,
+          y_label: key2,
+          dataset: @user_clustering_scenario.get_results_for_plot(key1, key2)
+        }
+      end
     end
   end
 
