@@ -148,6 +148,10 @@ SimpleNavigation::Configuration.run do |navigation|
 
     )
 
+    primary.item :user_clustering, 'User Clustering', user_clustering_scenarios_path, options.deep_dup.merge(
+      icon: ['fa fa-users fa-fw'],
+      highlights_on: %r(^/user_clustering_scenarios(/|$)),
+    )
 =begin
     # Add an item which has a sub navigation (same params, but with block)
     primary.item :key_2, 'name2', "#collapseComponents", dropdown_options.deep_dup do |sub_nav|
