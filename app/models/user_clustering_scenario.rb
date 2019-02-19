@@ -2,6 +2,11 @@ class UserClusteringScenario < ApplicationRecord
     has_many :user_clustering_parameters, dependent: :destroy
     has_many :user_clustering_results, dependent: :destroy
 
+    validates :kappa, numericality: { greater_than_or_equal_to: 2,
+                                      only_integer: true  }
+
+    validates_length_of :name, minimum: 3, maximum: 30, allow_blank: false
+
     include Recommendable
 
     def get_params
