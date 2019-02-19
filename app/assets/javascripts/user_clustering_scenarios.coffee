@@ -12,7 +12,7 @@ getColor = (label, opacity) ->
 
 prepareData = (data) ->
     data.map (d, i) ->
-        console.log d, i
+        # console.log d, i
         $.extend({
             showLine: false,
             backgroundColor: getColor(i, 0.2),
