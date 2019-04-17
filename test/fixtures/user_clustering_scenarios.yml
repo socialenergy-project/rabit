@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  kappa: 1
-  silhouette: 1.5
+  kappa: 3
+  name: test1
 
 two:
-  kappa: 1
-  silhouette: 1.5
+  kappa: 4
+  name: test2

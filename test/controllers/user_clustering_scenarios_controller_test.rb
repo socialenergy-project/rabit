@@ -33,7 +33,7 @@ class UserClusteringScenariosControllerTest < ActionDispatch::IntegrationTest
   test "should create user_clustering_scenario as admin" do
     sign_in_as_admin
     assert_difference('UserClusteringScenario.count') do
-      post user_clustering_scenarios_url, params: { user_clustering_scenario: { kappa: @user_clustering_scenario.kappa, silhouette: @user_clustering_scenario.silhouette } }
+      post user_clustering_scenarios_url, params: { user_clustering_scenario: { kappa: @user_clustering_scenario.kappa, name: @user_clustering_scenario.name, parameters: [ :game_score, :game_activity ]  } }
     end
 
     assert_redirected_to user_clustering_scenario_url(UserClusteringScenario.last)
