@@ -170,8 +170,8 @@ initialize_with_id_and_name({
 puts "Created #{Flexibility.all.count} Flexibilities"
 
 
-# ["Consumer", "Community::HABTM_Consumers", "DataPoint"].each do |tbl_name|
-["Consumer", "Community::HABTM_Consumers"].each do |tbl_name|
+["Consumer", "Community::HABTM_Consumers", "DataPoint"].each do |tbl_name|
+# ["Consumer", "Community::HABTM_Consumers"].each do |tbl_name|
   dbconn = ActiveRecord::Base.connection_pool.checkout
   raw  = dbconn.raw_connection
   begin
