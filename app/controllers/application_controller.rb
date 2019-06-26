@@ -36,6 +36,7 @@ class ApplicationController < ActionController::Base
 
     if [ 'https://socialauth.intelen.com',
          'https://rat.socialenergy-project.eu/users/auth/gsrn',
+         'https://rabit.socialenergy-project.eu/users/auth/gsrn',
          'https://socialauth.intelen.com/login/index.php' ].include? request.referer
       return super
     end

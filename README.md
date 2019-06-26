@@ -1,13 +1,14 @@
 # README
 
-This repository is the Research Algorithm Toolkit, developed in the context
+This repository is the Research Algorithm and Business Intelligence Toolkit,
+developed in the context
 of the Horizon 2020 SocialEnergy project http://socialenergy-project.eu/.
 
-The purpose of this module is to allow administrators or privileged RAT users
+The purpose of this module is to allow administrators or privileged RABIT users
 to evaluate the performance of different pricing algorithms, on the portfolio
 of the SocialEnergy user base.
 
-The portal is available at https://rat.socialenergy-project.eu.
+The portal is available at https://rabit.socialenergy-project.eu.
 
 
 ## Installation steps
@@ -97,7 +98,7 @@ Please adapt accordingly for other distributions/OSs.
 
 ## Registration and mock data
 
-In order to use the RAT platform as a standalone platform, an admin user must be
+In order to use the RABIT platform as a standalone platform, an admin user must be
 created, and the database needs to be initialized with consumers and other objects.
 Finally consumption data for the consumers must be added to the database.
 The steps for this follow:
@@ -121,7 +122,7 @@ The steps for this follow:
 
 1.  Start the server by running command `rails s` from the installation directory
 
-2.  Open a browser window at location http://localhost:3000/ (or https://rat.socialenergy.eu)
+2.  Open a browser window at location http://localhost:3000/ (or https://rabit.socialenergy.eu)
 
 3.  Register a new user using the `Sign up` link (or navigate to http://localhost:3000/users/sign_up).
     Set an email and a password and submit the form
@@ -138,10 +139,10 @@ The steps for this follow:
 
 ## Navigation and visualization
 
-A working demo the module may be found at https://rat.socialenergy-project.eu/, where anyone
+A working demo the module may be found at https://rabit.socialenergy-project.eu/, where anyone
 can register an account.
 
-The most important functionalities of the RAT module are the following :
+The most important functionalities of the RABIT module are the following :
 
 1.  Consumption data visualization. Visit for expample the following links:
     - http://localhost:3000/consumers
