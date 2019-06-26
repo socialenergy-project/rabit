@@ -80,7 +80,6 @@ gem 'will_paginate-bootstrap4'
 
 # For user/role management
 gem 'devise'
-gem 'omniauth-facebook'
 gem 'omniauth-oauth2'
 gem 'cancancan'
 gem 'rolify'

@@ -34,9 +34,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     logger.debug "Just signed in from #{resource}, #{request.referer}"
 
-    if [ 'https://www.facebook.com/',
-         'https://rat.socialenergy-project.eu/users/auth/facebook',
-         'https://socialauth.intelen.com',
+    if [ 'https://socialauth.intelen.com',
          'https://rat.socialenergy-project.eu/users/auth/gsrn',
          'https://socialauth.intelen.com/login/index.php' ].include? request.referer
       return super
