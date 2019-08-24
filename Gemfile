@@ -9,7 +9,7 @@ end
 gem 'dotenv-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.3'
+gem 'rails', '~> 5.2.3'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
@@ -129,3 +129,5 @@ gem 'filterrific'
 
 # for k-means clustering
 gem 'kmeans-clusterer'
+
+gem 'bootsnap' # Suggested by update to 4.2
