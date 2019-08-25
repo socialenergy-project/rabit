@@ -68,11 +68,11 @@ class DataPointsController < ApplicationController
                                      .select('consumers.name as con',
                                              'array_agg(timestamp ORDER BY data_points.timestamp asc) as tims',
                                              'array_agg(consumption ORDER BY data_points.timestamp ASC) as cons')
-                                     .map do |d|
+                                     .map { |d|
                              aggr = d.tims.map {|t| [t, 0]} if aggr.size == 0
                              aggr = aggr.zip(d.cons).map {|(a, b), d| [a, ((b.nil? or d.nil?) ? nil : b + d)]}
                              [d.con, d.tims.zip(d.cons)]
-                           end.to_h
+                           }.to_h
                            res["aggregate"] = aggr
                            res
                          else
