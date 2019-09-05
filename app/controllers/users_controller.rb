@@ -1,4 +1,5 @@
 require 'clustering/user_clustering.rb'
+require 'fetch_data/group_membership_client.rb'
 
 class UsersController < ApplicationController
   load_and_authorize_resource
@@ -19,8 +20,15 @@ class UsersController < ApplicationController
                             r["#{v[:group]}_#{v[:header]}"] ||= {}
                             r["#{v[:group]}_#{v[:header]}"][k] = v
                         end
-
-
+    gmc = FetchData::GroupMembershipClient.new
+    gmc.get_all
+    @group_info = @user.groups.map do |g|
+      {
+        name: g.name,
+        members: g.users,
+        leader: g.group_memberships.where(role: :ec_leader).pluck(:user_id).first,
+      }
+    end
   end
 
   # GET /users/new

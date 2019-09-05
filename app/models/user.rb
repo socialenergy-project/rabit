@@ -26,6 +26,8 @@ class User < ApplicationRecord
   has_many :user_clustering_parameters, dependent: :destroy
   has_many :user_clustering_results, dependent: :destroy
 
+  has_many :group_memberships, dependent: :destroy
+  has_many :groups, through: :group_memberships
 
 
   def self.from_omniauth(auth)

@@ -27,6 +27,33 @@
     </div>
   </div>
 
+  <div class="col-lg-6">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        user groups
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <% @group_info.each do |g| %>
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title"><%= g[:name] -%></h5>
+                <p class="card-text">
+                  <% g[:members].each do |m| %>
+                    <%= link_to m.name, m, class: (:leader if m.id == g[:leader]) %>
+                  <% end %><br>
+                </p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+
   <% @parameter_values.each do |header, hash| %>
   <div class="col-lg-6 ">
     <div class="card mb-3">
