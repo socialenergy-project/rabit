@@ -7,7 +7,7 @@ module FetchData
     end
 
     def get_all()
-      User.all.map do |user|
+      Parallel.map(User.all) do |user|
         if user.uid
           result = RestClient.post @gsrn_group_membership_url, {
             username: user.uid
