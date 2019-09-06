@@ -42,7 +42,9 @@ class ClScenario < ApplicationRecord
                                                         interval_id: interval_id,
                                                         algorithm: algorithm,
                                                         kappa: kappa,
-                                                        consumer_ids: consumer_ids
+                                                        consumer_ids: consumer_ids,
+                                                        cost_parameter: cost_parameter
+
         c.save(:validate => false)
         self.update_columns(clustering_id: c.id)
 

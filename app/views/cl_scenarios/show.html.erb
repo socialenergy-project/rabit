@@ -73,8 +73,12 @@
               consumer_ids: community.consumer_ids,
               recommendable_id: community.id,
               recommendable_type: community.class,
-              # parameter: @scenario.best_energy_program&.name,
-              recommendation_type_id: RecommendationType.find_by(name: "Switch Energy Program")&.id,
+              parameter: (@cl_scenario.algorithm == 'demand_response' ?
+                              "#{@cl_scenario.starttime} - #{@cl_scenario.endtime}" :
+                              nil),
+              recommendation_type_id: (@cl_scenario.algorithm == 'demand_response' ?
+                                            RecommendationType.find_by(name: "Demand Response Event")&.id :
+                                            RecommendationType.find_by(name: "Switch Energy Program")&.id),
           } }), class: 'btn btn-danger btn-sm' if can? :create, :recommendation %>
         </div>
         <div class="card-footer small text-muted">

@@ -68,6 +68,30 @@ module ClusteringModule
         },
         crtp: {
             string: 'Pricing based community formation – CRTP'
+        },
+        demand_response: {
+          string: 'Consumer selection for DR event',
+          proc: ->(params) {
+
+            user_consumption_list =  User.joins(consumers: :data_points)
+                                          .where('data_points.timestamp': params[:start_date]..params[:end_date],
+                                                'data_points.interval_id': params[:interval_id])
+                                          .group(:user_id)
+                                          .order(sum_data_points_consumption: :desc)
+                                          .sum('data_points.consumption')
+            remaining = params[:cost_parameter]
+            [
+              Community.new(
+                name: "DR cluster",
+                description: "Clustering for sending the DR event",
+                consumers: (user_consumption_list.take_while { |user_id, consumption|
+                  (remaining -= consumption) > -consumption
+                }.map { |user_id, consumption|
+                  User.find(user_id).consumers
+                }.flatten)
+              )
+            ]
+          }
         }
     }
   end
