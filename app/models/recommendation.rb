@@ -14,13 +14,13 @@ class Recommendation < ApplicationRecord
       c.users.map do |u|
         {
             recipient: u,
-            message: (custom_message.blank? ? recommendation_type.description : custom_message) % [c.name, parameter]
+            message: draft_single(c)
         }
       end
     end.flatten + users.map do |u|
       {
           recipient: u,
-          message: (custom_message.blank? ? recommendation_type.description : custom_message) % [nil, parameter]
+          message: draft_single(nil)
       }
     end
   end
@@ -28,6 +28,21 @@ class Recommendation < ApplicationRecord
   validate :dont_change_when_there_are_messages
 
   private
+
+  def draft_single(consumer)
+    if custom_message.blank?
+      suffix = ''
+      if recommendation_type.name == 'Switch Energy Program'
+        initial_cost = recommendable.results.where(energy_program_id: EnergyProgram.find_by(name: 'RTP (no DR)')).sum(:energy_cost)
+        new_cost = recommendable.results.where(energy_program_id: EnergyProgram.find_by(name: parameter)).sum(:energy_cost)
+        suffix = ' Estimated cost reduction of about %d%%%%.' % (100 *(initial_cost - new_cost) / initial_cost)
+        # suffix += " More details at <a href='#{Rails.application.routes.url_helpers.scenario_url recommendable}'>#{recommendable.name}</a>."
+      end
+      recommendation_type.description + suffix
+    else
+      custom_message
+    end % [consumer&.name, parameter]
+  end
 
   def dont_change_when_there_are_messages
     if messages.count > 0
