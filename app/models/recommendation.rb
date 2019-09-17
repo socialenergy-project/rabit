@@ -30,18 +30,19 @@ class Recommendation < ApplicationRecord
   private
 
   def draft_single(consumer)
-    if custom_message.blank?
-      suffix = ''
-      if recommendation_type.name == 'Switch Energy Program'
-        initial_cost = recommendable.results.where(energy_program_id: EnergyProgram.find_by(name: 'RTP (no DR)')).sum(:energy_cost)
-        new_cost = recommendable.results.where(energy_program_id: EnergyProgram.find_by(name: parameter)).sum(:energy_cost)
-        suffix = ' Estimated cost reduction of about %d%%%%.' % (100 *(initial_cost - new_cost) / initial_cost)
-        # suffix += " More details at <a href='#{Rails.application.routes.url_helpers.scenario_url recommendable}'>#{recommendable.name}</a>."
-      end
-      recommendation_type.description + suffix
+    return custom_message % [consumer&.name, parameter] unless custom_message.blank?
+
+    case recommendation_type.name
+    when 'Switch Energy Program'
+      initial_cost = recommendable.results.where(energy_program_id: EnergyProgram.find_by(name: 'RTP (no DR)')).sum(:energy_cost)
+      new_cost = recommendable.results.where(energy_program_id: EnergyProgram.find_by(name: parameter)).sum(:energy_cost)
+      recommendation_type.description % [consumer&.name, parameter] + ' Estimated cost reduction of about %d%%.' % (100 *(initial_cost - new_cost) / initial_cost)
+    when 'Engagement', 'Congradulate'
+      recommendation_type.description % parameter
     else
-      custom_message
-    end % [consumer&.name, parameter]
+      recommendation_type.description % [consumer&.name, parameter]
+    end
+
   end
 
   def dont_change_when_there_are_messages

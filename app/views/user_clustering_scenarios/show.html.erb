@@ -66,27 +66,30 @@
         Recommendations
       </div>
       <div class="card-body">
-
-
-        <% @user_clustering_scenario.get_clusters.each do |cluster, members| %>
+        <% @recommendation_params.each do |rp| %>
           <hr>
           <div>
-            Cluster <%= cluster %>, members: 
-            <% User.where(id: members).each do |u| %>
-              <%= link_to u.name, u %>,
+            Users:
+            <% p "Recommendation params users: ", rp[:users] %>
+            <% rp[:users].each do |u| %>
+              <%= link_to u.uid, u %>,
             <% end %>
 
             <%= render partial: 'recommendations/partial_index', locals: {
-              recommendations: @user_clustering_scenario.recommendations.joins(:recommendations_users).where('recommendations_users.user_id': members).distinct
+              recommendations: @user_clustering_scenario.recommendations
+                                                        .joins(:recommendations_users)
+                                                        .where('recommendations_users.user': rp[:users],
+                                                               parameter: rp[:parameter]).distinct
             } %>
 
-            <%= link_to 'Create Recommendation', new_recommendation_path({recommendation: {
-                user_ids: members,
-                recommendable_id: @user_clustering_scenario.id,
-                recommendable_type: @user_clustering_scenario.class,
-                parameter: "",
-                recommendation_type_id: RecommendationType.find_by(name: "Switch Energy Program")&.id,
-            } }), class: 'btn btn-danger btn-sm' if can? :create, :recommendation %>
+            <%= link_to "Create #{RecommendationType.find(rp[:recommendation_type_id])&.name || "Recommendation"} for #{rp[:parameter]}",
+                        new_recommendation_path({
+                          recommendation: rp.map { |k,v|
+                            k == :users ?
+                              [:user_ids, v.pluck(:id)] :
+                              [k,v]
+                          }.to_h }),
+                        class: 'btn btn-danger btn-sm' if can? :create, :recommendation %>
           </div>
         <% end %>
       </div>

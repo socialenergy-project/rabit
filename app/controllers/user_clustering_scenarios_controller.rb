@@ -27,6 +27,44 @@ class UserClusteringScenariosController < ApplicationController
         }
       end
     end
+
+    valuesHash = UserClusteringScenario.joins(:user_clustering_results, :user_clustering_parameters)
+                                       .where(id: @user_clustering_scenario.id)
+                                       .group(:'user_clustering_results.cluster', :'user_clustering_parameters.paramtype')
+                                       .sum(:'user_clustering_parameters.value')
+
+    clusters = @user_clustering_scenario.user_clustering_results.distinct(:cluster).pluck(:cluster)
+    paramtypes = @user_clustering_scenario.user_clustering_parameters.distinct(:paramtype).pluck(:paramtype)
+
+    p "The valuHAsh is", valuesHash
+    @recommendation_params = []
+    paramtypes.each do |paramtype|
+      res = valuesHash.select { |(c,p),v| p == paramtype }.map { |(c,p),v| [c,v] }
+      best = res.max_by {|c,v| v}
+      worst = res.min_by {|c,v| v}
+
+      if (worst[1] == 0 && best[1] > 0) || (best[1] / worst[1] >= 2)
+        @recommendation_params << {
+          recommendable_id: @user_clustering_scenario.id,
+          recommendable_type: @user_clustering_scenario.class,
+          users: User.joins(:user_clustering_results)
+                     .where('user_clustering_results.user_clustering_scenario': @user_clustering_scenario,
+                            'user_clustering_results.cluster': best[0]),
+          parameter: paramtype,
+          recommendation_type_id: RecommendationType.find_by(name: "Congradulate")&.id,
+        }
+
+        @recommendation_params << {
+          recommendable_id: @user_clustering_scenario.id,
+          recommendable_type: @user_clustering_scenario.class,
+          users: User.joins(:user_clustering_results)
+                     .where('user_clustering_results.user_clustering_scenario': @user_clustering_scenario,
+                            'user_clustering_results.cluster': worst[0]),
+          parameter: paramtype,
+          recommendation_type_id: RecommendationType.find_by(name: "Engagement")&.id,
+        }
+      end
+    end
   end
 
   # GET /user_clustering_scenarios/new
