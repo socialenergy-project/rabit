@@ -36,7 +36,6 @@ class UserClusteringScenariosController < ApplicationController
     clusters = @user_clustering_scenario.user_clustering_results.distinct(:cluster).pluck(:cluster)
     paramtypes = @user_clustering_scenario.user_clustering_parameters.distinct(:paramtype).pluck(:paramtype)
 
-    p "The valuHAsh is", valuesHash
     @recommendation_params = []
     paramtypes.each do |paramtype|
       res = valuesHash.select { |(c,p),v| p == paramtype }.map { |(c,p),v| [c,v] }
