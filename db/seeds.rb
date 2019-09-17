@@ -58,7 +58,7 @@ RecommendationType.where(id: 3).first_or_initialize.tap do |recommendation_type|
   recommendation_type.save!
 end
 
-RecommendationType.where(id: 2).first_or_initialize.tap do |recommendation_type|
+RecommendationType.where(id: 4).first_or_initialize.tap do |recommendation_type|
   recommendation_type.name = "Congradulate"
   recommendation_type.description = "Tip: congardulations, you are one of the best performing users by the following metrics: %s."
   recommendation_type.save!
