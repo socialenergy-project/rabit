@@ -190,7 +190,7 @@ puts "Created #{Flexibility.all.count} Flexibilities"
     file = File.new "db/initdata/#{tbl_name}.csv"        # open a compressed file
     dbconn.disable_referential_integrity do
       if tbl_name == "Community::HABTM_Consumers"
-        tbl_name.constantize.where(community_id: [1 .. 6, 100 .. 105]).delete_all
+        tbl_name.constantize.where(community_id: [1 .. 11, 100 .. 105]).delete_all
       else
         tbl_name.constantize.delete_all
       end
