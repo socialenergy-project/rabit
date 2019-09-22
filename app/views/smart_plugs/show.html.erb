@@ -1,0 +1,33 @@
+<%= content_for :title, @smart_plug.name || @smart_plug.id -%>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        smart_plug properties
+      </div>
+      <div class="card-body">
+        <p>
+          <strong>Consumer:</strong>
+          <%= link_to @smart_plug.consumer&.name, consumer_path(@smart_plug.consumer) if @smart_plug.consumer -%>
+        </p>
+        <p>
+          <strong>Name:</strong>
+          <%= @smart_plug.name-%>
+        </p>
+        <p>
+          <strong>Mqtt name:</strong>
+          <%= @smart_plug.mqtt_name-%>
+        </p>
+
+        <%= link_to 'Edit', edit_smart_plug_path(@smart_plug), class: 'btn btn-warning btn-sm' if can? :edit, @smart_plug %> |
+        <%= link_to 'All Smart Plugs', smart_plugs_path, class: 'btn btn-info btn-sm' %>
+
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>
+

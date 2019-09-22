@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  consumer: one
+  name: MyString
+  mqtt_name: MyString
+
+two:
+  consumer: two
+  name: MyString
+  mqtt_name: MyString

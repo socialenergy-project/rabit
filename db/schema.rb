@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_04_140721) do
+ActiveRecord::Schema.define(version: 2019_09_22_152312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -369,6 +369,15 @@ ActiveRecord::Schema.define(version: 2019_09_04_140721) do
     t.index ["user_id"], name: "index_scenarios_on_user_id"
   end
 
+  create_table "smart_plugs", force: :cascade do |t|
+    t.bigint "consumer_id"
+    t.string "name"
+    t.string "mqtt_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["consumer_id"], name: "index_smart_plugs_on_consumer_id"
+  end
+
   create_table "user_clustering_parameters", force: :cascade do |t|
     t.bigint "user_clustering_scenario_id"
     t.bigint "user_id"
@@ -458,6 +467,7 @@ ActiveRecord::Schema.define(version: 2019_09_04_140721) do
   add_foreign_key "scenarios", "flexibilities"
   add_foreign_key "scenarios", "intervals"
   add_foreign_key "scenarios", "users"
+  add_foreign_key "smart_plugs", "consumers"
   add_foreign_key "user_clustering_parameters", "user_clustering_scenarios"
   add_foreign_key "user_clustering_parameters", "users"
   add_foreign_key "user_clustering_results", "user_clustering_scenarios"

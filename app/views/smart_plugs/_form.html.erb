@@ -1,0 +1,38 @@
+<%= form_with(model: smart_plug, local: true) do |form| %>
+  <% if smart_plug.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(smart_plug.errors.count, "error") %> prohibited this smart_plug from being saved:</h2>
+
+      <ul>
+      <% smart_plug.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :consumer_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+       <%= form.collection_select :consumer_id, Consumer.all, :id, :name, { prompt: true }, class: "form-control custom-select", id: 'smart_plug_consumer_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :name, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :name, id: :name, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :mqtt_name, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :mqtt_name, id: :mqtt_name, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary btn-sm" %>
+  </div>
+<% end %>
