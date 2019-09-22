@@ -67,11 +67,42 @@ module FetchData
     end
 
     def upsert(res)
-      Rails.logger.debug "We got this data #{res}"
+#       Rails.logger.debug "We got this data #{res}"
       now = DateTime.now
 
       consumer_hash = {}
       interval_id = @interval.id
+=begin
+      fparams = {
+        table: 'data_points',
+        static_columns: {
+          interval_id: interval_id
+        },
+        options: {
+          timestamps: true,
+          unique: true,
+          check_for_existing: true
+        },
+        group_size: 2000,
+        variable_columns: %w(consumer_id timestamp consumption),
+        values: res.map { |r|
+#          Rails.logger.debug "r is #{r}"
+          consumer_hash[r["mac"]] ||= Consumer.find_by(edms_id: r["mac"]).id
+          [
+            consumer_hash[r["mac"]],
+            r["timestamp"],
+            r['kwhinterval']
+          ]
+        }
+      }
+#       Rails.logger.debug "fparams are constructed: #{fparams}"
+      Rails.logger.debug "Done1"
+      inserter = FastInserter::Base.new(fparams)
+      Rails.logger.debug "Done2"
+      inserter.fast_insert
+      Rails.logger.debug "Done3"
+=end
+
       DataPoint.bulk_insert ignore: true, values: (res.map do |r|
         consumer_hash[r["mac"]] ||= Consumer.find_by(edms_id: r["mac"]).id
         {
