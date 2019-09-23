@@ -33,7 +33,7 @@ class SmartPlugsControllerTest < ActionDispatch::IntegrationTest
   test "should create smart_plug as admin" do
     sign_in_as_admin
     assert_difference('SmartPlug.count') do
-      post smart_plugs_url, params: { smart_plug: { {"consumer_id"=>"@smart_plug.consumer_id", "mqtt_name"=>"@smart_plug.mqtt_name", "name"=>"@smart_plug.name"} } }
+      post smart_plugs_url, params: { smart_plug: {"consumer_id"=>@smart_plug.consumer_id, "mqtt_name"=>@smart_plug.mqtt_name, "name"=>@smart_plug.name} }
     end
 
     assert_redirected_to smart_plug_url(SmartPlug.last)
@@ -42,7 +42,7 @@ class SmartPlugsControllerTest < ActionDispatch::IntegrationTest
   test "should NOT create smart_plug as user" do
     sign_in_as_user
     assert_no_difference('SmartPlug.count') do
-      post smart_plugs_url, params: { smart_plug: { {"consumer_id"=>"@smart_plug.consumer_id", "mqtt_name"=>"@smart_plug.mqtt_name", "name"=>"@smart_plug.name"} } }
+      post smart_plugs_url, params: { smart_plug: {"consumer_id"=>@smart_plug.consumer_id, "mqtt_name"=>@smart_plug.mqtt_name, "name"=>@smart_plug.name} }
     end
 
     assert_redirected_to root_path
@@ -75,13 +75,13 @@ class SmartPlugsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update smart_plug as admin" do
     sign_in_as_admin
-    patch smart_plug_url(@smart_plug), params: { smart_plug: { {"consumer_id"=>"@smart_plug.consumer_id", "mqtt_name"=>"@smart_plug.mqtt_name", "name"=>"@smart_plug.name"} } }
+    patch smart_plug_url(@smart_plug), params: { smart_plug: {"consumer_id"=>@smart_plug.consumer_id, "mqtt_name"=>@smart_plug.mqtt_name, "name"=>@smart_plug.name} }
     assert_redirected_to smart_plug_url(@smart_plug)
   end
 
   test "should NOT update smart_plug as user" do
     sign_in_as_user
-    patch smart_plug_url(@smart_plug), params: { smart_plug: { {"consumer_id"=>"@smart_plug.consumer_id", "mqtt_name"=>"@smart_plug.mqtt_name", "name"=>"@smart_plug.name"} } }
+    patch smart_plug_url(@smart_plug), params: { smart_plug: {"consumer_id"=>@smart_plug.consumer_id, "mqtt_name"=>@smart_plug.mqtt_name, "name"=>@smart_plug.name} }
     assert_redirected_to root_path
   end
 

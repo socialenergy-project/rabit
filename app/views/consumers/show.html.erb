@@ -48,7 +48,9 @@
           <strong>Consumer category:</strong>
           <%= link_to @consumer.consumer_category&.name, consumer_category_path(@consumer.consumer_category) if @consumer.consumer_category -%>
         </div>
-
+        <div>
+          <strong>Smart plugs:</strong>
+          <%= @consumer.smart_plugs.map{|sp| link_to sp.name, sp}.join(" | ").html_safe -%>        </div>
         <div>
           <strong>Member in:</strong>
           <ul class="max-height-100px">
@@ -76,6 +78,27 @@
   <%= render partial: "charts/gmap" %>
 
   <%= render partial: "charts/consumption_chart", locals: {entity: @consumer} %>
+
+  <% @consumer.smart_plugs.each do |smart_plug| %>
+    <div class="col-xxl-6 col-sm-12 mb-3  d-flex ">
+      <div class="card card-100">
+       <div class="card-header">
+              <i class="fa fa-area-chart"></i>
+              <%= smart_plug.name %>
+            </div>
+            <div class="card-body">
+              <canvas id="smart_plug_<%= smart_plug.id -%>" width="100%" height="65"></canvas>
+              <div class="cell legend" tabindex="0"></div>
+              <script>
+                subscribe_smart_plug("<%= smart_plug.mqtt_name %>","smart_plug_<%= smart_plug.id -%>")
+              </script>
+            </div>
+            <div class="card-footer small text-muted">
+            </div>
+      </div>
+    </div>
+  <% end %>
+
 </div>
 
 

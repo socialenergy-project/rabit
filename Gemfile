@@ -133,3 +133,4 @@ gem 'bootsnap' # Suggested by update to 4.2
 
 gem 'fast_inserter'
 
+gem 'mqtt'

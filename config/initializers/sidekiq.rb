@@ -28,16 +28,28 @@ Sidekiq.configure_server do |config|
       work['payload']['class'] == "MonitorRedisWorker"
     end # .each &:delete
 
+    mqtt_workers = workers.select do |process_id, thread_id, work|
+      work['payload']['class'] == "MonitorMqttWorker"
+    end # .each &:delete
+
     in_queue = Sidekiq::Queue.new.select do |job|
       job.klass == "MonitorRedisWorker"
     end
 
+    in_queue_mqtt = Sidekiq::Queue.new.select do |job|
+      job.klass == "MonitorMqttWorker"
+    end
+
     scheduled = Sidekiq::ScheduledSet.new.select {|job| job.klass == "MonitorRedisWorker" }
+    scheduled_mqtt = Sidekiq::ScheduledSet.new.select {|job| job.klass == "MonitorMqttWorker" }
 
     Rails.logger.debug "We have #{scheduled.count} scheduled, #{in_queue.count} in queue, and #{redis_workers.count} workers."
+    Rails.logger.debug "We have #{scheduled_mqtt.count} scheduled, #{in_queue_mqtt.count} in queue, and #{mqtt_workers.count} workers."
 
     already_scheduled = scheduled.count + in_queue.count + redis_workers.count
+    already_scheduled_mqtt = scheduled_mqtt.count + in_queue_mqtt.count + mqtt_workers.count
     MonitorRedisWorker.perform_async if already_scheduled == 0
+    MonitorMqttWorker.perform_async if already_scheduled_mqtt == 0
   end
 end
 
