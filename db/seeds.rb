@@ -213,6 +213,17 @@ puts "Created #{Flexibility.all.count} Flexibilities"
   puts "Created #{tbl_name.constantize.all.count} #{tbl_name.pluralize}"
 end
 
+
+[[1, 'smart plug 1', 'ZWaveNode005'],
+ [2, 'smart plug 2', 'ZWaveNode006']].each do |id,name,mqtt_name|
+  SmartPlug.where(id: id).first_or_initialize.tap do |smart_plug|
+    smart_plug.consumer_id = 7
+    smart_plug.name = name
+    smart_plug.mqtt_name = mqtt_name
+    smart_plug.save!
+  end
+end
+
 ActiveRecord::Base.connection_pool.with_connection do |dbconn|
   ActiveRecord::Base.descendants do |t|
     dbconn.checkout.reset_pk_sequence!(t.table_name)

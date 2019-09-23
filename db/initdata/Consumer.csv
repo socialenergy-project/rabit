@@ -5,6 +5,7 @@ id,name,location,edms_id,building_type_id,connection_type_id,location_x,location
 4,ICCS lab,"Zografou, Athens",cnl_hem,3,,37.979494,23.783337,"",2,2018-05-16 04:54:39 UTC,2018-05-16 04:54:39 UTC,
 5,Demo consumer_power,"Zografou, Athens",DemoPlug_power,3,,37.978328,23.782296,"",2,2018-07-03 09:17:20 UTC,2018-07-04 07:57:06 UTC,
 6,Demo consumer,"Zografou, Athens",DemoPlug,3,,37.978328,23.782296,"",2,2018-07-03 09:17:20 UTC,2018-07-04 07:57:06 UTC,
+7,Consumer with devices,"Zografou, Athens",hscnl02,5,,37.978428,23.782696,"",2,2018-07-03 09:17:20 UTC,2018-07-04 07:57:06 UTC,
 1000,Protergeia consumer 0,"Athens",emulation_0_power,5,,37.978328,23.782296,"",3,2018-07-03 09:17:20 UTC,2018-07-04 07:57:06 UTC,
 1001,Protergeia consumer 1,"Thessaloniki",emulation_1_power,5,,40.626616, 22.956677,"",3,2018-07-03 09:17:20 UTC,2018-07-04 07:57:06 UTC,
 1002,Protergeia consumer 2,"Patras",emulation_2_power,5,,38.246321,21.739779,"",3,2018-07-03 09:17:20 UTC,2018-07-04 07:57:06 UTC,
