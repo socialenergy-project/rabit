@@ -22,7 +22,7 @@ class Consumer < ApplicationRecord
 =end
 
   def realtime?
-    ["ICCS", "Emulated"].include? consumer_category&.name
+    ["ICCS", "Protergeia"].include? consumer_category&.name
   end
 
   def initDates
