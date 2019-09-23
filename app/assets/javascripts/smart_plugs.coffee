@@ -95,4 +95,9 @@ $(document).on 'turbolinks:load', ->
                 },
             }
         })
+
         App.livecharts[sp.id] = {chart: chart, duration: 300 * 1000}
+
+    $(".smart_plug_button").click ->
+        console.log "clicked ", $(this).attr('smart_plug'), "action", $(this).attr('action')
+        sendCommand($(this).attr('smart_plug'), $(this).attr('action'))

@@ -36,15 +36,22 @@ class MonitorMqttWorker
         Rails.logger.debug "event_type: #{event_type}"
         Rails.logger.debug "value: #{value}"
 
-        message = {}
-        case event_type
-        when 'ElectricMeterWatts'
-          message = {
-            timestamp: DateTime.now.to_datetime.to_s,
-            event_type: event_type,
-            consumption: value.to_f
-          }
-        end
+        message = case event_type
+                  when 'ElectricMeterWatts'
+                    {
+                      timestamp: DateTime.now.to_datetime.to_s,
+                      event_type: event_type,
+                      consumption: value.to_f
+                    }
+                  when 'Switch'
+                    {
+                      timestamp: DateTime.now.to_datetime.to_s,
+                      event_type: event_type,
+                      new_state: value
+                    }
+                  else
+                    {}
+                  end
         ActionCable.server.broadcast("smart_plug_channel_#{smart_plug}", message) if message.size > 0
       end
 

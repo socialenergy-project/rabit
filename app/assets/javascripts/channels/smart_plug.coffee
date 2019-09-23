@@ -16,20 +16,28 @@ window.subscribe_smart_plug = (smart_plug, domElementId) ->
         console.log "The subsciption is ", this
         this.unsubscribe()
         return
-      dataset = chart.data.datasets[0]
-      console.log "The dataset is #{dataset}"
 
-      last_time = dataset?.data?.slice(-1)[0]?.x || 0
-      last_value = dataset?.data?.slice(-1)[0]?.y
-      console.log "last_time=#{last_time}"
-      new_time = new Date(data['timestamp'])
-      console.log "new_time=#{new_time}"
-      if new_time > last_time
-        dataset.data.push({x: new_time, y: last_value}) if last_value
-        dataset.data.push({x: new_time, y: data['consumption']})
+      if data['event_type'] == 'ElectricMeterWatts'
+        dataset = chart.data.datasets[0]
         console.log "The dataset is #{dataset}"
-        chart.update()
-        console.log "Updated chart #{chart}"
+
+        last_time = dataset?.data?.slice(-1)[0]?.x || 0
+        last_value = dataset?.data?.slice(-1)[0]?.y
+        console.log "last_time=#{last_time}"
+        new_time = new Date(data['timestamp'])
+        console.log "new_time=#{new_time}"
+        if new_time > last_time
+          dataset.data.push({x: new_time, y: last_value}) if last_value
+          dataset.data.push({x: new_time, y: data['consumption']})
+          console.log "The dataset is #{dataset}"
+          chart.update()
+          console.log "Updated chart #{chart}"
+      else if data['event_type'] == 'Switch'
+        console.log "Got a switch event"
+        color = if data['new_state'] == "OFF" then 'red' else 'green'
+        $('.smart_plug_status[smart_plug="'+ domElementId+ '"').text(data['new_state']).css('color', color)
     )
 
-
+window.sendCommand = (domElementId, command) ->
+  return unless subscriptions[domElementId]
+  subscriptions[domElementId].send({message: command})

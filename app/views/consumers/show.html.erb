@@ -94,6 +94,9 @@
               </script>
             </div>
             <div class="card-footer small text-muted">
+               <button class="smart_plug_button" smart_plug="smart_plug_<%= smart_plug.id -%>" action="ON">Turn on</button>
+               <button class="smart_plug_button" smart_plug="smart_plug_<%= smart_plug.id -%>" action="OFF">Turn off</button>
+               state: <span class=smart_plug_status smart_plug="smart_plug_<%= smart_plug.id -%>">unknown</span>
             </div>
       </div>
     </div>
