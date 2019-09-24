@@ -8,7 +8,7 @@ class ConsumersController < ApplicationController
   # GET /consumers
   # GET /consumers.json
   def index
-    @consumers = Consumer.category(params[:category]).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @consumers = Consumer.accessible_by(current_ability,:read).category(params[:category]).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /consumers/1

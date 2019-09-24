@@ -34,6 +34,9 @@ class Ability
     else
       # cannot :index, User
       can :read, :all
+      cannot :read, Consumer
+      can :read, Consumer, users: {groups: {group_memberships: {user_id: user.id} }}
+      can :read, Consumer, users: {id: user.id }
       # can [:select, :confirm], Clustering
       cannot :read, [User]
       can :show, User do |emp|
