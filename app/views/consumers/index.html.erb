@@ -13,6 +13,7 @@
           <tr>
             <th><%= sortable "name", "Name" -%></th>
             <th><%= sortable "location", "Location" -%></th>
+            <th>Relationship</th>
             <th><%= sortable "edms_id", "Edms" -%></th>
             <th><%= sortable "energy_program_id", "Energy program" -%></th>
             <th><%= sortable "building_type_id", "Building type" -%></th>
@@ -32,6 +33,17 @@
             </td>
             <td>
                 <%= consumer.location-%>
+            </td>
+            <td>
+                <%=
+                  if current_user.consumers.include? consumer
+                    "Owner"
+                  elsif current_user.groups.joins(:users).select('users.id').pluck(:'users.id').any? {|user_id| consumer.user_ids.include? user_id}
+                    current_user.groups.joins(:users).select('users.id', 'groups.name').pluck(:'users.id', :'groups.name').select {|user_id, gname| consumer.user_ids.include? user_id}.map{|user_id, gname| "#{link_to(User.find(user_id).uid || User.find(user_id).name, User.find(user_id))} (#{gname})"}.join(",").html_safe
+                  else
+                     "Admin"
+                  end
+                -%>
             </td>
             <td>
                 <%= consumer.edms_id-%>
