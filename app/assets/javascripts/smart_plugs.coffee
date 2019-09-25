@@ -78,6 +78,11 @@ $(document).on 'turbolinks:load', ->
                             display: true,
                             labelString: "Watt",
                             fontSize: '15',
+                        },
+                        ticks: {
+                            min: 0,
+                            # max: 40000,
+                            maxTicksLimit: 5
                         }
                     }],
                 },

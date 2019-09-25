@@ -14,7 +14,7 @@ module OmniAuth
           site: "https://socialauth.intelen.com",
           authorize_url: "/authorize_x.php",
           token_url: "https://socialauth.intelen.com/token_x.php",
-          redirect_uri: 'https://rabit.socialenergy-project.eu/users/auth/gsrn/callback/'
+          redirect_uri: 'https://rat.socialenergy-project.eu/users/auth/gsrn/callback/'
       }
 
       # These are called after authentication has succeeded. If
