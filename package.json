@@ -8,7 +8,7 @@
     "datatables.net": "^1.10.19",
     "install": "^0.12.2",
     "jquery.easing": "^1.4.1",
-    "npm": "^6.9.0",
+    "npm": "^6.13.4",
     "popper.js": "^1.14.7",
     "select2": "^4.0.6"
   }
