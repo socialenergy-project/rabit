@@ -12,7 +12,7 @@ class PagesController < ApplicationController
     ]
 
     now = DateTime.now
-    today_in_2015 = now.change(year: 2015)
+    today_in_2015 = (now.change(year: 2015) rescue (now-1.day).change(year: 2015))
     @charts = [{
                  dom_id: :real_time_hour_chart,
                  title: "Real time data for past hour",

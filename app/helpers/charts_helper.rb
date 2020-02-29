@@ -54,7 +54,8 @@ module ChartsHelper
                           }
                       }]
 
-    start_2015 = DateTime.now.change(year: 2015)
+    start_2015 = DateTime.now
+    start_2015 = (start_2015.change(year: 2015) rescue (start_2015-1.day).change(year: 2015))
 
     historical_links = [{
                           name: "1 day, 15 minute interval",

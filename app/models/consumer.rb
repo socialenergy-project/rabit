@@ -29,7 +29,8 @@ class Consumer < ApplicationRecord
     if realtime?
       { duration: 1.week.to_i, start_date: nil, end_date: nil, type: "Real-time" }
     else
-      start = (DateTime.now - 1.week).change(year: 2015)
+      start = (DateTime.now - 1.week)
+      start = (start.change(year: 2015) rescue (start-1.day).change(year: 2015))
       { start_date: start, end_date: start + 1.week, duration: nil, type: "Historical" }
     end.merge interval_id: Interval.find_by(duration: 3600).id
   end

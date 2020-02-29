@@ -18,7 +18,8 @@ class EccType < ApplicationRecord
   end
 
   def initDates
-    start_time = (DateTime.now - 1.week).change(year: 2015)
+    start_time = (DateTime.now - 1.week)
+    start_time = (start_time.change(year: 2015) rescue (start_time-1.day).change(year: 2015))
     {
         start_date: start_time,
         end_date: start_time + 1.week,
