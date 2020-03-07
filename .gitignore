@@ -32,3 +32,5 @@
 
 # Ignore coverage files
 coverage
+
+/public/assets/*

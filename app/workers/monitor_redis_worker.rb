@@ -9,7 +9,11 @@ class MonitorRedisWorker
     redis.subscribe('dp_channel_all', 'ruby-lang') do |on|
       on.message do |channel, msg|
         Rails.logger.debug "Received #{msg.inspect}"
-        data = JSON.parse(msg)
+        data = nil;
+        begin
+          data = JSON.parse(msg)
+        rescue e
+        end
         data_point = {
             interval_id: Interval.find_by(duration: data["interval"]).id,
             timestamp: data["timestamp"].to_datetime.to_s,

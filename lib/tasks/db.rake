@@ -9,7 +9,7 @@ namespace :db do
     Rails.application.eager_load!
 
     (args.extras.count > 0 ? args.extras.map(&:constantize) : ActiveRecord::Base.descendants.reject do |t|
-      [User, ApplicationRecord, DataPoint, Result].include? t
+      [User, ApplicationRecord, DataPoint].include? t
     end).each do |t|
       CSV.open("db/initdata/#{t}.csv", "wb") do |csv|
         puts "Exporting table: #{t}"
