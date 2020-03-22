@@ -34,8 +34,8 @@ class Ability
     else
       # cannot :index, User
       can :read, :all
-      cannot :read, Consumer
-      can :read, Consumer, users: {id: user.groups.joins(:users).select('users.id').pluck(:'users.id') }
+      # cannot :read, Consumer
+      # can :read, Consumer, users: {id: user.groups.joins(:users).select('users.id').pluck(:'users.id') }
       # can [:select, :confirm], Clustering
       cannot :read, [User]
       can :show, User do |emp|
