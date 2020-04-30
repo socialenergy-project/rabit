@@ -65,7 +65,7 @@ group :development do
   gem "rb-fsevent", require: false
 
   gem 'rails-erd', require: false
-  gem 'pry-coolline' # for guard
+  # gem 'pry-coolline' # for guard
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
