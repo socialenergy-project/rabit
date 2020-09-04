@@ -69,7 +69,7 @@
             <td>
                 <%= link_to consumer.consumer_category&.name, consumer_category_path(consumer.consumer_category) if consumer.consumer_category -%>
             </td>
-            <td><%= link_to 'Show', consumer, class: 'btn btn-info btn-sm' if can? :show, consumer%></td>
+            <td><%= link_to 'Show', consumer, class: 'btn btn-info btn-sm' if can? :show, consumer %></td>
             <td><%= link_to 'Edit', edit_consumer_path(consumer), class: 'btn btn-warning btn-sm' if can? :update, consumer %></td>
             <td><%= link_to 'Destroy', consumer, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' if can? :destroy, consumer %></td>
           </tr>
@@ -79,6 +79,7 @@
         <%= will_paginate @collection, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
         <br>
         <%= link_to 'New Consumer', new_consumer_path(category: params[:category]), class: 'btn btn-primary btn-sm' if can? :create, Consumer %>
+        <%= link_to 'Import', import_consumers_path(category: params[:category]), method: :post, class: 'btn btn-warning btn-sm' if params[:category].to_i == 4 and can? :create, Consumer %>
       </div>
       <div class="card-footer small text-muted">
       </div>

@@ -1,3 +1,5 @@
+require 'fetch_data/flexgrid_client'
+
 class ConsumersController < ApplicationController
   load_and_authorize_resource
   before_action :set_consumer, only: [:show, :edit, :update, :destroy]
@@ -9,6 +11,12 @@ class ConsumersController < ApplicationController
   # GET /consumers.json
   def index
     @consumers = Consumer.accessible_by(current_ability,:read).category(params[:category]).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+  end
+
+  def import
+    raise "Wrong category" unless params[:category].to_i == 4
+    Consumer.import FetchData::FlexgridClient.prosumers, params[:category]
+    redirect_to consumers_path(category: params[:category])
   end
 
   # GET /consumers/1

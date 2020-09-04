@@ -33,7 +33,7 @@ class ConsumersControllerTest < ActionDispatch::IntegrationTest
   test "should create consumer as admin" do
     sign_in_as_admin
     assert_difference('Consumer.count') do
-      post consumers_url, params: { consumer: { building_type_id: @consumer.building_type_id, connection_type_id: @consumer.connection_type_id, consumer_category_id: @consumer.consumer_category_id, edms_id: @consumer.edms_id, feeder_id: @consumer.feeder_id, location: @consumer.location, location_x: @consumer.location_x, location_y: @consumer.location_y, name: @consumer.name } }
+      post consumers_url, params: { consumer: { building_type_id: @consumer.building_type_id, connection_type_id: @consumer.connection_type_id, consumer_category_id: @consumer.consumer_category_id, edms_id: "#{@consumer.edms_id}_2", feeder_id: @consumer.feeder_id, location: @consumer.location, location_x: @consumer.location_x, location_y: @consumer.location_y, name: @consumer.name } }
     end
 
     assert_redirected_to consumer_url(Consumer.last)

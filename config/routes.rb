@@ -17,7 +17,9 @@ Rails.application.routes.draw do
   resources :energy_programs
   resources :ecc_types
   resources :data_points
-  resources :consumers
+  resources :consumers do
+    post :import, on: :collection
+  end
   resources :consumer_categories
   resources :communities
   resources :building_types

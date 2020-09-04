@@ -12,26 +12,40 @@ class Consumer < ApplicationRecord
   has_many :smart_plugs, dependent: :destroy
 
   scope :category, ->(cat) { where(consumer_category: cat) if cat.present? }
-  scope :with_locations, -> { where("location_x IS NOT NULL and location_y IS NOT NULL") }
+  scope :with_locations, -> { where('location_x IS NOT NULL and location_y IS NOT NULL') }
 
-
-=begin
-  validates_associated :communities, message: ->(_class_obj, obj) {
-    p "consumer OBJ is #{_class_obj} #{obj}", obj[:value]; obj[:value].map(&:errors).map(&:full_messages).join(',')
-  }
-=end
+  #   validates_associated :communities, message: ->(_class_obj, obj) {
+  #     p "consumer OBJ is #{_class_obj} #{obj}", obj[:value]; obj[:value].map(&:errors).map(&:full_messages).join(',')
+  #   }
 
   def realtime?
-    ["ICCS", "Protergeia"].include? consumer_category&.name
+    %w[ICCS Protergeia].include? consumer_category&.name
   end
 
   def initDates
-    if realtime?
-      { duration: 1.week.to_i, start_date: nil, end_date: nil, type: "Real-time" }
+    if consumer_category_id == 4
+      { duration: nil, start_date: '2019-05-05 00:00 EEST'.to_datetime, end_date: '2019-05-11 23:45 EEST'.to_datetime, type: 'Historical' }
+    elsif realtime?
+      { duration: 1.week.to_i, start_date: nil, end_date: nil, type: 'Real-time' }
     else
       start = (DateTime.now - 1.week)
-      start = (start.change(year: 2015) rescue (start-1.day).change(year: 2015))
-      { start_date: start, end_date: start + 1.week, duration: nil, type: "Historical" }
+      start = (begin
+                 start.change(year: 2015)
+               rescue StandardError
+                 (start - 1.day).change(year: 2015)
+               end)
+      { start_date: start, end_date: start + 1.week, duration: nil, type: 'Historical' }
     end.merge interval_id: Interval.find_by(duration: 3600).id
+  end
+
+  def self.import(consumers, category)
+    Consumer.bulk_insert ignore: true, values: (consumers.map do |c|
+      {
+        name: "Flexgrid - #{c['_id']}",
+        edms_id: c['_id'],
+        consumer_category_id: category,
+      }
+    end)
+    Community.find(12).consumers = Consumer.where consumer_category_id: category
   end
 end

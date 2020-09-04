@@ -198,7 +198,7 @@ window.getdata = (domElementId, consumers, chart_vars) ->
                    0
 
       # console.log "Painting chart, duration:", duration
-      createChart(domElementId, res, lines == 1 || lines > 5, true, duration)
+      createChart(domElementId, res, lines == 1 || lines > 5, false, duration)
       $('#' + domElementId).siblings('.legend').removeClass('alert-info alert-danger')
     else
       $('#' + domElementId).siblings('.legend').removeClass('alert-info').addClass('alert-danger').text('No data points in range, select (or reset) the interval')

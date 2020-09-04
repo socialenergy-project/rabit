@@ -1,10 +1,12 @@
+require 'fetch_data/flexgrid_client'
+
 module FetchData
   class FetchData
     Upsert.logger = Logger.new("/dev/null")
 
     def initialize(consumers, chart_cookies)
       @interval = Interval.find(chart_cookies[:interval_id]&.to_i)
-      @consumers = consumers.select {|c| c&.realtime?}
+      @consumers = consumers
       start = chart_cookies[:type] == 'Real-time' ?
           DateTime.now - chart_cookies[:duration].to_i.seconds :
           chart_cookies[:start_date].to_datetime
@@ -13,7 +15,6 @@ module FetchData
           chart_cookies[:end_date].to_datetime
 
       @params = {
-          mac: @consumers.map {|c| c.edms_id}.join(","),
           starttime: start,
           endtime: stop,
           interval: @interval.duration
@@ -33,7 +34,7 @@ module FetchData
 
       )
       p "The last ones are #{last}"
-      new_data_points = download
+      new_data_points = download(@params.merge(mac: @consumers.select{|c| [2,3].include? c.consumer_category_id}.map(&:edms_id).join(",") ))
                             .reject{|d| d["timestamp"].to_datetime < last[d["mac"]]}
 
 
@@ -58,11 +59,19 @@ module FetchData
 
     end
 
-    def download
-      Rails.logger.debug "We need: #{@consumers.length * @interval.timestamps(@params[:starttime], @params[:endtime]).count} points"
-      Rails.logger.debug "We have: #{DataPoint.where(consumer: @consumers, interval: @interval, timestamp: @params[:starttime]..@params[:endtime]).count} points"
+    def download(params)
+      Rails.logger.debug "We need: #{@consumers.length * @interval.timestamps(params[:starttime], params[:endtime]).count} points"
+      Rails.logger.debug "We have: #{DataPoint.where(consumer: @consumers, interval: @interval, timestamp: params[:starttime]..params[:endtime]).count} points"
 
-      JSON.parse RestClient.get ENV['EDMS_URL'], params: @params
+      JSON.parse RestClient.get ENV['EDMS_URL'], params: params
+
+    end
+
+    def download_flex(params)
+      Rails.logger.debug "FLEX: We need: #{@consumers.length * @interval.timestamps(params[:starttime], params[:endtime]).count} points"
+      Rails.logger.debug "FLEX: We have: #{DataPoint.where(consumer: @consumers, interval: @interval, timestamp: params[:starttime]..params[:endtime]).count} points"
+
+      FlexgridClient.data_points(params[:starttime].utc.strftime('%Y-%m-%dT%H:%M:%S'), params[:endtime].utc.strftime('%Y-%m-%dT%H:%M:%S'), params[:consumers], @interval.duration)
 
     end
 
@@ -72,37 +81,6 @@ module FetchData
 
       consumer_hash = {}
       interval_id = @interval.id
-=begin
-      fparams = {
-        table: 'data_points',
-        static_columns: {
-          interval_id: interval_id
-        },
-        options: {
-          timestamps: true,
-          unique: true,
-          check_for_existing: true
-        },
-        group_size: 2000,
-        variable_columns: %w(consumer_id timestamp consumption),
-        values: res.map { |r|
-#          Rails.logger.debug "r is #{r}"
-          consumer_hash[r["mac"]] ||= Consumer.find_by(edms_id: r["mac"]).id
-          [
-            consumer_hash[r["mac"]],
-            r["timestamp"],
-            r['kwhinterval']
-          ]
-        }
-      }
-#       Rails.logger.debug "fparams are constructed: #{fparams}"
-      Rails.logger.debug "Done1"
-      inserter = FastInserter::Base.new(fparams)
-      Rails.logger.debug "Done2"
-      inserter.fast_insert
-      Rails.logger.debug "Done3"
-=end
-
       DataPoint.bulk_insert ignore: true, values: (res.map do |r|
         consumer_hash[r["mac"]] ||= Consumer.find_by(edms_id: r["mac"]).id
         {
@@ -112,27 +90,25 @@ module FetchData
             consumption: r['kwhinterval'],
         }
       end)
+    end
 
+    def upsert_flex(res)
+      # Rails.logger.debug "We received: #{JSON.pretty_generate new_data.to_a}"
+      now = DateTime.now
 
-=begin
-      ActiveRecord::Base.connection_pool.with_connection do |conn|
-        Upsert.batch(conn, DataPoint.table_name) do |upsert|
-          consumer_hash = {}
-          interval_id = @interval.id
-          res.each do |r|
-            consumer_hash[r["mac"]] ||= Consumer.find_by(edms_id: r["mac"]).id
-            upsert.row({
-                           consumer_id: consumer_hash[r["mac"]],
-                           timestamp: r["timestamp"],
-                           interval_id: interval_id,
-                       }, consumption: r['kwhinterval'],
-                       created_at: now,
-                       updated_at: now)
-
-          end
-        end
-      end
-=end
+      consumer_hash = {}
+      interval_id = @interval.id
+      interval_duration = @interval.duration
+      DataPoint.bulk_insert ignore: true, values: (res.map do |r|
+        mac = r["_id"]["prosumer_id"]
+        consumer_hash[mac] ||= Consumer.find_by(edms_id: mac).id
+        {
+            consumer_id: consumer_hash[mac],
+            timestamp: r["_id"]["date"],
+            interval_id: interval_id,
+            consumption: (r['grid_consumption_w_aggr'].to_f - r['grid_feed_in_w_aggr'].to_f) / 1000 * interval_duration / 1.hour,
+        }
+      end)
 
     end
 
@@ -185,8 +161,20 @@ module FetchData
 
         Rails.logger.debug "start: #{@params[:starttime]}"
         Rails.logger.debug "end: #{@params[:endtime]}"
-        new_points = download
-        upsert(new_points)
+
+        # Get from socialenergy EDMS db
+        edms_consumers = @consumers.select{|c| [2,3].include? c.consumer_category_id}
+        if edms_consumers.any?
+          socialenerg_data_points = download @params.merge(mac: edms_consumers.map(&:edms_id).join(",") )
+          upsert socialenerg_data_points
+        end
+
+        # Get from flexgrid db
+        flexgrid_consumers = @consumers.select{|c| [4].include? c.consumer_category_id}
+        if flexgrid_consumers.any?
+          flexgrid_data_points = download_flex @params.merge(consumers: flexgrid_consumers.map(&:edms_id) )
+          upsert_flex flexgrid_data_points
+        end
       end
     end
   end

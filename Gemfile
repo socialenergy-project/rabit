@@ -84,6 +84,7 @@ gem 'omniauth-oauth2'
 gem 'cancancan'
 gem 'rolify'
 gem 'rest-client'
+gem 'oauth2'
 
 # For backoffice
 gem 'rails_admin', '~> 2.0'
