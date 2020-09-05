@@ -66,14 +66,15 @@ class DataPointsController < ApplicationController
                                      .group('communities.id')
                                      .group('consumers.name')
                                      .select('consumers.name as con',
+                                             'count(data_points.id) as num',
                                              'array_agg(timestamp ORDER BY data_points.timestamp asc) as tims',
                                              'array_agg(consumption ORDER BY data_points.timestamp ASC) as cons')
                                      .map { |d|
-                             aggr = d.tims.map {|t| [t, 0]} if aggr.size == 0
-                             aggr = aggr.zip(d.cons).map {|(a, b), d| [a, ((b.nil? or d.nil?) ? nil : b + d)]}
+                            #  aggr = d.tims.map {|t| [t, 0]} if aggr.size == 0
+                            #  aggr = aggr.zip(d.cons).map {|(a, b), d| [a, ((b.nil? or d.nil?) ? nil : b + d)]}
                              [d.con, d.tims.zip(d.cons)]
                            }.to_h
-                           res["aggregate"] = aggr
+                           res["aggregate"] = get_aggregate(filter, community, res.size)
                            res
                          else
                            {
@@ -161,5 +162,19 @@ class DataPointsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def data_point_params
     params.require(:data_point).permit(:consumer_id, :interval_id, :timestamp, :consumption, :flexibility)
+  end
+
+  def get_aggregate(filter, community, res_size)
+    DataPoint.joins(consumer: :communities)
+    .where(filter.merge 'communities.id': community.id)
+    .group('communities.id')
+    .group('timestamp')
+    .order(timestamp: :asc)
+    .select('COUNT(data_points.id) as num, communities.id as com, timestamp, case when sum(case when consumption is null then 1 else 0 end) > 0 then null else sum(consumption) end as cons')
+    .having('COUNT(data_points.id) = ?', res_size)
+    .map {|d| 
+      p "We have ", [d.timestamp, d.cons, d.num]
+      
+      [d.timestamp, d.cons]}
   end
 end
