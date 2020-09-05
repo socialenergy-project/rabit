@@ -75,6 +75,6 @@ class ConsumerCategoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def consumer_category_params
-      params.require(:consumer_category).permit(:name, :description, :real_time)
+      params.require(:consumer_category).permit(:name, :description, :reference_year)
     end
 end

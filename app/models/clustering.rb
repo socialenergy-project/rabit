@@ -15,6 +15,10 @@ class Clustering < ApplicationRecord
     (communities.first || Community.first)&.realtime?
   end
 
+  def reference_year
+    (communities.first || Community.first)&.reference_year
+  end
+
   def initDates
     if self.cl_scenario&.starttime and self.cl_scenario&.endtime and self.cl_scenario&.interval_id
       {

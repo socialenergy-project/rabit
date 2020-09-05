@@ -6,7 +6,7 @@ module FetchData
       @token ||= OAuth2::Client
                  .new(ENV['FLEXGRID_CLIENT'], '', site: ENV['FLEXGRID_URL'])
                  .password.get_token(ENV['FLEXGRID_USER'], ENV['FLEXGRID_PASSWORD'])
-      @token.refresh if @token.expired?
+      @token.refresh! if @token.expired?
       @token
     end
 

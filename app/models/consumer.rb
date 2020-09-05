@@ -19,20 +19,22 @@ class Consumer < ApplicationRecord
   #   }
 
   def realtime?
-    %w[ICCS Protergeia].include? consumer_category&.name
+    reference_year.nil?
+  end
+
+  def reference_year
+    consumer_category.reference_year
   end
 
   def initDates
-    if consumer_category_id == 4
-      { duration: nil, start_date: '2019-05-05 00:00 EEST'.to_datetime, end_date: '2019-05-11 23:45 EEST'.to_datetime, type: 'Historical' }
-    elsif realtime?
+    if realtime?
       { duration: 1.week.to_i, start_date: nil, end_date: nil, type: 'Real-time' }
     else
       start = (DateTime.now - 1.week)
       start = (begin
-                 start.change(year: 2015)
+                 start.change(year: consumer_category.reference_year)
                rescue StandardError
-                 (start - 1.day).change(year: 2015)
+                 (start - 1.day).change(year: consumer_category.reference_year)
                end)
       { start_date: start, end_date: start + 1.week, duration: nil, type: 'Historical' }
     end.merge interval_id: Interval.find_by(duration: 3600).id

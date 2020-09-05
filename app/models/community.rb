@@ -21,6 +21,10 @@ class Community < ApplicationRecord
     (consumers.first || Consumer.first)&.realtime?
   end
 
+  def reference_year
+    (consumers.first || Consumer.first)&.reference_year
+  end
+
   def initDates
     (consumers.first || Consumer.first)&.initDates
   end

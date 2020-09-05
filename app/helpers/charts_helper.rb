@@ -55,7 +55,7 @@ module ChartsHelper
                       }]
 
     start_2015 = DateTime.now
-    start_2015 = (start_2015.change(year: 2015) rescue (start_2015-1.day).change(year: 2015))
+    start_2015 = (start_2015.change(year: entity.reference_year) rescue (start_2015-1.day).change(year: entity.reference_year)) if entity.reference_year
 
     historical_links = [{
                           name: "1 day, 15 minute interval",
@@ -84,14 +84,14 @@ module ChartsHelper
                       },{
                             name: "1 year, 1 day interval",
                             params: {
-                                'start_date': '2015-01-01T00:00:00Z'.to_datetime,
-                                'end_date': '2015-12-31T00:00:00Z'.to_datetime,
+                                'start_date': "#{entity.reference_year}-01-01T00:00:00Z".to_datetime,
+                                'end_date': "#{entity.reference_year}-12-31T00:00:00Z".to_datetime,
                                 'type': "Historical",
                                 'interval_id': Interval.find_by(duration: 86400).id,
                             }
                         }]
 
-    if entity.realtime?
+    if entity.reference_year.nil?
       realtime_links
     else
       historical_links

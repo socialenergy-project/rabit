@@ -79,6 +79,10 @@ initialize_with_id_and_name({ 1 => "By building type", 2 => "ICCS", 3 => "compar
 puts "Created #{Clustering.all.count} clusterings"
 
 initialize_with_id_and_name({ 1 => "Hedno", 2 => "ICCS", 3 => "Protergeia", 4 => "Flexgrid" }, ConsumerCategory)
+
+ConsumerCategory.find(1).update reference_year: 2015
+ConsumerCategory.find(4).update reference_year: 2018
+
 puts "Created #{ConsumerCategory.all.count} consumer categories"
 
 initialize_with_id_and_name({
