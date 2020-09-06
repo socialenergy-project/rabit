@@ -1,12 +1,13 @@
 require 'oauth2'
 
 module FetchData
+  # Client for downloading from the FLEXGRID central database server
   module FlexgridClient
     def self.token
       @token ||= OAuth2::Client
                  .new(ENV['FLEXGRID_CLIENT'], '', site: ENV['FLEXGRID_URL'])
                  .password.get_token(ENV['FLEXGRID_USER'], ENV['FLEXGRID_PASSWORD'])
-      @token.refresh! if @token.expired?
+      @token = @token.refresh! if @token.expired?
       @token
     end
 
@@ -27,13 +28,17 @@ module FetchData
       Enumerator.new do |yielder|
         loop do
           Rails.logger.debug "Requesting '#{path}', params:'#{params}'"
-          result = JSON.parse(token.get(path, params: params.merge(max_results: 10000)).body)
+          result = get_single path, params
           result['_items'].each { |item| yielder << item }
           break unless result['_links']['next']
 
           path = result['_links']['next']['href']
         end
       end
+    end
+
+    def self.get_single(path, params = {})
+      JSON.parse(token.get(path, params: params.merge(max_results: 10_000)).body)
     end
   end
 end

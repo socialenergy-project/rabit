@@ -172,9 +172,6 @@ class DataPointsController < ApplicationController
     .order(timestamp: :asc)
     .select('COUNT(data_points.id) as num, communities.id as com, timestamp, case when sum(case when consumption is null then 1 else 0 end) > 0 then null else sum(consumption) end as cons')
     .having('COUNT(data_points.id) = ?', res_size)
-    .map {|d| 
-      p "We have ", [d.timestamp, d.cons, d.num]
-      
-      [d.timestamp, d.cons]}
+    .map {|d|[d.timestamp, d.cons]}
   end
 end
