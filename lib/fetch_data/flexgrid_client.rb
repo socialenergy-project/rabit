@@ -4,11 +4,16 @@ module FetchData
   # Client for downloading from the FLEXGRID central database server
   module FlexgridClient
     def self.token
-      @token ||= OAuth2::Client
-                 .new(ENV['FLEXGRID_CLIENT'], '', site: ENV['FLEXGRID_URL'])
-                 .password.get_token(ENV['FLEXGRID_USER'], ENV['FLEXGRID_PASSWORD'])
-      @token = @token.refresh! if @token.expired?
-      @token
+      @semaphore ||= Mutex.new
+
+      @semaphore.synchronize do
+        # only one thread at a time can enter this block...
+        @token ||= OAuth2::Client
+                   .new(ENV['FLEXGRID_CLIENT'], '', site: ENV['FLEXGRID_URL'])
+                   .password.get_token(ENV['FLEXGRID_USER'], ENV['FLEXGRID_PASSWORD'])
+        @token = @token.refresh! if @token.expired?
+        @token
+      end
     end
 
     def self.prosumers(params = {})
