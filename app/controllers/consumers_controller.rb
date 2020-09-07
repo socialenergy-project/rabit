@@ -15,7 +15,7 @@ class ConsumersController < ApplicationController
 
   def import
     raise "Wrong category" unless params[:category].to_i == 4
-    Consumer.import FetchData::FlexgridClient.prosumers, params[:category]
+    Consumer.import $flexgrid_client.prosumers, params[:category]
     redirect_to consumers_path(category: params[:category])
   end
 
