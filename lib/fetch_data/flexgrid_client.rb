@@ -3,9 +3,9 @@ require 'oauth2'
 module FetchData
   # Client for downloading from the FLEXGRID central database server
   module FlexgridClient
-    def self.token
-      @semaphore ||= Mutex.new
+    @semaphore ||= Mutex.new
 
+    def self.token
       @semaphore.synchronize do
         # only one thread at a time can enter this block...
         @token ||= OAuth2::Client
