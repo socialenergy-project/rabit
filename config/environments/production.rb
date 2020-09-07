@@ -99,15 +99,4 @@ Rails.application.configure do
   config.after_initialize do
     Rails.application.routes.default_url_options[:host] = config.action_mailer.default_url_options.values.join(':')
   end
-
-  # Passenger uses preloading by default, so no need to turn it on.
-  # Passenger automatically establishes connections to ActiveRecord,
-  # but for other DBs, you will have to:
-  PhusionPassenger.on_event(:starting_worker_process) do |forked|
-    if forked
-      require 'fetch_data/flexgrid_client'
-      $flexgrid_client = FetchData::FlexgridClient.new
-    end
-  end
-
 end
