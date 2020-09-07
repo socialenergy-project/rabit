@@ -6,6 +6,12 @@ one:
   description: MyText
   clustering: one
 
+one2:
+  id: 12
+  name: MyStrin2
+  description: MyTex3
+  clustering: two
+
 two:
   id: 105
   name: MyString

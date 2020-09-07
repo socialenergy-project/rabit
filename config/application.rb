@@ -18,15 +18,3 @@ module RABIT
     # the framework and any gems in your application.
   end
 end
-
-require 'fetch_data/flexgrid_client'
-$flexgrid_client = FetchData::FlexgridClient.new
-
-# Passenger uses preloading by default, so no need to turn it on.
-# Passenger automatically establishes connections to ActiveRecord,
-# but for other DBs, you will have to:
-PhusionPassenger.on_event(:starting_worker_process) do |forked|
-  if forked
-    $flexgrid_client = FetchData::FlexgridClient.new
-  end
-end if Object.const_defined?('PhusionPassenger') 

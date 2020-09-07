@@ -71,7 +71,7 @@ module FetchData
       Rails.logger.debug "FLEX: We need: #{@consumers.length * @interval.timestamps(params[:starttime], params[:endtime]).count} points"
       Rails.logger.debug "FLEX: We have: #{DataPoint.where(consumer: @consumers, interval: @interval, timestamp: params[:starttime]..params[:endtime]).count} points"
 
-      $flexgrid_client.data_points(params[:starttime].utc.strftime('%Y-%m-%dT%H:%M:%S'), params[:endtime].utc.strftime('%Y-%m-%dT%H:%M:%S'), params[:consumers], @interval.duration)
+      FlexgridClient.data_points(params[:starttime].utc.strftime('%Y-%m-%dT%H:%M:%S'), params[:endtime].utc.strftime('%Y-%m-%dT%H:%M:%S'), params[:consumers], @interval.duration)
 
     end
 

@@ -32,3 +32,15 @@ three:
   location_y: 1.5
   feeder_id: MyString
   consumer_category: two
+
+four:
+  id: 7
+  name: MyString
+  location: MyString
+  edms_id: MyString4
+  building_type: two
+  connection_type: two
+  location_x: 1.5
+  location_y: 1.5
+  feeder_id: MyString
+  consumer_category: two
