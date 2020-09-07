@@ -5,13 +5,12 @@ module FetchData
   class FlexgridClient
 
     def initialize
-      @token ||= OAuth2::Client
+      @token = OAuth2::Client
       .new(ENV['FLEXGRID_CLIENT'], '', site: ENV['FLEXGRID_URL'])
       .password.get_token(ENV['FLEXGRID_USER'], ENV['FLEXGRID_PASSWORD'])
     end
 
     def token
-      # only one thread at a time can enter this block...
       @token = @token.refresh! if @token.expired?
       @token
     end
