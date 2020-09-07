@@ -18,3 +18,6 @@ module RABIT
     # the framework and any gems in your application.
   end
 end
+
+require 'fetch_data/flexgrid_client'
+$flexgrid_client = FetchData::FlexgridClient.new
