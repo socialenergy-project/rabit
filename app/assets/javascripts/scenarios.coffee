@@ -60,7 +60,7 @@ prepareData = (dataset) ->
       pointBorderWidth: 2,
     }).reverse()
 
-window.createChart = (domElementId, dataset, legendId = null, startFromZero = true, duration = 0, yaxistext= "Consumption (kWh)") ->
+window.createChart = (domElementId, dataset, legendId = null, startFromZero = true, duration = 0, yaxistext= "Consumption (kWh)", chart_vars = null) ->
   return unless Object.keys(dataset).length > 0
   ctx = document.getElementById(domElementId)
   unless ctx
@@ -73,7 +73,8 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
     chart.destroy()
 
   now = (new Date()).getTime()
-  limits = if duration then { min: now - duration, max: now + duration / 5.0 } else  {}
+  console.log("dataset: ", dataset, chart_vars);
+  limits = if duration then { min: now - duration, max: now + duration / 5.0 } else if chart_vars then {min: new Date(chart_vars['start_date']), max: new Date(chart_vars['end_date'])} else {}
   chart = new Chart(ctx, {
     type: 'scatter',
     responsive: true,
@@ -166,6 +167,7 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
       },
     }
   })
+  console.log("Created chart ", chart);
 
   if (duration)
     App.livecharts[domElementId] = {chart: chart, duration: duration}
@@ -198,7 +200,7 @@ window.getdata = (domElementId, consumers, chart_vars) ->
                    0
 
       # console.log "Painting chart, duration:", duration
-      createChart(domElementId, res, lines == 1 || lines > 5, false, duration)
+      createChart(domElementId, res, lines == 1 || lines > 5, false, duration, null, chart_vars)
       $('#' + domElementId).siblings('.legend').removeClass('alert-info alert-danger')
     else
       $('#' + domElementId).siblings('.legend').removeClass('alert-info').addClass('alert-danger').text('No data points in range, select (or reset) the interval')
