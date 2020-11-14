@@ -176,8 +176,13 @@ class Scenario < ApplicationRecord
       begin
         valid_timestamps = self.ecc_type.get_valid_timestamps(self.interval.timestamps(self.starttime, self.endtime))
 
-        result = PythonWrapper.run_pricing({"consumer_ids": self.consumers.map.with_index{|c,i| (i+1).to_s}, #   ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],
-                                            "consumers_data": self.consumers.map.with_index do |c,i|
+        active_consumers = self.consumers.reject {|c| c.data_points.where(
+          interval: self.interval,
+          timestamp: valid_timestamps
+        ).count == 0}
+
+        result = PythonWrapper.run_pricing({"consumer_ids": active_consumers.map.with_index{|c,i| (i+1).to_s}, #   ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],
+                                            "consumers_data": active_consumers.map.with_index do |c,i|
                                               [(i+1).to_s, [c.data_points.where(
                                                   interval: self.interval,
                                                   timestamp: valid_timestamps
@@ -192,7 +197,7 @@ class Scenario < ApplicationRecord
                                             "select_algorithm": self.energy_programs,
                                             "level_flexibility": self.flexibility.id,
                                             "number_of_clusters": self.number_of_clusters,
-                                            "peak_demand_kwh": self.consumers.sum{|c| c.data_points.where(interval: self.interval, timestamp: self.starttime .. self.endtime).maximum(:consumption) || 0},
+                                            "peak_demand_kwh": active_consumers.sum{|c| c.data_points.where(interval: self.interval, timestamp: self.starttime .. self.endtime).maximum(:consumption) || 0},
                                             "pp_enable": 0.0}, 'crtp_prtp_rtp')
 
         puts JSON.pretty_generate result
