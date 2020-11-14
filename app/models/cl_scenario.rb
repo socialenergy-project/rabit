@@ -42,7 +42,7 @@ class ClScenario < ApplicationRecord
                                                         interval_id: interval_id,
                                                         algorithm: algorithm,
                                                         kappa: kappa,
-                                                        consumer_ids: consumer_ids.reject{|c| c.data_points.where(interval_id: interval_id, timestamp: starttime .. endtime).count == 0},
+                                                        consumer_ids: consumer_ids.reject{|c| DataPoints.where(consumer_id: c, interval_id: interval_id, timestamp: starttime .. endtime).count == 0},
                                                         cost_parameter: cost_parameter
 
         c.save(:validate => false)
