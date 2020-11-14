@@ -7,6 +7,8 @@ class EccType < ApplicationRecord
                                 allow_destroy: true,
                                 reject_if: :all_empty
 
+  belongs_to :consumer
+
   def get_valid_timestamps(timestamps)
     ecc_terms.sum do |ecc_term|
       ecc_term.get_valid_timestamps(timestamps)

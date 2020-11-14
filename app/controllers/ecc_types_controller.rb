@@ -15,7 +15,12 @@ class EccTypesController < ApplicationController
 
   # GET /ecc_types/new
   def new
-    @ecc_type = EccType.new
+    @ecc_type = if params[:consumer].blank?
+      EccType.new
+    else
+      consumer = Consumer.find(params[:consumer].to_i)
+      EccType.new(consumer_id: consumer.id, name: "SLA for #{consumer.name}")
+    end
   end
 
   # GET /ecc_types/1/edit
@@ -56,9 +61,10 @@ class EccTypesController < ApplicationController
   # DELETE /ecc_types/1.json
   def destroy
     respond_to do |format|
+      consumer = @ecc_type.consumer
       begin
         @ecc_type.destroy
-        format.html {redirect_to ecc_types_url, notice: 'Ecc type was successfully destroyed.'}
+        format.html {redirect_to (consumer ? consumer_path(consumer) : ecc_types_url), notice: 'Ecc type was successfully destroyed.'}
         format.json {head :no_content}
       rescue Exception => e
         format.html {redirect_to ecc_types_url, alert: 'Ecc type was NOT successfully destroyed. Reason is ' + e.message}
@@ -75,6 +81,6 @@ class EccTypesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def ecc_type_params
-    params.require(:ecc_type).permit(:name, ecc_terms_attributes: [ :id, :value, :price_per_mw, :_destroy, ecc_factors_attributes: [:id, :_destroy, :period, :start, :stop] ])
+    params.require(:ecc_type).permit(:consumer_id, :name, ecc_terms_attributes: [ :id, :value, :price_per_mw, :_destroy, ecc_factors_attributes: [:id, :_destroy, :period, :start, :stop] ])
   end
 end

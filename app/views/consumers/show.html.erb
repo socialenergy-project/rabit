@@ -65,7 +65,16 @@
           <strong>Users:</strong>
           <%= @consumer.users.map{|u| link_to u.name, user_path(u)}.join(" | ").html_safe -%>
         </div>
-
+        <div>
+          <strong>SLA:</strong>
+          <% if @consumer.ecc_type.nil? %>
+            <%= link_to 'New SLA', new_ecc_type_path(consumer: @consumer), class: 'btn btn-primary btn-sm' if can? :edit, @consumer %>
+          <% else %>
+            <%= link_to "View SLA", @consumer.ecc_type%>
+            <%= link_to "DELETE SLA", @consumer.ecc_type, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' if can? :destroy, @consumer.ecc_type %>
+          <% end %>
+        </div>
+        <div>&nbsp;</div>
         <%= link_to 'Edit', edit_consumer_path(@consumer), class: 'btn btn-warning btn-sm' if can? :edit, @consumer %> |
         <%= link_to "All #{category_name(@consumer.consumer_category)}", consumers_path(category: @consumer.consumer_category), class: 'btn btn-info btn-sm' %> |
         <%= link_to 'All Consumers', consumers_path, class: 'btn btn-info btn-sm' %>

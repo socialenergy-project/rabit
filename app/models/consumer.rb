@@ -11,6 +11,8 @@ class Consumer < ApplicationRecord
   has_many :data_points, dependent: :destroy
   has_many :smart_plugs, dependent: :destroy
 
+  has_one :ecc_type, dependent: :destroy
+
   scope :category, ->(cat) { where(consumer_category: cat) if cat.present? }
   scope :with_locations, -> { where('location_x IS NOT NULL and location_y IS NOT NULL') }
 

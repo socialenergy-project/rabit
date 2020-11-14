@@ -13,6 +13,10 @@
           <%= @ecc_type.name -%>
         </p>
         <p>
+          <strong>Consumer:</strong>
+          <%= link_to @ecc_type.consumer&.name, @ecc_type.consumer if @ecc_type.consumer -%>
+        </p>
+        <p>
           <% if @ecc_type.ecc_terms.count > 0 %>
             <strong>Active periods:</strong>
             <ul>
