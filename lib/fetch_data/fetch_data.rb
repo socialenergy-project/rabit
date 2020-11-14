@@ -9,10 +9,10 @@ module FetchData
       @consumers = consumers
       start = chart_cookies[:type] == 'Real-time' ?
           DateTime.now - chart_cookies[:duration].to_i.seconds :
-          chart_cookies[:start_date].to_datetime
+          chart_cookies[:start_date].to_datetime - 2 * @interval.duration.seconds
       stop = chart_cookies[:type] == 'Real-time' ?
           DateTime.now + (chart_cookies[:duration].to_i / 5.0).seconds :
-          chart_cookies[:end_date].to_datetime
+          chart_cookies[:end_date].to_datetime + 2 * @interval.duration.seconds
 
       @params = {
           starttime: start,

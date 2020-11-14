@@ -12,7 +12,7 @@ addPopup = (element, text, cssclass) ->
 
 $(document).on "turbolinks:load", ->
   $("input.datetimepicker").datetimepicker({
-    format: 'yyyy-mm-dd hh:ii z',
+    format: 'yyyy-mm-dd hh:ii',
     minuteStep: 15,
     autoclose: true,
   })
@@ -74,7 +74,7 @@ window.createChart = (domElementId, dataset, legendId = null, startFromZero = tr
 
   now = (new Date()).getTime()
   console.log("dataset: ", dataset, chart_vars);
-  limits = if duration then { min: now - duration, max: now + duration / 5.0 } else if chart_vars then {min: new Date(chart_vars['start_date']), max: new Date(chart_vars['end_date'])} else {}
+  limits = if duration then { min: now - duration, max: now + duration / 5.0 } else if chart_vars then {min: new Date(new Date(chart_vars["start_date"].replace(" ", "T") + ":00Z").valueOf() - 5 * 60 * 500) , max: new Date(new Date(chart_vars['end_date'].replace(" ", "T") + ":00Z").valueOf() + 5 * 60 * 1000)} else {}
   chart = new Chart(ctx, {
     type: 'scatter',
     responsive: true,

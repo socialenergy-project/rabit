@@ -78,8 +78,8 @@ class PagesController < ApplicationController
       community: Community.find(12),
       path_method: method(:community_path),
       params: {
-        'start_date': today_in_2018,
-        'end_date': today_in_2018 + 1.day,
+        'start_date': helpers.format_datetime(today_in_2018),
+        'end_date': helpers.format_datetime(today_in_2018 + 1.day),
         'interval_id': Interval.find_by(duration: 900).id,
         'type': 'Historical'
       }
@@ -89,8 +89,8 @@ class PagesController < ApplicationController
       community: Community.find(12),
       path_method: method(:community_path),
       params: {
-        'start_date': today_in_2018,
-        'end_date': today_in_2018 + 1.week,
+        'start_date': helpers.format_datetime(today_in_2018),
+        'end_date': helpers.format_datetime(today_in_2018 + 1.week),
         'interval_id': Interval.find_by(duration: 3600).id,
         'type': 'Historical'
       }
@@ -100,8 +100,8 @@ class PagesController < ApplicationController
       community: Community.find(12),
       path_method: method(:community_path),
       params: {
-        'start_date': today_in_2018,
-        'end_date': today_in_2018 + 1.month,
+        'start_date': helpers.format_datetime(today_in_2018),
+        'end_date': helpers.format_datetime(today_in_2018 + 1.month),
         'interval_id': Interval.find_by(duration: 86_400).id,
         'type': 'Historical'
       }
@@ -111,8 +111,8 @@ class PagesController < ApplicationController
       community: Community.find(105),
       path_method: method(:community_path),
       params: {
-        'start_date': today_in_2015,
-        'end_date': today_in_2015 + 1.day,
+        'start_date': helpers.format_datetime(today_in_2015),
+        'end_date': helpers.format_datetime(today_in_2015 + 1.day),
         'interval_id': Interval.find_by(duration: 900).id,
         'type': 'Historical'
       }
@@ -122,8 +122,8 @@ class PagesController < ApplicationController
       community: Community.find(103),
       path_method: method(:community_path),
       params: {
-        'start_date': today_in_2015,
-        'end_date': today_in_2015 + 1.month,
+        'start_date': helpers.format_datetime(today_in_2015),
+        'end_date': helpers.format_datetime(today_in_2015 + 1.month),
         'interval_id': Interval.find_by(duration: 86_400).id,
         'type': 'Historical'
       }
