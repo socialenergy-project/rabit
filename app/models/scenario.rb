@@ -192,7 +192,7 @@ class Scenario < ApplicationRecord
                                             "select_algorithm": self.energy_programs,
                                             "level_flexibility": self.flexibility.id,
                                             "number_of_clusters": self.number_of_clusters,
-                                            "peak_demand_kwh": self.consumers.sum{|c| c.data_points.where(interval: self.interval, timestamp: self.starttime .. self.endtime).maximum(:consumption)},
+                                            "peak_demand_kwh": self.consumers.sum{|c| c.data_points.where(interval: self.interval, timestamp: self.starttime .. self.endtime).maximum(:consumption) || 0},
                                             "pp_enable": 0.0}, 'crtp_prtp_rtp')
 
         puts JSON.pretty_generate result
