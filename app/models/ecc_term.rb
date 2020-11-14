@@ -12,4 +12,8 @@ class EccTerm < ApplicationRecord
       ecc_factor.get_valid_timestamps(t)
     end
   end
+
+  def get_sla(timestamps)
+    get_valid_timestamps(timestamps).map{|timestamp| [timestamp, {value: value, price_per_mw: price_per_mw}]  }.to_h
+  end
 end

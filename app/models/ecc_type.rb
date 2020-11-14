@@ -8,10 +8,17 @@ class EccType < ApplicationRecord
                                 reject_if: :all_empty
 
   def get_valid_timestamps(timestamps)
-    ecc_terms.sum do |ecc_factor|
-      ecc_factor.get_valid_timestamps(timestamps)
+    ecc_terms.sum do |ecc_term|
+      ecc_term.get_valid_timestamps(timestamps)
     end.flatten.sort.uniq
   end
+
+  def get_sla(timestamps)
+    ecc_terms.map do |ecc_term|
+      ecc_term.get_sla(timestamps)
+    end
+  end
+
 
   def realtime?
     false

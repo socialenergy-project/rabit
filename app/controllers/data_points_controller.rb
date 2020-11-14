@@ -56,10 +56,14 @@ class DataPointsController < ApplicationController
                        elsif params[:ecc_type]
                          ecc_type = EccType.find(params[:ecc_type]&.to_i)
                          helpers.chart_cookies(ecc_type) unless params[:nocookies]
-                         valid_timestamps = ecc_type.get_valid_timestamps(timestamps_per_line)
-                         {
-                             '': timestamps_per_line.map {|t| [t, valid_timestamps.include?(t) ? 0.9 : nil ]}
-                         }
+                         sla = ecc_type.get_sla(timestamps_per_line)
+                         puts "The sla is #{sla}"
+
+                          sla.map.with_index { |term, i| {
+                              "volume_mw_#{i}": timestamps_per_line.map {|t| [t, term.has_key?(t) ? term[t][:value] : nil ]},
+                              "price_per_mw_#{i}": timestamps_per_line.map {|t| [t, term.has_key?(t) ? term[t][:price_per_mw] : nil ]}
+                            } }.reduce &:merge
+
                        else
                          community = Community.find(params[:community])
                          helpers.chart_cookies(community) unless params[:nocookies]

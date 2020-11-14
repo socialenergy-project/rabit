@@ -30,6 +30,7 @@ $(document).on "turbolinks:load", ->
     addPopup "#all-links", "URL NOT copied to clipboard", "alert-danger"
 
 getColor = (label, opacity) ->
+  return "rgba(220,53,69,#{opacity})" if label.match /price_per_mw/
   switch label
     when "RTP (no DR)" then "rgba(220,53,69,#{opacity})"
     when "Real-time pricing" then "rgba(0,123,255,#{opacity})"
@@ -200,7 +201,7 @@ window.getdata = (domElementId, consumers, chart_vars) ->
                    0
 
       # console.log "Painting chart, duration:", duration
-      createChart(domElementId, res, lines == 1 || lines > 5, false, duration, null, chart_vars)
+      createChart(domElementId, res, lines == 1 || lines > 5, false, duration, (if consumers.ecc_type then "" else null), chart_vars)
       $('#' + domElementId).siblings('.legend').removeClass('alert-info alert-danger')
     else
       $('#' + domElementId).siblings('.legend').removeClass('alert-info').addClass('alert-danger').text('No data points in range, select (or reset) the interval')

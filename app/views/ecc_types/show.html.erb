@@ -14,13 +14,13 @@
         </p>
         <p>
           <% if @ecc_type.ecc_terms.count > 0 %>
-            Active periods:
+            <strong>Active periods:</strong>
             <ul>
             <% @ecc_type.ecc_terms.each_with_index do |ecc_term, index| %>
-              <li><%= "OR" if index > 0 %></li>
+              <li><strong>Demand Reduction (MW):</strong> <%= ecc_term.value %>, <strong>Price (€/MW):</strong> <%= ecc_term.price_per_mw %></li>
                 <ul>
                   <% ecc_term.ecc_factors.each_with_index do |ecc_factor, index| %>
-                    <li><%= "AND" if index > 0 %> <%= ecc_factor.period.humanize %>, <%= ecc_factor.period.humanize.split[-1].pluralize   %>: <%= ecc_factor.start %> up to <%= ecc_factor.stop %></li>
+                    <li><%= "AND" if index > 0 %> <%= ecc_factor.period.humanize %>, <strong><%= ecc_factor.period.humanize.split[-1].pluralize   %>:</strong> <%= ecc_factor.start %> up to <%= ecc_factor.stop %></li>
 
                   <% end %>
                 </ul>

@@ -20,6 +20,12 @@
 
     <%= form.fields_for :ecc_terms do |ff| %>
       <div>
+        <%= ff.label :value, "Demand Reduction (MW)", class: "form-label no-flex" %>
+        <%= ff.number_field :value, step: 0.1, class: "form-control" %>
+
+        <%= ff.label :price_per_mw, "Price (€/MW)", class: "form-label no-flex" %>
+        <%= ff.number_field :price_per_mw, step: 0.01, class: "form-control" %>
+
         <%= ff.fields_for :ecc_factors do |fff| %>
           <div class="form-inline">
             <div class="p-1">
