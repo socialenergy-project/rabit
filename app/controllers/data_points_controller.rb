@@ -19,11 +19,12 @@ class DataPointsController < ApplicationController
 
         interval = Interval.find(params[:interval_id]&.to_i)&.duration&.seconds
 
+        interval = 5.minutes unless interval > 5.minutes
+
         timerange = params[:type] == "Real-time" ?
-                        DateTime.now - duration..DateTime.now + duration / 5.0 :
+                        DateTime.now - duration - 2 * interval ..DateTime.now + duration / 5.0 :
                         params[:start_date]&.to_datetime - 2 * interval .. params[:end_date]&.to_datetime + 2 * interval
 
-        p "The timerange is #{timerange}"
 
         filter = {
             timestamp: timerange,
