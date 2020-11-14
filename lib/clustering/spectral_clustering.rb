@@ -41,7 +41,8 @@ module ClusteringModule
       @consumers = DataPoint.includes(:consumer).where(consumer: @consumers,
                       interval: @interval_id,
                       timestamp: @startDate .. @endDate)
-          .group(:consumer_id).select('consumer_id, min(consumption) as c').reject{|d| d.c < 0.1}.map{|d| d.consumer}
+          .group(:consumer_id).select('consumer_id, min(consumption) as c') #.reject{|d| d.c < 0.1}
+          .map{|d| d.consumer}
 
 =begin
       @consumers = @consumers.reject do |c|
