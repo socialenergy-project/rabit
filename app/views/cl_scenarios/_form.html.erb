@@ -44,14 +44,14 @@
   <div class="form-group row">
     <%= form.label :starttime, class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
-      <%= form.text_field :starttime, value: format_datetime(@cl_scenario.starttime), id: :cl_scenario_starttime, class: "form-control datetimepicker" %>
+      <%= form.text_field :starttime, value: @cl_scenario.starttime.strftime("%F %H:%M"), id: :cl_scenario_starttime, class: "form-control datetimepicker" %>
     </div>
   </div>
 
   <div class="form-group row">
     <%= form.label :endtime, class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
-      <%= form.text_field :endtime, value: format_datetime(@cl_scenario.endtime), id: :cl_scenario_endtime, class: "form-control datetimepicker" %>
+      <%= form.text_field :endtime, value: @cl_scenario.endtime.strftime("%F %H:%M"), id: :cl_scenario_endtime, class: "form-control datetimepicker" %>
     </div>
   </div>
 
