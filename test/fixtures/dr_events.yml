@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  starttime: 2020-11-14 18:54:00
+  interval: one
+  price: 9.99
+  state: 1
+  type: 1
+
+two:
+  name: MyString
+  starttime: 2020-11-14 18:54:00
+  interval: two
+  price: 9.99
+  state: 1
+  type: 1

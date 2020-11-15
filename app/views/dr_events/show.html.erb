@@ -1,0 +1,45 @@
+<%= content_for :title, @dr_event.name || @dr_event.id -%>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        dr_event properties
+      </div>
+      <div class="card-body">
+        <p>
+          <strong>Name:</strong>
+          <%= @dr_event.name-%>
+        </p>
+        <p>
+          <strong>Starttime:</strong>
+          <%= @dr_event.starttime-%>
+        </p>
+        <p>
+          <strong>Interval:</strong>
+          <%= link_to @dr_event.interval&.name, interval_path(@dr_event.interval) if @dr_event.interval -%>
+        </p>
+        <p>
+          <strong>Price:</strong>
+          <%= @dr_event.price-%>
+        </p>
+        <p>
+          <strong>State:</strong>
+          <%= @dr_event.state-%>
+        </p>
+        <p>
+          <strong>Type:</strong>
+          <%= @dr_event.type-%>
+        </p>
+
+        <%= link_to 'Edit', edit_dr_event_path(@dr_event), class: 'btn btn-warning btn-sm' if can? :edit, @dr_event %> |
+        <%= link_to 'All Dr Events', dr_events_path, class: 'btn btn-info btn-sm' %>
+
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>
+
