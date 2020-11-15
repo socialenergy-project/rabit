@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :dr_events
+  resources :dr_events do
+    post :schedule, on: :member
+  end
   resources :smart_plugs
   resources :user_clustering_scenarios
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'

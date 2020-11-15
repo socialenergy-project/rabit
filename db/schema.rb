@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_14_165400) do
+ActiveRecord::Schema.define(version: 2020_11_15_090903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -155,10 +155,20 @@ ActiveRecord::Schema.define(version: 2020_11_14_165400) do
     t.bigint "interval_id", null: false
     t.decimal "price"
     t.integer "state"
-    t.integer "type"
+    t.integer "dr_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["interval_id"], name: "index_dr_events_on_interval_id"
+  end
+
+  create_table "dr_targets", force: :cascade do |t|
+    t.bigint "dr_event_id", null: false
+    t.integer "ts_offset"
+    t.decimal "volume"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["dr_event_id", "ts_offset"], name: "index_dr_targets_on_dr_event_id_and_ts_offset", unique: true
+    t.index ["dr_event_id"], name: "index_dr_targets_on_dr_event_id"
   end
 
   create_table "ecc_factors", force: :cascade do |t|
@@ -467,6 +477,7 @@ ActiveRecord::Schema.define(version: 2020_11_14_165400) do
   add_foreign_key "data_points", "consumers"
   add_foreign_key "data_points", "intervals"
   add_foreign_key "dr_events", "intervals"
+  add_foreign_key "dr_targets", "dr_events"
   add_foreign_key "ecc_factors", "ecc_terms"
   add_foreign_key "ecc_terms", "ecc_types"
   add_foreign_key "ecc_types", "consumers"

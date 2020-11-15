@@ -2,56 +2,61 @@
   <% if dr_event.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(dr_event.errors.count, "error") %> prohibited this dr_event from being saved:</h2>
-
       <ul>
-      <% dr_event.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% dr_event.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
-
   <div class="form-group row">
     <%= form.label :name, class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
       <%= form.text_field :name, id: :name, class: "form-control" %>
     </div>
   </div>
-
   <div class="form-group row">
     <%= form.label :starttime, class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
-      <%= form.datetime_select :starttime, id: :starttime, class: "form-control" %>
+      <%= form.text_field :starttime, value: @dr_event.starttime&.strftime("%F %H:%M"), id: :scenario_starttime, class: "form-control datetimepicker" %>
     </div>
   </div>
-
   <div class="form-group row">
     <%= form.label :interval_id, class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
-       <%= form.collection_select :interval_id, Interval.all, :id, :name, { prompt: true }, class: "form-control custom-select", id: 'dr_event_interval_id'  %>
+      <%= form.collection_select :interval_id, Interval.all, :id, :name, { prompt: true }, class: "form-control custom-select", id: 'dr_event_interval_id'  %>
     </div>
   </div>
-
   <div class="form-group row">
     <%= form.label :price, class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
-      <%= form.text_field :price, id: :price, class: "form-control" %>
+      <%= form.number_field :price, id: :price, step: 0.01, class: "form-control" %>
     </div>
   </div>
-
   <div class="form-group row">
     <%= form.label :state, class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
-      <%= form.number_field :state, id: :state, class: "form-control" %>
+      <%#= form.select :state, DrEvent.states.keys, {class: "form-control custom-select"}, disabled: true %>
+      <%= form.text_field :state, class: "form-control custom-select", disabled: :disabled %>
     </div>
   </div>
-
   <div class="form-group row">
-    <%= form.label :type, class: "col-sm-3 col-form-label" %>
+    <%= form.label :dr_type, class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
-      <%= form.number_field :type, id: :type, class: "form-control" %>
+      <%= form.select :dr_type, DrEvent.dr_types.keys, class: "form-control custom-select" %>
     </div>
   </div>
+  <h3>Dr targets</h3>
+  <div id="dr_target_fieds">
+    <%= form.fields_for :dr_targets, form.object.dr_targets.sort_by{|o| o.ts_offset } do |ff| %>
+      <%= render partial: 'dr_target_field', locals: {ff: ff} %>
+    <% end %>
+  </div>
+  <button id="new_dr_target">New DR Target</button>
+  <script>
+    App.dr_event_form.new_field = "<%= escape_javascript( render partial: 'dr_target_field', locals: {ff: form } ) %>";
+    App.dr_event_form.num_rows = <%= form.object.dr_targets.count %>;
+  </script>
 
   <div class="actions">
     <%= form.submit class: "btn btn-primary btn-sm" %>

@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dr_event: one
+  ts_offset: 1
+  volume: 9.99
+
+two:
+  dr_event: two
+  ts_offset: 1
+  volume: 9.99

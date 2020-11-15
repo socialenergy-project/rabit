@@ -1,6 +1,6 @@
 class DrEventsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_dr_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_dr_event, only: [:show, :schedule, :edit, :update, :destroy]
 
   # GET /dr_events
   # GET /dr_events.json
@@ -15,7 +15,25 @@ class DrEventsController < ApplicationController
 
   # GET /dr_events/new
   def new
-    @dr_event = DrEvent.new
+    default_interval = Interval.find_by(duration: 1.hour.seconds)
+    @dr_event = DrEvent.new(interval: default_interval,
+                            starttime: default_interval.next_timestamp(DateTime.now)&.strftime("%F %H:%M"),
+                            state: :created)
+    3.times {|i| @dr_event.dr_targets.build ts_offset: i}
+  end
+
+  def schedule
+    respond_to do |format|
+
+
+      if false #@dr_event.save
+        format.html { redirect_to @dr_event, notice: 'Dr event was successfully updated.' }
+        format.json { render :show, status: :ok, location: @dr_event }
+      else
+        format.html { redirect_to @dr_event, alert: 'Dr event was NOT successfully updated.' }
+        format.json { render json: @dr_event.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # GET /dr_events/1/edit
@@ -75,6 +93,6 @@ class DrEventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def dr_event_params
-      params.require(:dr_event).permit(:name, :starttime, :interval_id, :price, :state, :type)
+      params.require(:dr_event).permit(:name, :starttime, :interval_id, :price, :state, :dr_type, dr_targets_attributes: [ :id, :ts_offset, :volume,])
     end
 end

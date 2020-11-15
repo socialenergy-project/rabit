@@ -16,7 +16,7 @@
             <th><%= sortable "interval_id", "Interval" -%></th>
             <th><%= sortable "price", "Price" -%></th>
             <th><%= sortable "state", "State" -%></th>
-            <th><%= sortable "type", "Type" -%></th>
+            <th><%= sortable "dr_type", "Dr Type" -%></th>
             <th colspan="3"></th>
           </tr>
           </thead>
@@ -39,7 +39,7 @@
                 <%= dr_event.state-%>
             </td>
             <td>
-                <%= dr_event.type-%>
+                <%= dr_event.dr_type-%>
             </td>
             <td><%= link_to 'Show', dr_event, class: 'btn btn-info btn-sm' if can? :show, dr_event%></td>
             <td><%= link_to 'Edit', edit_dr_event_path(dr_event), class: 'btn btn-warning btn-sm' if can? :update, dr_event %></td>

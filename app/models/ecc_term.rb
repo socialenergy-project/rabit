@@ -4,8 +4,8 @@ class EccTerm < ApplicationRecord
   has_many :ecc_factors, dependent: :destroy
 
   accepts_nested_attributes_for :ecc_factors,
-                                :allow_destroy => true,
-                                :reject_if     => :all_blank
+                                allow_destroy: true,
+                                reject_if: :all_blank
 
   def get_valid_timestamps(timestamps)
     ecc_factors.inject(timestamps) do |t, ecc_factor|
@@ -14,6 +14,15 @@ class EccTerm < ApplicationRecord
   end
 
   def get_sla(timestamps)
-    get_valid_timestamps(timestamps).map{|timestamp| [timestamp, {value: value, price_per_mw: price_per_mw}]  }.to_h
+    get_valid_timestamps(timestamps).map { |timestamp| [timestamp, { value: value, price_per_mw: price_per_mw }] }.to_h
+  end
+
+  def get_sla_for_ts(timestamp)
+    return unless ecc_factors.all? { |ecf| ecf.is_valid_ts?(timestamp) }
+
+    {
+      value: value,
+      price_per_mw: price_per_mw
+    }
   end
 end
