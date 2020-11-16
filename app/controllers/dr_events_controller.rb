@@ -1,32 +1,29 @@
 class DrEventsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_dr_event, only: [:show, :schedule, :edit, :update, :destroy]
+  before_action :set_dr_event, only: %i[show schedule edit update destroy]
 
   # GET /dr_events
   # GET /dr_events.json
   def index
-    @dr_events = DrEvent.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @dr_events = DrEvent.order(sort_column + ' ' + sort_direction).paginate(page: params[:page])
   end
 
   # GET /dr_events/1
   # GET /dr_events/1.json
-  def show
-  end
+  def show; end
 
   # GET /dr_events/new
   def new
     default_interval = Interval.find_by(duration: 1.hour.seconds)
     @dr_event = DrEvent.new(interval: default_interval,
-                            starttime: default_interval.next_timestamp(DateTime.now)&.strftime("%F %H:%M"),
+                            starttime: default_interval.next_timestamp(DateTime.now)&.strftime('%F %H:%M'),
                             state: :created)
-    3.times {|i| @dr_event.dr_targets.build ts_offset: i}
+    3.times { |i| @dr_event.dr_targets.build ts_offset: i }
   end
 
   def schedule
     respond_to do |format|
-
-
-      if false #@dr_event.save
+      if false # @dr_event.save
         format.html { redirect_to @dr_event, notice: 'Dr event was successfully updated.' }
         format.json { render :show, status: :ok, location: @dr_event }
       else
@@ -37,8 +34,7 @@ class DrEventsController < ApplicationController
   end
 
   # GET /dr_events/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /dr_events
   # POST /dr_events.json
@@ -74,25 +70,24 @@ class DrEventsController < ApplicationController
   # DELETE /dr_events/1.json
   def destroy
     respond_to do |format|
-      begin
-        @dr_event.destroy
-        format.html { redirect_to dr_events_url, notice: 'Dr event was successfully destroyed.' }
-        format.json { head :no_content }
-      rescue Exception => e
-        format.html { redirect_to dr_events_url, alert: 'Dr event was NOT successfully destroyed. Reason is ' + e.message }
-        format.json { render json: e, status: :unprocessable_entity }
-      end
+      @dr_event.destroy
+      format.html { redirect_to dr_events_url, notice: 'Dr event was successfully destroyed.' }
+      format.json { head :no_content }
+    rescue Exception => e
+      format.html { redirect_to dr_events_url, alert: 'Dr event was NOT successfully destroyed. Reason is ' + e.message }
+      format.json { render json: e, status: :unprocessable_entity }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_dr_event
-      @dr_event = DrEvent.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def dr_event_params
-      params.require(:dr_event).permit(:name, :starttime, :interval_id, :price, :state, :dr_type, dr_targets_attributes: [ :id, :ts_offset, :volume,])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_dr_event
+    @dr_event = DrEvent.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def dr_event_params
+    params.require(:dr_event).permit(:name, :starttime, :interval_id, :price, :state, :dr_type, dr_targets_attributes: %i[id ts_offset volume])
+  end
 end

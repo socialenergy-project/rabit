@@ -1,5 +1,6 @@
 class DrTarget < ApplicationRecord
   belongs_to :dr_event
+  has_many :dr_actions
 
   def timestamp_start
     dr_event.starttime + dr_event.interval.duration * ts_offset

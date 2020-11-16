@@ -8,6 +8,6 @@ class CreateDrTargets < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index :dr_targets, [ :dr_event_id, :ts_offset ], unique: true
+    add_index :dr_targets, %i[dr_event_id ts_offset], unique: true
   end
 end

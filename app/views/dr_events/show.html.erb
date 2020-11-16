@@ -48,7 +48,7 @@
         <h2>SLA availability</h2>
         <table class="table">
           <thead>
-            <tr><th>Consumer</th><th>Price per unit (€/MW)</th>><th>SLA Demand Reduction (MW)</th><th>Current Allocation (MW)</th><th>DR availability (MW)</th></tr>
+            <tr><th>Consumer</th><th>Price per unit (€/MW)</th><th>SLA Demand Reduction (MW)</th><th>Current Allocation (MW)</th><th>DR availability (MW)</th></tr>
           </thead>
           <tbody>
             <% @dr_event.dr_targets.each do |dr_target| %>
@@ -58,7 +58,18 @@
               <% EccTerm.joins(:ecc_type).includes(ecc_type: :consumer).where('consumer_id IS NOT NULL').each do |sla| %>
                 <% vals = sla.get_sla_for_ts(dr_target.timestamp_start) %>
                 <% if (vals) %>
-                  <tr><td><%= sla.ecc_type.consumer.name %></td><td><%= vals[:price_per_mw] %><td><%= vals[:value] %></td><td><%= DrEvent.active.count %></td><td><%= DrEvent.active.count %></t  d></tr>
+                  <tr>
+                    <td><%= sla.ecc_type.consumer.name %></td>
+                    <td><%= vals[:price_per_mw] %></td>
+                    <td><%= vals[:value] %></td>
+                    <td><%= DrAction.for_timestamp_range(dr_target.timestamp_start,
+                                                         dr_target.timestamp_stop)
+                                    .where(consumer_id: sla.ecc_type.consumer_id)
+                                    .sum :volume_planned %></td>
+                    <td><%= sla.value - DrAction.for_timestamp_range(dr_target.timestamp_start,
+                                                         dr_target.timestamp_stop)
+                                    .where(consumer_id: sla.ecc_type.consumer_id)
+                                    .sum(:volume_planned) %></td></tr>
                 <% else %>
                   <tr><td colspan=4>
                     No consumers for timestamp

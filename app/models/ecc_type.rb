@@ -21,7 +21,6 @@ class EccType < ApplicationRecord
     end
   end
 
-
   def realtime?
     false
   end
@@ -32,20 +31,23 @@ class EccType < ApplicationRecord
 
   def initDates
     start_time = (DateTime.now - 1.week)
-    start_time = (start_time.change(year: 2015) rescue (start_time-1.day).change(year: 2015))
+    start_time = begin
+      start_time.change(year: 2015)
+    rescue StandardError
+      (start_time - 1.day).change(year: 2015)
+    end
     {
-        start_date: start_time,
-        end_date: start_time + 1.week,
-        duration: nil,
-        type: "Historical",
-        interval_id: Interval.find_by(duration: 3600).id,
+      start_date: start_time,
+      end_date: start_time + 1.week,
+      duration: nil,
+      type: 'Historical',
+      interval_id: Interval.find_by(duration: 3600).id
     }
   end
 
   private
 
   def all_empty(attributes)
-    ! attributes[:ecc_factors_attributes]&.any? {|k1,v1| v1.any? {|k2,v2| ! v2.blank? }}
+    !attributes[:ecc_factors_attributes]&.any? { |_k1, v1| v1.any? { |_k2, v2| !v2.blank? } }
   end
-
 end

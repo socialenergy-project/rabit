@@ -12,6 +12,7 @@ class Consumer < ApplicationRecord
   has_many :smart_plugs, dependent: :destroy
 
   has_one :ecc_type, dependent: :destroy
+  has_many :dr_actions, dependent: :restrict_with_error
 
   scope :category, ->(cat) { where(consumer_category: cat) if cat.present? }
   scope :with_locations, -> { where('location_x IS NOT NULL and location_y IS NOT NULL') }
@@ -34,10 +35,10 @@ class Consumer < ApplicationRecord
     else
       start = (DateTime.now - 1.week)
       start = (begin
-                 start.change(year: consumer_category.reference_year)
-               rescue StandardError
-                 (start - 1.day).change(year: consumer_category.reference_year)
-               end)
+        start.change(year: consumer_category.reference_year)
+      rescue StandardError
+        (start - 1.day).change(year: consumer_category.reference_year)
+      end)
       { start_date: start, end_date: start + 1.week, duration: nil, type: 'Historical' }
     end.merge interval_id: Interval.find_by(duration: 3600).id
   end
@@ -47,7 +48,7 @@ class Consumer < ApplicationRecord
       {
         name: "Flexgrid - #{c['_id']}",
         edms_id: c['_id'],
-        consumer_category_id: category,
+        consumer_category_id: category
       }
     end)
     Community.find(12).consumers = Consumer.where consumer_category_id: category

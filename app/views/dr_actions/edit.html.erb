@@ -1,0 +1,20 @@
+<%= content_for :title, 'Editing Dr Action' %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        dr_action properties
+      </div>
+      <div class="card-body">
+        <%= render 'form', dr_action: @dr_action %>
+
+        <%= link_to 'Show', @dr_action, class: 'btn btn-info btn-sm' %> |
+        <%= link_to 'All Dr Actions', dr_actions_path, class: 'btn btn-info btn-sm' %>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>

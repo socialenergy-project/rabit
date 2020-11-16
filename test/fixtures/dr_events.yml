@@ -6,7 +6,7 @@ one:
   interval: one
   price: 9.99
   state: 1
-  type: 1
+  dr_type: 1
 
 two:
   name: MyString
@@ -14,4 +14,4 @@ two:
   interval: two
   price: 9.99
   state: 1
-  type: 1
+  dr_type: 1
