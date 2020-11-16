@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :dr_plan_actions
   resources :dr_actions
   resources :dr_events do
     post :schedule, on: :member

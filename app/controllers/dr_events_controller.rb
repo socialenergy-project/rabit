@@ -23,7 +23,9 @@ class DrEventsController < ApplicationController
 
   def schedule
     respond_to do |format|
-      if false # @dr_event.save
+      if @dr_event.schedule! # @dr_event.save
+        @dr_event.state = :ready
+        @dr_event.save
         format.html { redirect_to @dr_event, notice: 'Dr event was successfully updated.' }
         format.json { render :show, status: :ok, location: @dr_event }
       else

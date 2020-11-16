@@ -31,6 +31,13 @@ class Ability
 
     if user.has_role? 'admin'
       can :manage, :all
+      cannot :manage, DrEvent
+      can :read, DrEvent
+
+      can [:schedule, :edit], DrEvent do |dr_event|
+        dr_event.created? || dr_event.ready?
+      end
+
     else
       # cannot :index, User
       can :read, :all

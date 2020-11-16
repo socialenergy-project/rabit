@@ -36,11 +36,26 @@
         <h2>DR targets</h2>
         <table class="table">
           <thead>
-            <tr><th>Timestamp period</th><th>Demand Reduction (MW)</th></tr>
+            <tr><th>Timestamp period</th><th>Requested Demand Reduction (MW)</th><th>Planned Demand Reduction (MW)</th><th>Cost (€)</th></tr>
           </thead>
           <tbody>
           <% @dr_event.dr_targets.each do |dr_target| %>
-          <tr><td><%= dr_target.timestamp_start %> - <%= dr_target.timestamp_stop %></td><td><%= dr_target.volume %></td></tr>
+          <tr>
+            <td><%= dr_target.timestamp_start %> - <%= dr_target.timestamp_stop %></td>
+            <td><%= dr_target.volume %></td>
+            <td>
+              [<% dr_target.dr_plan_actions.includes(:consumer).map do |a| %>
+                <%= link_to a.consumer.name, a.consumer.ecc_type %>:&nbsp;<%= a.volume_planned %>,
+              <% end %>]
+              <br>Total: <%= dr_target.dr_plan_actions.sum(:volume_planned) %>
+            </td>
+            <td>
+              [<% dr_target.dr_plan_actions.includes(:consumer).map do |a| %>
+                <%= link_to a.consumer.name, a.consumer.ecc_type %>:&nbsp;<%= a.price_per_mw %>,
+              <% end %>]
+              <br>Total: <%= dr_target.dr_plan_actions.sum('volume_planned * price_per_mw') %>
+            </td>
+          </tr>
           <% end %>
           <tbody>
         </table>
@@ -80,12 +95,36 @@
           <tbody>
         </table>
 
+        <h2>DR actions</h2>
+        <table class="table">
+          <thead>
+            <tr><th>Timestamp period</th><th>Requested Demand Reduction (MW)</th><th>Planned Demand Reduction (MW)</th><th>Cost (€)</th></tr>
+          </thead>
+          <tbody>
+          <% @dr_event.dr_targets.each do |dr_target| %>
+          <tr>
+            <td><%= dr_target.timestamp_start %> - <%= dr_target.timestamp_stop %></td>
+            <td><%= dr_target.volume %></td>
+            <td>
+              [<% dr_target.dr_actions.includes(:consumer).map do |a| %>
+                <%= link_to a.consumer.name, a.consumer.ecc_type %>:&nbsp;<%= a.volume_planned %>,
+              <% end %>]
+              <br>Total: <%= dr_target.dr_actions.sum(:volume_planned) %>
+            </td>
+            <td>
+              [<% dr_target.dr_actions.includes(:consumer).map do |a| %>
+                <%= link_to a.consumer.name, a.consumer.ecc_type %>:&nbsp;<%= a.price_per_mw %>,
+              <% end %>]
+              <br>Total: <%= dr_target.dr_actions.sum('volume_planned * price_per_mw') %>
+            </td>
+          </tr>
+          <% end %>
+          <tbody>
+        </table>
 
-
-
-        <%= link_to 'Edit', edit_dr_event_path(@dr_event), class: 'btn btn-warning btn-sm' if can? :edit, @dr_event %> |
-        <%= link_to 'All Dr Events', dr_events_path, class: 'btn btn-info btn-sm' %> |
-        <%= link_to 'Schedule DR event', schedule_dr_event_path(@dr_event), class: 'btn btn-primary btn-sm', method: :post %>
+        <%= button_to 'Edit', edit_dr_event_path(@dr_event), class: 'btn btn-warning btn-sm', disabled: !can?(:edit, @dr_event) %> |
+        <%= button_to 'All Dr Events', dr_events_path, class: 'btn btn-info btn-sm' %> |
+        <%= button_to 'Schedule DR event', schedule_dr_event_path(@dr_event), class: 'btn btn-primary btn-sm', method: :post, disabled: !can?(:schedule, @dr_event) %>
 
       </div>
       <div class="card-footer small text-muted">
