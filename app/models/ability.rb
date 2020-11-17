@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Ability
   include CanCan::Ability
 
@@ -32,11 +34,15 @@ class Ability
     if user.has_role? 'admin'
       can :manage, :all
       cannot :manage, DrEvent
-      can :read, DrEvent
+      can %i[read create], DrEvent
 
-      can [:schedule, :edit], DrEvent do |dr_event|
+      can [:schedule, :edit, :update, :destroy], DrEvent do |dr_event|
         dr_event.created? || dr_event.ready?
       end
+
+      can [:activate], DrEvent, &:ready?
+
+      can [:cancel], DrEvent, &:active?
 
     else
       # cannot :index, User
@@ -57,6 +63,5 @@ class Ability
         user == cl_scenario.user
       end
     end
-
   end
 end

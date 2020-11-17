@@ -102,29 +102,33 @@
           </thead>
           <tbody>
           <% @dr_event.dr_targets.each do |dr_target| %>
-          <tr>
-            <td><%= dr_target.timestamp_start %> - <%= dr_target.timestamp_stop %></td>
-            <td><%= dr_target.volume %></td>
-            <td>
-              [<% dr_target.dr_actions.includes(:consumer).map do |a| %>
-                <%= link_to a.consumer.name, a.consumer.ecc_type %>:&nbsp;<%= a.volume_planned %>,
-              <% end %>]
-              <br>Total: <%= dr_target.dr_actions.sum(:volume_planned) %>
-            </td>
-            <td>
-              [<% dr_target.dr_actions.includes(:consumer).map do |a| %>
-                <%= link_to a.consumer.name, a.consumer.ecc_type %>:&nbsp;<%= a.price_per_mw %>,
-              <% end %>]
-              <br>Total: <%= dr_target.dr_actions.sum('volume_planned * price_per_mw') %>
-            </td>
-          </tr>
+            <% if dr_target.dr_actions.count.positive? %>
+            <tr>
+              <td><%= dr_target.timestamp_start %> - <%= dr_target.timestamp_stop %></td>
+              <td><%= dr_target.volume %></td>
+              <td>
+                [<% dr_target.dr_actions.includes(:consumer).map do |a| %>
+                  <%= link_to a.consumer.name, a.consumer.ecc_type %>:&nbsp;<%= a.volume_planned %>,
+                <% end %>]
+                <br>Total: <%= dr_target.dr_actions.sum(:volume_planned) %>
+              </td>
+              <td>
+                [<% dr_target.dr_actions.includes(:consumer).map do |a| %>
+                  <%= link_to a.consumer.name, a.consumer.ecc_type %>:&nbsp;<%= a.price_per_mw %>,
+                <% end %>]
+                <br>Total: <%= dr_target.dr_actions.sum('volume_planned * price_per_mw') %>
+              </td>
+            </tr>
+            <% end %>
           <% end %>
           <tbody>
         </table>
 
-        <%= button_to 'Edit', edit_dr_event_path(@dr_event), class: 'btn btn-warning btn-sm', disabled: !can?(:edit, @dr_event) %> |
-        <%= button_to 'All Dr Events', dr_events_path, class: 'btn btn-info btn-sm' %> |
-        <%= button_to 'Schedule DR event', schedule_dr_event_path(@dr_event), class: 'btn btn-primary btn-sm', method: :post, disabled: !can?(:schedule, @dr_event) %>
+        <%= button_to 'Edit', edit_dr_event_path(@dr_event), class: 'btn btn-warning btn-sm', method: :get, disabled: !can?(:edit, @dr_event) %> |
+        <%= link_to 'All Dr Events', dr_events_path, class: 'btn btn-info btn-sm' %> |
+        <%= button_to 'Schedule DR event', schedule_dr_event_path(@dr_event), class: 'btn btn-primary btn-sm', method: :post, disabled: !can?(:schedule, @dr_event) %>|
+        <%= button_to 'Activate DR event', activate_dr_event_path(@dr_event), class: 'btn btn-primary btn-sm', method: :post, disabled: !can?(:activate, @dr_event) %>|
+        <%= button_to 'Cancel DR event', cancel_dr_event_path(@dr_event), class: 'btn btn-secondary btn-sm', method: :post, disabled: !can?(:cancel, @dr_event) %>
 
       </div>
       <div class="card-footer small text-muted">

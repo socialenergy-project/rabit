@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DrEventsController < ApplicationController
   load_and_authorize_resource
   before_action :set_dr_event, only: %i[show schedule edit update destroy]
@@ -5,7 +7,7 @@ class DrEventsController < ApplicationController
   # GET /dr_events
   # GET /dr_events.json
   def index
-    @dr_events = DrEvent.order(sort_column + ' ' + sort_direction).paginate(page: params[:page])
+    @dr_events = DrEvent.order("#{sort_column} #{sort_direction}").paginate(page: params[:page])
   end
 
   # GET /dr_events/1
@@ -24,12 +26,34 @@ class DrEventsController < ApplicationController
   def schedule
     respond_to do |format|
       if @dr_event.schedule! # @dr_event.save
-        @dr_event.state = :ready
-        @dr_event.save
-        format.html { redirect_to @dr_event, notice: 'Dr event was successfully updated.' }
+        format.html { redirect_to @dr_event, notice: 'Dr event was successfully scheduled.' }
         format.json { render :show, status: :ok, location: @dr_event }
       else
-        format.html { redirect_to @dr_event, alert: 'Dr event was NOT successfully updated.' }
+        format.html { redirect_to @dr_event, alert: 'Dr event was NOT successfully scheduled.' }
+        format.json { render json: @dr_event.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def activate
+    respond_to do |format|
+      if @dr_event.activate! # @dr_event.save
+        format.html { redirect_to @dr_event, notice: 'Dr event was successfully scheduled.' }
+        format.json { render :show, status: :ok, location: @dr_event }
+      else
+        format.html { redirect_to @dr_event, alert: 'Dr event was NOT successfully scheduled.' }
+        format.json { render json: @dr_event.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def cancel
+    respond_to do |format|
+      if @dr_event.cancel! # @dr_event.save
+        format.html { redirect_to @dr_event, notice: 'Dr event was successfully canceled.' }
+        format.json { render :show, status: :ok, location: @dr_event }
+      else
+        format.html { redirect_to @dr_event, alert: 'Dr event was NOT successfully canceled.' }
         format.json { render json: @dr_event.errors, status: :unprocessable_entity }
       end
     end
@@ -41,7 +65,7 @@ class DrEventsController < ApplicationController
   # POST /dr_events
   # POST /dr_events.json
   def create
-    @dr_event = DrEvent.new(dr_event_params)
+    @dr_event = DrEvent.new(dr_event_params.merge(state: :ready))
 
     respond_to do |format|
       if @dr_event.save
@@ -76,7 +100,7 @@ class DrEventsController < ApplicationController
       format.html { redirect_to dr_events_url, notice: 'Dr event was successfully destroyed.' }
       format.json { head :no_content }
     rescue Exception => e
-      format.html { redirect_to dr_events_url, alert: 'Dr event was NOT successfully destroyed. Reason is ' + e.message }
+      format.html { redirect_to dr_events_url, alert: "Dr event was NOT successfully destroyed. Reason is #{e.message}" }
       format.json { render json: e, status: :unprocessable_entity }
     end
   end

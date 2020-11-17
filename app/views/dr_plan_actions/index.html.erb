@@ -22,7 +22,7 @@
           <% @dr_plan_actions.each do |dr_plan_action| %>
           <tr>
             <td>
-                <%= link_to dr_plan_action.dr_target&.name, dr_target_path(dr_plan_action.dr_target) if dr_plan_action.dr_target -%>
+                <%= link_to dr_plan_action.dr_target&.dr_event&.name, dr_event_path(dr_plan_action.dr_target&.dr_event) if dr_plan_action.dr_target -%>
             </td>
             <td>
                 <%= link_to dr_plan_action.consumer&.name, consumer_path(dr_plan_action.consumer) if dr_plan_action.consumer -%>

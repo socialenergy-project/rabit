@@ -14,7 +14,7 @@
   <div class="form-group row">
     <%= form.label :dr_target_id, class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
-       <%= form.collection_select :dr_target_id, DrTarget.all, :id, :name, { prompt: true }, class: "form-control custom-select", id: 'dr_plan_action_dr_target_id'  %>
+       <%= form.select :dr_target_id, options_for_select(DrTarget.all.map{|drt| [ "#{drt.dr_event.name} - #{drt.timestamp_start} - #{drt.timestamp_stop}",  drt.id ]}), { prompt: true }, class: "form-control custom-select", id: 'dr_action_dr_target_id'  %>
     </div>
   </div>
 

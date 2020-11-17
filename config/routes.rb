@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   resources :dr_plan_actions
   resources :dr_actions
   resources :dr_events do
     post :schedule, on: :member
+    post :activate, on: :member
+    post :cancel, on: :member
   end
   resources :smart_plugs
   resources :user_clustering_scenarios

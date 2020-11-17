@@ -1,4 +1,4 @@
-<%= content_for :title, @dr_plan_action.name || @dr_plan_action.id -%>
+<%= content_for :title, "#{@dr_plan_action.dr_target&.dr_event&.name} - #{@dr_plan_action.consumer&.name}" -%>
 
 <div class="row">
   <div class="col-lg-12">
@@ -10,7 +10,7 @@
       <div class="card-body">
         <p>
           <strong>Dr target:</strong>
-          <%= link_to @dr_plan_action.dr_target&.name, dr_target_path(@dr_plan_action.dr_target) if @dr_plan_action.dr_target -%>
+          <%= link_to @dr_plan_action.dr_target&.dr_event&.name, dr_event_path(@dr_plan_action.dr_target&.dr_event) if @dr_plan_action.dr_target -%>
         </p>
         <p>
           <strong>Consumer:</strong>
