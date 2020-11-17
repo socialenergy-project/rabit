@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_17_091020) do
+ActiveRecord::Schema.define(version: 2020_11_17_161320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -210,7 +210,7 @@ ActiveRecord::Schema.define(version: 2020_11_17_091020) do
     t.bigint "ecc_type_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "value"
+    t.decimal "value", precision: 15, scale: 4
     t.decimal "price_per_mw", precision: 15, scale: 2
     t.index ["ecc_type_id"], name: "index_ecc_terms_on_ecc_type_id"
   end
