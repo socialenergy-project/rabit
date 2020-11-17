@@ -5,7 +5,7 @@ class EccTypesController < ApplicationController
   # GET /ecc_types
   # GET /ecc_types.json
   def index
-    @ecc_types = EccType.order(sort_column + ' ' + sort_direction).paginate(page: params[:page])
+    @ecc_types = EccType.accessible_by(current_ability,:read).order(sort_column + ' ' + sort_direction).paginate(page: params[:page])
   end
 
   # GET /ecc_types/1
@@ -18,7 +18,11 @@ class EccTypesController < ApplicationController
                   EccType.new
                 else
                   consumer = Consumer.find(params[:consumer].to_i)
-                  EccType.new(consumer_id: consumer.id, name: "SLA for #{consumer.name}")
+                  EccType.new(consumer_id: consumer.id,
+                              name: "SLA for #{consumer.name}",
+                              max_activation_time_per_activation: "01:00:00",
+                              max_activation_time_per_day: "01:00:00",
+                              minimum_activation_time: "01:00:00")
                 end
   end
 
@@ -80,6 +84,6 @@ class EccTypesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def ecc_type_params
-    params.require(:ecc_type).permit(:consumer_id, :name, ecc_terms_attributes: [:id, :value, :price_per_mw, :_destroy, { ecc_factors_attributes: %i[id _destroy period start stop] }])
+    params.require(:ecc_type).permit(:consumer_id, :name, :ramp_up_rate, :ramp_down_rate, :max_activation_time_per_activation, :max_activation_time_per_day, :energy_up_per_day, :energy_down_per_day, :minimum_activation_time, :max_activations_per_day, ecc_terms_attributes: [:id, :value, :price_per_mw, :_destroy, { ecc_factors_attributes: %i[id _destroy period start stop] }])
   end
 end

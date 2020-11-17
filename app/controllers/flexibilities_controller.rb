@@ -5,7 +5,7 @@ class FlexibilitiesController < ApplicationController
   # GET /flexibilities
   # GET /flexibilities.json
   def index
-    @flexibilities = Flexibility.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @flexibilities = Flexibility.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /flexibilities/1

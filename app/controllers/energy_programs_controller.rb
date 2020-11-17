@@ -5,7 +5,7 @@ class EnergyProgramsController < ApplicationController
   # GET /energy_programs
   # GET /energy_programs.json
   def index
-    @energy_programs = EnergyProgram.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @energy_programs = EnergyProgram.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /energy_programs/1

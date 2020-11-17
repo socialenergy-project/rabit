@@ -5,7 +5,7 @@ class DrPlanActionsController < ApplicationController
   # GET /dr_plan_actions
   # GET /dr_plan_actions.json
   def index
-    @dr_plan_actions = DrPlanAction.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @dr_plan_actions = DrPlanAction.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /dr_plan_actions/1

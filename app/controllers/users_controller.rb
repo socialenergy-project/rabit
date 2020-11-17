@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @users = User.accessible_by(current_ability,:read).rder(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /users/1

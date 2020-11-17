@@ -1,22 +1,24 @@
 class PagesController < ApplicationController
   def home
     @cards = [
-      { message: "#{Message.where(recipient: current_user).count} Messages",
+      { message: "#{Message.accessible_by(current_ability,:read).where(recipient: current_user).count} Messages",
         color: 'bg-primary', link: messages_path, image: 'fa-comments' },
-      { message: "#{Consumer.count} Consumers", color: 'bg-warning',
+      { message: "#{Consumer.accessible_by(current_ability,:read).count} Consumers", color: 'bg-warning',
         link: consumers_path, image: 'fa-line-chart' },
-      { message: "#{Community.count} Communities", color: 'bg-success',
+      { message: "#{Community.accessible_by(current_ability,:read).count} Communities", color: 'bg-success',
         link: communities_path, image: 'fa-handshake-o' },
-      { message: "#{Clustering.count} Clusterings", color: 'bg-danger',
+      { message: "#{Clustering.accessible_by(current_ability,:read).count} Clusterings", color: 'bg-danger',
         link: clusterings_path, image: 'fa-sitemap' },
       { message: "#{ClScenario.count} Clustering Algorithm Scenarios",
         color: 'bg-info', link: cl_scenarios_path, image: 'fa-sitemap' },
-      { message: "#{Recommendation.count} Recommendations", color: 'bg-primary',
+      { message: "#{Recommendation.accessible_by(current_ability,:read).count} Recommendations", color: 'bg-primary',
         link: recommendations_path, image: 'fa-money' },
-      { message: "#{Scenario.count} Energy Program Scenarios",
-        color: 'bg-warning', link: scenarios_path, image: 'fa-plug' },
-      { message: "#{UserClusteringScenario.count} User Clustering Scenarios",
-        color: 'bg-success', link: user_clustering_scenarios_path, image: 'fa-users' }
+      { message: "#{EccType.accessible_by(current_ability,:read).count} SLA offers",
+        color: 'bg-primary', link: ecc_types_path, image: 'fa-plug' },
+      (can?(:create, DrEvent) ? { message: "#{DrEvent.accessible_by(current_ability,:read).count} Demand Response Events",
+        color: 'bg-success', link: dr_events_path, image: 'fa-users' } :
+        { message: "#{DrAction.accessible_by(current_ability, :read).count} Demad Response Actions",
+        color: 'bg-success', link: dr_actions_path, image: 'fa-users' })
     ]
 
     now = DateTime.now

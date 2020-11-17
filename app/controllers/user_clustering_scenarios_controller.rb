@@ -7,7 +7,7 @@ class UserClusteringScenariosController < ApplicationController
   # GET /user_clustering_scenarios
   # GET /user_clustering_scenarios.json
   def index
-    @user_clustering_scenarios = UserClusteringScenario.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @user_clustering_scenarios = UserClusteringScenario.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /user_clustering_scenarios/1

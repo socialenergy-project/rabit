@@ -17,6 +17,39 @@
           <%= link_to @ecc_type.consumer&.name, @ecc_type.consumer if @ecc_type.consumer -%>
         </p>
         <p>
+          <strong>Ramp up rate (MW/h):</strong>
+          <%= @ecc_type.ramp_up_rate-%>
+        </p>
+        <p>
+          <strong>Ramp down rate (MW/h):</strong>
+          <%= @ecc_type.ramp_down_rate-%>
+        </p>
+        <p>
+          <strong>Max activation time per activation:</strong>
+          <%= @ecc_type.max_activation_time_per_activation-%>
+        </p>
+        <p>
+          <strong>Max activation time per day:</strong>
+          <%= @ecc_type.max_activation_time_per_day-%>
+        </p>
+        <p>
+          <strong>Energy up per day (MWh):</strong>
+          <%= @ecc_type.energy_up_per_day-%>
+        </p>
+        <p>
+          <strong>Energy down per day (MWh):</strong>
+          <%= @ecc_type.energy_down_per_day-%>
+        </p>
+        <p>
+          <strong>Minimum activation time:</strong>
+          <%= @ecc_type.minimum_activation_time-%>
+        </p>
+        <p>
+          <strong>Max activations per day:</strong>
+          <%= @ecc_type.max_activations_per_day-%>
+        </p>
+
+        <p>
           <% if @ecc_type.ecc_terms.count > 0 %>
             <strong>Active periods:</strong>
             <ul>

@@ -5,7 +5,7 @@ class ConnectionTypesController < ApplicationController
   # GET /connection_types
   # GET /connection_types.json
   def index
-    @connection_types = ConnectionType.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @connection_types = ConnectionType.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /connection_types/1

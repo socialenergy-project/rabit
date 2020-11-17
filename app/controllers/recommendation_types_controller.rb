@@ -5,7 +5,7 @@ class RecommendationTypesController < ApplicationController
   # GET /recommendation_types
   # GET /recommendation_types.json
   def index
-    @recommendation_types = RecommendationType.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @recommendation_types = RecommendationType.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /recommendation_types/1

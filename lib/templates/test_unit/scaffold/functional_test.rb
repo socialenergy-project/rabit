@@ -11,7 +11,7 @@ class <%= controller_class_name %>ControllerTest < ActionDispatch::IntegrationTe
   end
 
   test "should get index as user" do
-    sign_in_as_user
+    sign_in_as_admin
     get <%= index_helper %>_url
     assert_response :success
   end

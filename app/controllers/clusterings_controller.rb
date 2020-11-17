@@ -10,7 +10,7 @@ class ClusteringsController < ApplicationController
   # GET /clusterings
   # GET /clusterings.json
   def index
-    @clusterings = Clustering.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @clusterings = Clustering.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /clusterings/1

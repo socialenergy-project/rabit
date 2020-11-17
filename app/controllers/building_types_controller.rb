@@ -5,7 +5,7 @@ class BuildingTypesController < ApplicationController
   # GET /building_types
   # GET /building_types.json
   def index
-    @building_types = BuildingType.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @building_types = BuildingType.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /building_types/1

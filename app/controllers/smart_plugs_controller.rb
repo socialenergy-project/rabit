@@ -5,7 +5,7 @@ class SmartPlugsController < ApplicationController
   # GET /smart_plugs
   # GET /smart_plugs.json
   def index
-    @smart_plugs = SmartPlug.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @smart_plugs = SmartPlug.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /smart_plugs/1

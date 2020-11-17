@@ -7,7 +7,7 @@ class RecommendationsController < ApplicationController
   # GET /recommendations
   # GET /recommendations.json
   def index
-    @recommendations = Recommendation.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @recommendations = Recommendation.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /recommendations/1

@@ -68,7 +68,7 @@
         <div>
           <strong>SLA:</strong>
           <% if @consumer.ecc_type.nil? %>
-            <%= link_to 'New SLA', new_ecc_type_path(consumer: @consumer), class: 'btn btn-primary btn-sm' if can? :edit, @consumer %>
+            <%= link_to 'New SLA', new_ecc_type_path(consumer: @consumer), class: 'btn btn-primary btn-sm' if can? :create, EccType %>
           <% else %>
             <%= link_to "View SLA", @consumer.ecc_type%>
             <%= link_to "DELETE SLA", @consumer.ecc_type, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' if can? :destroy, @consumer.ecc_type %>

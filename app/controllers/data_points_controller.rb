@@ -9,7 +9,7 @@ class DataPointsController < ApplicationController
   def index
     respond_to do |format|
       format.html do
-        @data_points = DataPoint.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+        @data_points = DataPoint.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
         render :index
       end
       format.json do

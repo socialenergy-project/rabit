@@ -10,7 +10,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # GET <%= route_url %>
   # GET <%= route_url %>.json
   def index
-    @<%= plural_table_name %> = <%= class_name %>.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @<%= plural_table_name %> = <%= class_name %>.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET <%= route_url %>/1

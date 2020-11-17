@@ -7,7 +7,7 @@ class CommunitiesController < ApplicationController
   # GET /communities
   # GET /communities.json
   def index
-    @communities = Community.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @communities = Community.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /communities/1

@@ -9,7 +9,7 @@ class ClScenariosController < ApplicationController
   # GET /cl_scenarios
   # GET /cl_scenarios.json
   def index
-    @cl_scenarios = ClScenario.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @cl_scenarios = ClScenario.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   def stderr

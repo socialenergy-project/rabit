@@ -5,7 +5,7 @@ class DrActionsController < ApplicationController
   # GET /dr_actions
   # GET /dr_actions.json
   def index
-    @dr_actions = DrAction.order(sort_column + ' ' + sort_direction).paginate(page: params[:page])
+    @dr_actions = DrAction.accessible_by(current_ability,:read).order(sort_column + ' ' + sort_direction).paginate(page: params[:page])
   end
 
   # GET /dr_actions/1

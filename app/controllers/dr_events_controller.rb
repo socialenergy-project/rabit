@@ -7,7 +7,7 @@ class DrEventsController < ApplicationController
   # GET /dr_events
   # GET /dr_events.json
   def index
-    @dr_events = DrEvent.order("#{sort_column} #{sort_direction}").paginate(page: params[:page])
+    @dr_events = DrEvent.accessible_by(current_ability,:read).order("#{sort_column} #{sort_direction}").paginate(page: params[:page])
   end
 
   # GET /dr_events/1

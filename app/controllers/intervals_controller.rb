@@ -5,7 +5,7 @@ class IntervalsController < ApplicationController
   # GET /intervals
   # GET /intervals.json
   def index
-    @intervals = Interval.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @intervals = Interval.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /intervals/1

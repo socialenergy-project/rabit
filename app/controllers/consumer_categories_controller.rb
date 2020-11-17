@@ -5,7 +5,7 @@ class ConsumerCategoriesController < ApplicationController
   # GET /consumer_categories
   # GET /consumer_categories.json
   def index
-    @consumer_categories = ConsumerCategory.order(sort_column + " " + sort_direction).paginate(:page => params[:page])
+    @consumer_categories = ConsumerCategory.accessible_by(current_ability,:read).order(sort_column + " " + sort_direction).paginate(:page => params[:page])
   end
 
   # GET /consumer_categories/1
