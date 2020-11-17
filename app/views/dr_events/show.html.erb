@@ -21,6 +21,10 @@
           <%= link_to @dr_event.interval&.name, interval_path(@dr_event.interval) if @dr_event.interval -%>
         </p>
         <p>
+          <strong>Consumer Category:</strong>
+          <%= link_to @dr_event.consumer_category&.name, consumer_category_path(@dr_event.consumer_category) if @dr_event.consumer_category -%>
+        </p>
+        <p>
           <strong>Price:</strong>
           <%= @dr_event.price-%>
         </p>
@@ -63,14 +67,14 @@
         <h2>SLA availability</h2>
         <table class="table">
           <thead>
-            <tr><th>Consumer</th><th>Price per unit (€/MW)</th>><th>SLA Demand Reduction (MW)</th><th>Current Allocation (MW)</th><th>DR availability (MW)</th></tr>
+            <tr><th>Consumer</th><th>Price per unit (€/MW)</th><th>SLA Demand Reduction (MW)</th><th>Current Allocation (MW)</th><th>DR availability (MW)</th></tr>
           </thead>
           <tbody>
             <% @dr_event.dr_targets.each do |dr_target| %>
               <tr><td colspan=4>
               <%= dr_target.timestamp_start %> - <%= dr_target.timestamp_stop %>
               </td></tr>
-              <% EccTerm.joins(:ecc_type).includes(ecc_type: :consumer).where('consumer_id IS NOT NULL').each do |sla| %>
+              <% (@dr_event.slas_for_ts(dr_target.timestamp_start) & @dr_event.slas_for_ts(dr_target.timestamp_stop)).each do |sla| %>
                 <% vals = sla.get_sla_for_ts(dr_target.timestamp_start) %>
                 <% if (vals) %>
                   <tr>

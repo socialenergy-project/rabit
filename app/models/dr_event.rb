@@ -2,6 +2,8 @@
 
 class DrEvent < ApplicationRecord
   belongs_to :interval
+  belongs_to :consumer_category, optional: true
+
   has_many :dr_targets, dependent: :destroy
 
   enum state: %i[created ready active in_progress completed elapsed]
@@ -67,10 +69,11 @@ class DrEvent < ApplicationRecord
   end
 
   def slas_for_ts(timestamp)
-    EccTerm.joins(:ecc_type)
-           .includes(ecc_type: :consumer)
-           .where('consumer_id IS NOT NULL')
-           .select { |e| e.get_sla_for_ts(timestamp) }
+    res = EccTerm.joins(ecc_type: :consumer)
+                 .includes(ecc_type: :consumer)
+                 .where('consumer_id IS NOT NULL')
+    res = res.where('consumers.consumer_category_id': consumer_category_id) unless consumer_category_id.blank?
+    res.select { |e| e.get_sla_for_ts(timestamp) }
   end
 
   def activate!

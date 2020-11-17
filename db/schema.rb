@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_16_110409) do
+ActiveRecord::Schema.define(version: 2020_11_17_091020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,6 +170,8 @@ ActiveRecord::Schema.define(version: 2020_11_16_110409) do
     t.integer "dr_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "consumer_category_id"
+    t.index ["consumer_category_id"], name: "index_dr_events_on_consumer_category_id"
     t.index ["interval_id"], name: "index_dr_events_on_interval_id"
   end
 
@@ -501,6 +503,7 @@ ActiveRecord::Schema.define(version: 2020_11_16_110409) do
   add_foreign_key "data_points", "intervals"
   add_foreign_key "dr_actions", "consumers"
   add_foreign_key "dr_actions", "dr_targets"
+  add_foreign_key "dr_events", "consumer_categories"
   add_foreign_key "dr_events", "intervals"
   add_foreign_key "dr_plan_actions", "consumers"
   add_foreign_key "dr_plan_actions", "dr_targets"

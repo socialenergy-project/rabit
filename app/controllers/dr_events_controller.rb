@@ -114,6 +114,6 @@ class DrEventsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def dr_event_params
-    params.require(:dr_event).permit(:name, :starttime, :interval_id, :price, :state, :dr_type, dr_targets_attributes: %i[id ts_offset volume])
+    params.require(:dr_event).permit(:name, :starttime, :interval_id, :consumer_category_id, :price, :state, :dr_type, dr_targets_attributes: %i[id ts_offset volume])
   end
 end
