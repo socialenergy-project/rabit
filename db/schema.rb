@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_17_161320) do
+ActiveRecord::Schema.define(version: 2020_11_17_162328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -220,6 +220,14 @@ ActiveRecord::Schema.define(version: 2020_11_17_161320) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "consumer_id"
+    t.decimal "ramp_up_rate", precision: 15, scale: 4
+    t.decimal "ramp_down_rate", precision: 15, scale: 4
+    t.interval "max_activation_time_per_activation"
+    t.interval "max_activation_time_per_day"
+    t.decimal "energy_up_per_day", precision: 15, scale: 4
+    t.decimal "energy_down_per_day", precision: 15, scale: 4
+    t.interval "minimum_activation_time"
+    t.integer "max_activations_per_day"
     t.index ["consumer_id"], name: "index_ecc_types_on_consumer_id"
   end
 
