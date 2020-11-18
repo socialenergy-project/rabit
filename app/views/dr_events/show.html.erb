@@ -64,9 +64,9 @@
             </td>
             <td>
               <% dr_target.dr_plan_actions.includes(:consumer).where(consumer_category_id: consumer_category).map do |a| %>
-                <%= link_to a.consumer.name , a.consumer.ecc_type %>:&nbsp;<%= dr_target.cleared_price %>,
+                <%= link_to a.consumer.name , a.consumer.ecc_type %>:&nbsp;<%= dr_target.dr_plan_actions.where(consumer_category_id: consumer_category).maximum(:price_per_mw) %>,
               <% end %>
-              <br>Total: <%= dr_target.dr_plan_actions.sum(:volume_planned) * (dr_target.cleared_price || 0)%>
+              <br>Total: <%= dr_target.dr_plan_actions.sum(:volume_planned) * (dr_target.dr_plan_actions.where(consumer_category_id: consumer_category).maximum(:price_per_mw) || 0)%>
             </td>
           </tr>
           <% end %>
