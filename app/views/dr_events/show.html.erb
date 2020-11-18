@@ -37,10 +37,13 @@
           <%= @dr_event.dr_type-%>
         </p>
 
-        <h2>DR targets</h2>
-        <table class="table">
+        <% categories = ConsumerCategory.joins(dr_plan_actions: :dr_target).where('dr_targets.dr_event_id': @dr_event).uniq
+         ( categories + (categories.length > 1 ? [ nil ] : [])).each do |consumer_category| %>
+
+        <h2>DR targets - <%= consumer_category&.name || 'All' %></h2>
+        <table class="table table-responsive">
           <thead>
-            <tr><th>Timestamp period</th><th>Requested Demand Reduction (MW)</th><th>Planned Demand Reduction (MW)</th><th>Cost (€)</th></tr>
+            <tr><th>Timestamp period</th><th>Requested Demand Reduction (MW)</th><th>Planned Demand Reduction (MW)</th><th>Cost - Pay as bid (€)</th><th>Cost - Pay as cleared (€)</th></tr>
           </thead>
           <tbody>
           <% @dr_event.dr_targets.each do |dr_target| %>
@@ -48,24 +51,32 @@
             <td><%= dr_target.timestamp_start %> - <%= dr_target.timestamp_stop %></td>
             <td><%= dr_target.volume %></td>
             <td>
-              [<% dr_target.dr_plan_actions.includes(:consumer).map do |a| %>
+              <% dr_target.dr_plan_actions.includes(:consumer).where(consumer_category_id: consumer_category).map do |a| %>
                 <%= link_to a.consumer.name, a.consumer.ecc_type %>:&nbsp;<%= a.volume_planned %>,
-              <% end %>]
+              <% end %>
               <br>Total: <%= dr_target.dr_plan_actions.sum(:volume_planned) %>
             </td>
             <td>
-              [<% dr_target.dr_plan_actions.includes(:consumer).map do |a| %>
+              <% dr_target.dr_plan_actions.includes(:consumer).where(consumer_category_id: consumer_category).map do |a| %>
                 <%= link_to a.consumer.name, a.consumer.ecc_type %>:&nbsp;<%= a.price_per_mw %>,
-              <% end %>]
+              <% end %>
               <br>Total: <%= dr_target.dr_plan_actions.sum('volume_planned * price_per_mw') %>
+            </td>
+            <td>
+              <% dr_target.dr_plan_actions.includes(:consumer).where(consumer_category_id: consumer_category).map do |a| %>
+                <%= link_to a.consumer.name , a.consumer.ecc_type %>:&nbsp;<%= dr_target.cleared_price %>,
+              <% end %>
+              <br>Total: <%= dr_target.dr_plan_actions.sum(:volume_planned) * (dr_target.cleared_price || 0)%>
             </td>
           </tr>
           <% end %>
           <tbody>
         </table>
 
+        <% end %>
+
         <h2>SLA availability</h2>
-        <table class="table">
+        <table class="table table-responsive scroll_table">
           <thead>
             <tr><th>Consumer</th><th>Price per unit (€/MW)</th><th>SLA Demand Reduction (MW)</th><th>Current Allocation (MW)</th><th>DR availability (MW)</th></tr>
           </thead>
@@ -100,7 +111,7 @@
         </table>
 
         <h2>DR actions</h2>
-        <table class="table">
+        <table class="table table-responsive">
           <thead>
             <tr><th>Timestamp period</th><th>Requested Demand Reduction (MW)</th><th>Planned Demand Reduction (MW)</th><th>Cost (€)</th></tr>
           </thead>
@@ -111,15 +122,15 @@
               <td><%= dr_target.timestamp_start %> - <%= dr_target.timestamp_stop %></td>
               <td><%= dr_target.volume %></td>
               <td>
-                [<% dr_target.dr_actions.includes(:consumer).map do |a| %>
+                <% dr_target.dr_actions.includes(:consumer).map do |a| %>
                   <%= link_to a.consumer.name, a.consumer.ecc_type %>:&nbsp;<%= a.volume_planned %>,
-                <% end %>]
+                <% end %>
                 <br>Total: <%= dr_target.dr_actions.sum(:volume_planned) %>
               </td>
               <td>
-                [<% dr_target.dr_actions.includes(:consumer).map do |a| %>
+                <% dr_target.dr_actions.includes(:consumer).map do |a| %>
                   <%= link_to a.consumer.name, a.consumer.ecc_type %>:&nbsp;<%= a.price_per_mw %>,
-                <% end %>]
+                <% end %>
                 <br>Total: <%= dr_target.dr_actions.sum('volume_planned * price_per_mw') %>
               </td>
             </tr>

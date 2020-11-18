@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_17_162328) do
+ActiveRecord::Schema.define(version: 2020_11_18_092147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -182,6 +182,8 @@ ActiveRecord::Schema.define(version: 2020_11_17_162328) do
     t.decimal "price_per_mw"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "consumer_category_id"
+    t.index ["consumer_category_id"], name: "index_dr_plan_actions_on_consumer_category_id"
     t.index ["consumer_id"], name: "index_dr_plan_actions_on_consumer_id"
     t.index ["dr_target_id"], name: "index_dr_plan_actions_on_dr_target_id"
   end
@@ -192,6 +194,7 @@ ActiveRecord::Schema.define(version: 2020_11_17_162328) do
     t.decimal "volume"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.decimal "cleared_price"
     t.index ["dr_event_id", "ts_offset"], name: "index_dr_targets_on_dr_event_id_and_ts_offset", unique: true
     t.index ["dr_event_id"], name: "index_dr_targets_on_dr_event_id"
   end
@@ -513,6 +516,7 @@ ActiveRecord::Schema.define(version: 2020_11_17_162328) do
   add_foreign_key "dr_actions", "dr_targets"
   add_foreign_key "dr_events", "consumer_categories"
   add_foreign_key "dr_events", "intervals"
+  add_foreign_key "dr_plan_actions", "consumer_categories"
   add_foreign_key "dr_plan_actions", "consumers"
   add_foreign_key "dr_plan_actions", "dr_targets"
   add_foreign_key "dr_targets", "dr_events"
