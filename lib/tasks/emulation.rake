@@ -20,7 +20,7 @@ namespace :emulation do
     cat_mv = ConsumerCategory.find_or_create_by!(name: 'DR medium voltage')
 
     20.times do |i|
-      consumer = Consumer.find_or_create_by!(name: "DR low medium #{i}", consumer_category: cat_mv)
+      consumer = Consumer.find_or_create_by!(name: "DR medium voltage #{i}", consumer_category: cat_mv)
       consumer.update(edms_id: "senity_#{edms_id_count += 1}_power")
       consumer.ecc_type&.destroy
       factor = EccFactor.new period: :daily_per_hour, start: 0, stop: 23

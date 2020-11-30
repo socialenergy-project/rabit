@@ -8,7 +8,7 @@ class DrEventWorker
     logger.debug "running at #{timestamp}"
 
     actions_to_activate = DrAction.includes(:consumer).for_timestamp(timestamp).where(activated_at: nil)
-    actions_to_deactivate = DrAction.includes(:consumer).where('activated_at IS NOT NULL AND deactivated_at IS NULL') - actions_to_activate
+    actions_to_deactivate = DrAction.includes(:consumer).where('activated_at IS NOT NULL AND deactivated_at IS NULL') - DrAction.includes(:consumer).for_timestamp(timestamp)
 
     logger.debug "Current actions to be deactivated: #{actions_to_deactivate.pluck(:consumer_id)}"
     actions_to_deactivate.each { |dra| deactivate_dr(dra, timestamp) }
