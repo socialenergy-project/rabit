@@ -39,7 +39,7 @@ module FetchData
 
       )
       p "The last ones are #{last}"
-      new_data_points = download(@params.merge(mac: @consumers.select{|c| [2,3].include? c.consumer_category_id}.map(&:edms_id).join(",") ))
+      new_data_points = download(@params.merge(mac: @consumers.select{|c| [2,3,5,6].include? c.consumer_category_id}.map(&:edms_id).join(",") ))
                             .reject{|d| d["timestamp"].to_datetime < last[d["mac"]]}
 
 
@@ -168,7 +168,7 @@ module FetchData
         Rails.logger.debug "end: #{@params[:endtime]}"
 
         # Get from socialenergy EDMS db
-        edms_consumers = @consumers.select{|c| [2,3].include? c.consumer_category_id}
+        edms_consumers = @consumers.select{|c| [2,3,5,6].include? c.consumer_category_id}
         if edms_consumers.any?
           socialenerg_data_points = download @params.merge(mac: edms_consumers.map(&:edms_id).join(",") )
           upsert socialenerg_data_points
