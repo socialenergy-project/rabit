@@ -18,7 +18,7 @@ class DrEventsController < ApplicationController
   def new
     default_interval = Interval.find_by(duration: 1.hour.seconds)
     @dr_event = DrEvent.new(interval: default_interval,
-                            starttime: default_interval.next_timestamp(DateTime.now)&.strftime('%F %H:%M'),
+                            starttime: default_interval.next_timestamp(DateTime.now - DateTime.now.utc_offset.seconds)&.strftime('%F %H:%M'),
                             state: :created)
     3.times { |i| @dr_event.dr_targets.build ts_offset: i }
   end

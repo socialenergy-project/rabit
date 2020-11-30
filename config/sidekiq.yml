@@ -1,0 +1,14 @@
+---
+:verbose: false
+# :concurrency: 5
+# :logfile: ./log/sidekiq.log
+
+:schedule:
+  DrEventWorker:
+    cron: "* * * * *"
+    queue: scheduler
+    enabled: true
+
+:queues:
+  - default
+  - scheduler

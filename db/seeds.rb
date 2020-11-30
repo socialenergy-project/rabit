@@ -139,39 +139,39 @@ initialize_with_id_and_name({
                             }, BuildingType)
 puts "Created #{BuildingType.all.count} Building types"
 
-initialize_with_id_and_name({
-                                1 => "Night hours",
-                                2 => "Weekend",
-                                3 => "Mon-Fri",
-                                4 => "Peak hours",
-                            }, EccType)
-puts "Created #{EccType.all.count} ECC types"
+# initialize_with_id_and_name({
+#                                 1 => "Night hours",
+#                                 2 => "Weekend",
+#                                 3 => "Mon-Fri",
+#                                 4 => "Peak hours",
+#                             }, EccType)
+# puts "Created #{EccType.all.count} ECC types"
 
-[[1,3],[2,1],[3,1],[4,4],[5,2],[6,2]].each do |id, ecc_type_id|
-  EccTerm.where(id: id).first_or_initialize.tap do |ecc_term|
-    ecc_term.ecc_type_id = ecc_type_id
-    ecc_term.save!
-  end
-end
+# [[1,3],[2,1],[3,1],[4,4],[5,2],[6,2]].each do |id, ecc_type_id|
+#   EccTerm.where(id: id).first_or_initialize.tap do |ecc_term|
+#     ecc_term.ecc_type_id = ecc_type_id
+#     ecc_term.save!
+#   end
+# end
 
-[[1,:weekly_per_day,1,5,1],
- [2,:daily_per_hour,8,20,1],
- [3,:weekly_per_day,1,5,2],
- [4,:daily_per_hour,0,8,2],
- [5,:weekly_per_day,1,5,3],
- [6,:daily_per_hour,20,24,3],
- [7,:yearly_per_month,6,9,4],
- [8,:daily_per_hour,14,17,4],
- [9,:weekly_per_day,0,0,5],
- [10,:weekly_per_day,6,6,6]].each do |id,period,start,stop,ecc_term_id|
-  EccFactor.where(id: id).first_or_initialize.tap do |ecc_factor|
-    ecc_factor.period = period
-    ecc_factor.start = start
-    ecc_factor.stop = stop
-    ecc_factor.ecc_term_id = ecc_term_id
-    ecc_factor.save!
-  end
-end
+# [[1,:weekly_per_day,1,5,1],
+#  [2,:daily_per_hour,8,20,1],
+#  [3,:weekly_per_day,1,5,2],
+#  [4,:daily_per_hour,0,8,2],
+#  [5,:weekly_per_day,1,5,3],
+#  [6,:daily_per_hour,20,24,3],
+#  [7,:yearly_per_month,6,9,4],
+#  [8,:daily_per_hour,14,17,4],
+#  [9,:weekly_per_day,0,0,5],
+#  [10,:weekly_per_day,6,6,6]].each do |id,period,start,stop,ecc_term_id|
+#   EccFactor.where(id: id).first_or_initialize.tap do |ecc_factor|
+#     ecc_factor.period = period
+#     ecc_factor.start = start
+#     ecc_factor.stop = stop
+#     ecc_factor.ecc_term_id = ecc_term_id
+#     ecc_factor.save!
+#   end
+# end
 
 
 
@@ -193,8 +193,8 @@ initialize_with_id_and_name({
 puts "Created #{Flexibility.all.count} Flexibilities"
 
 
-#["Consumer", "Community::HABTM_Consumers", "DataPoint"].each do |tbl_name|
-["Consumer", "Community::HABTM_Consumers"].each do |tbl_name|
+["Consumer", "Community::HABTM_Consumers", "DataPoint"].each do |tbl_name|
+#["Consumer", "Community::HABTM_Consumers"].each do |tbl_name|
   dbconn = ActiveRecord::Base.connection_pool.checkout
   raw  = dbconn.raw_connection
   begin
