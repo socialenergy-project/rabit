@@ -1,3 +1,5 @@
+require 'fetch_data/fetch_data'
+
 class DrEventWorker
   include Sidekiq::Worker
 
@@ -9,6 +11,16 @@ class DrEventWorker
 
     actions_to_activate = DrAction.includes(:consumer).for_timestamp(timestamp).where(activated_at: nil)
     actions_to_deactivate = DrAction.includes(:consumer).where('activated_at IS NOT NULL AND deactivated_at IS NULL') - DrAction.includes(:consumer).for_timestamp(timestamp)
+
+    if actions_to_activate.count.positive?
+      actions_to_activate.map do |dr_action|
+        FetchData::FetchData.new([dr_action.consumer], {
+                                   interval_id: dr_action.dr_target.dr_event.interval_id,
+                                   type: 'Real-time',
+                                   duration: dr_action.dr_target.dr_event.interval.duration * 3
+                                 }).sync
+      end
+    end
 
     logger.debug "Current actions to be deactivated: #{actions_to_deactivate.pluck(:consumer_id)}"
     actions_to_deactivate.each { |dra| deactivate_dr(dra, timestamp) }
@@ -27,7 +39,7 @@ class DrEventWorker
 
   def activate_dr(dr_action, timestamp)
     last_data_point = DataPoint.includes(:interval).where(consumer_id: dr_action.consumer_id).order(timestamp: :desc).first
-    target = (last_data_point ? last_data_point.consumption / (last_data_point.interval.duration.to_f / 1.hour) : 0.0) - (dr_action.volume_planned * 1e6)
+    target = (last_data_point ? last_data_point.consumption * 1e+3 / (last_data_point.interval.duration.to_f / 1.hour) : 0.0) - (dr_action.volume_planned * 1e6)
     topic = "site_max_consumption/#{dr_action.consumer.edms_id[/\d+/].to_i}"
     send_to_mqtt(topic, target)
     dr_action.update(activated_at: timestamp)
