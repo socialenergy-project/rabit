@@ -27,7 +27,7 @@ class DrEventWorker
 
   def activate_dr(dr_action, timestamp)
     last_data_point = DataPoint.includes(:interval).where(consumer_id: dr_action.consumer_id).order(timestamp: :desc).first
-    target = (last_data_point ? last_data_point.consumption * (last_data_point.interval.duration.to_f / 1.hour) : 0.0) - (dr_action.volume_planned * 1e6)
+    target = (last_data_point ? last_data_point.consumption / (last_data_point.interval.duration.to_f / 1.hour) : 0.0) - (dr_action.volume_planned * 1e6)
     topic = "site_max_consumption/#{dr_action.consumer.edms_id[/\d+/].to_i}"
     send_to_mqtt(topic, target)
     dr_action.update(activated_at: timestamp)
