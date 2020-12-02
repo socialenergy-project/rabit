@@ -23,7 +23,7 @@ class ConsumersController < ApplicationController
   # GET /consumers/1
   # GET /consumers/1.json
   def show
-    @hash = build_map([@consumer], @consumer.communities.first&.clustering)
+    @hash = build_map([@consumer], @consumer.communities.first&.clustering || Clustering.first)
   end
 
   # GET /consumers/new
