@@ -34,7 +34,7 @@ class DrEventWorker
   end
 
   def deactivate_dr(dr_action, timestamp)
-    if dr_action.consumer.smart_plugs.positive?
+    if dr_action.consumer.smart_plugs.count.positive?
       dr_action.consumer.smart_plugs.each do |smart_plug|
         topic = "hscnl/#{consumer.edms_id}/sendcommand/#{smart_plug.mqtt_name}_Switch"
         send_to_mqtt(topic, 'ON')
@@ -50,7 +50,7 @@ class DrEventWorker
     last_data_point = DataPoint.includes(:interval).where(consumer_id: dr_action.consumer_id).order(timestamp: :desc).first
     target = (last_data_point ? last_data_point.consumption * 1e+3 / (last_data_point.interval.duration.to_f / 1.hour) : 0.0) - (dr_action.volume_planned * 1e6)
 
-    if dr_action.consumer.smart_plugs.positive?
+    if dr_action.consumer.smart_plugs.count.positive?
       dr_action.consumer.smart_plugs.each do |smart_plug|
         topic = "hscnl/#{consumer.edms_id}/sendcommand/#{smart_plug.mqtt_name}_Switch"
         send_to_mqtt(topic, 'OFF')
