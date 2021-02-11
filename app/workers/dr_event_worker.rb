@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fetch_data/fetch_data'
 
 class DrEventWorker
@@ -32,16 +34,31 @@ class DrEventWorker
   end
 
   def deactivate_dr(dr_action, timestamp)
-    topic = "site_max_consumption/#{dr_action.consumer.edms_id[/\d+/].to_i}"
-    send_to_mqtt(topic, { 'message': 'DR_OFF' }.to_json)
+    if dr_action.consumer.smart_plugs.positive?
+      dr_action.consumer.smart_plugs.each do |smart_plug|
+        topic = "hscnl/#{consumer.edms_id}/sendcommand/#{smart_plug.mqtt_name}_Switch"
+        send_to_mqtt(topic, 'ON')
+      end
+    else
+      topic = "site_max_consumption/#{dr_action.consumer.edms_id[/\d+/].to_i}"
+      send_to_mqtt(topic, { 'message': 'DR_OFF' }.to_json)
+    end
     dr_action.update(deactivated_at: timestamp)
   end
 
   def activate_dr(dr_action, timestamp)
     last_data_point = DataPoint.includes(:interval).where(consumer_id: dr_action.consumer_id).order(timestamp: :desc).first
     target = (last_data_point ? last_data_point.consumption * 1e+3 / (last_data_point.interval.duration.to_f / 1.hour) : 0.0) - (dr_action.volume_planned * 1e6)
-    topic = "site_max_consumption/#{dr_action.consumer.edms_id[/\d+/].to_i}"
-    send_to_mqtt(topic, target)
+
+    if dr_action.consumer.smart_plugs.positive?
+      dr_action.consumer.smart_plugs.each do |smart_plug|
+        topic = "hscnl/#{consumer.edms_id}/sendcommand/#{smart_plug.mqtt_name}_Switch"
+        send_to_mqtt(topic, 'OFF')
+      end
+    else
+      topic = "site_max_consumption/#{dr_action.consumer.edms_id[/\d+/].to_i}"
+      send_to_mqtt(topic, target)
+    end
     dr_action.update(activated_at: timestamp)
   end
 

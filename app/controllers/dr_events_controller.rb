@@ -7,7 +7,8 @@ class DrEventsController < ApplicationController
   # GET /dr_events
   # GET /dr_events.json
   def index
-    @dr_events = DrEvent.accessible_by(current_ability,:read).order("#{sort_column} #{sort_direction}").paginate(page: params[:page])
+    @dr_events = DrEvent.accessible_by(current_ability,
+                                       :read).order("#{sort_column} #{sort_direction}").paginate(page: params[:page])
   end
 
   # GET /dr_events/1
@@ -99,8 +100,10 @@ class DrEventsController < ApplicationController
       @dr_event.destroy
       format.html { redirect_to dr_events_url, notice: 'Dr event was successfully destroyed.' }
       format.json { head :no_content }
-    rescue Exception => e
-      format.html { redirect_to dr_events_url, alert: "Dr event was NOT successfully destroyed. Reason is #{e.message}" }
+    rescue StandardError => e
+      format.html do
+        redirect_to dr_events_url, alert: "Dr event was NOT successfully destroyed. Reason is #{e.message}"
+      end
       format.json { render json: e, status: :unprocessable_entity }
     end
   end
@@ -114,6 +117,15 @@ class DrEventsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def dr_event_params
-    params.require(:dr_event).permit(:name, :starttime, :interval_id, :consumer_category_id, :price, :state, :dr_type, dr_targets_attributes: %i[id ts_offset volume])
+    params.require(:dr_event).permit(:name, :starttime, :interval_id, :consumer_category_id, :price, :state, :dr_type,
+                                     dr_targets_attributes: %i[id ts_offset volume])
+  end
+
+  def sort_column
+    :starttime
+  end
+
+  def sort_direction
+    :desc
   end
 end
