@@ -36,7 +36,7 @@ class DrEventWorker
   def deactivate_dr(dr_action, timestamp)
     if dr_action.consumer.smart_plugs.count.positive?
       dr_action.consumer.smart_plugs.each do |smart_plug|
-        topic = "hscnl/#{consumer.edms_id}/sendcommand/#{smart_plug.mqtt_name}_Switch"
+        topic = "hscnl/#{dr_action.consumer.edms_id}/sendcommand/#{smart_plug.mqtt_name}_Switch"
         send_to_mqtt(topic, 'ON')
       end
     else
@@ -52,7 +52,7 @@ class DrEventWorker
 
     if dr_action.consumer.smart_plugs.count.positive?
       dr_action.consumer.smart_plugs.each do |smart_plug|
-        topic = "hscnl/#{consumer.edms_id}/sendcommand/#{smart_plug.mqtt_name}_Switch"
+        topic = "hscnl/#{dr_action.consumer.edms_id}/sendcommand/#{smart_plug.mqtt_name}_Switch"
         send_to_mqtt(topic, 'OFF')
       end
     else
