@@ -11,7 +11,7 @@ gem 'dotenv-rails'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0'
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 0.18'
+gem 'pg' #, '~> 0.18'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
@@ -79,7 +79,7 @@ gem 'font-awesome-sass', '~> 4.7.0'
 gem 'will_paginate-bootstrap4'
 
 # For user/role management
-gem 'devise'
+gem "devise", github: "heartcombo/devise", branch: "master"
 gem 'omniauth-oauth2'
 gem 'cancancan'
 gem 'rolify'
