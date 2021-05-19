@@ -59,6 +59,7 @@ prepareData = (dataset) ->
       pointHoverBackgroundColor: getColor(k, 0.2),
       pointHitRadius: 20,
       pointBorderWidth: 2,
+      showLine: true,
     }).reverse()
 
 window.createChart = (domElementId, dataset, legendId = null, startFromZero = true, duration = 0, yaxistext= "Consumption (kWh)", chart_vars = null) ->

@@ -29,7 +29,8 @@ $(document).on 'turbolinks:load', ->
                     pointHoverBackgroundColor: "rgba(2,117,216,1)",
                     pointHitRadius: 20,
                     pointBorderWidth: 2,
-                    data: []
+                    data: [],
+                    showLine: true,
                 }],
             },
             options: {
