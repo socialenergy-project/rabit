@@ -40,7 +40,7 @@ namespace :db do
           CSV.new(gz.read, :headers => true).each do |row|
             t.where(id: row['id']).first_or_initialize.tap do |cc|
               cc.update_attributes(row.to_h)
-              yield(cc) if block_given?
+              # yield(cc) if block_given?
               cc.save!
             end
           end

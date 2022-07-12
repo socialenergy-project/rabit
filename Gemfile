@@ -79,7 +79,7 @@ gem 'font-awesome-sass', '~> 4.7.0'
 gem 'will_paginate-bootstrap4'
 
 # For user/role management
-gem "devise", github: "heartcombo/devise", branch: "master"
+gem "devise", github: "heartcombo/devise", branch: "main"
 gem 'omniauth-oauth2'
 gem 'cancancan'
 gem 'rolify'
@@ -116,7 +116,7 @@ gem "sidekiq-cron", "~> 0.6.3"
 
 gem 'sidekiq-scheduler'
 
-gem 'sidekiq'
+gem 'sidekiq', "= 6.4.1"
 gem 'sidekiq-unique-jobs'
 gem 'redis-namespace'
 
