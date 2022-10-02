@@ -1,0 +1,53 @@
+<%= content_for :title, 'Dr Targets' %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        All Dr Targets
+      </div>
+      <div class="card-body">
+        <table class="table table-responsive table-striped table-bordered table-hover">
+          <thead>
+          <tr>
+            <th><%= sortable "dr_event_id", "Dr event" -%></th>
+            <th><%= sortable "ts_offset", "Ts offset" -%></th>
+            <th><%= sortable "volume", "Volume" -%></th>
+            <th><%= sortable "cleared_price", "Cleared price" -%></th>
+            <th colspan="3"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @dr_targets.each do |dr_target| %>
+          <tr>
+            <td>
+                <%= link_to dr_target.dr_event&.name, dr_event_path(dr_target.dr_event) if dr_target.dr_event -%>
+            </td>
+            <td>
+                <%= dr_target.ts_offset-%>
+            </td>
+            <td>
+                <%= dr_target.volume-%>
+            </td>
+            <td>
+                <%= dr_target.cleared_price-%>
+            </td>
+            <td><%= link_to 'Show', dr_target, class: 'btn btn-info btn-sm' if can? :show, dr_target%></td>
+            <td><%= link_to 'Edit', edit_dr_target_path(dr_target), class: 'btn btn-warning btn-sm' if can? :update, dr_target %></td>
+            <td><%= link_to 'Destroy', dr_target, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' if can? :destroy, dr_target %></td>
+          </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <%= will_paginate @collection, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <br>
+        <%= link_to 'New Dr Target', new_dr_target_path, class: 'btn btn-primary btn-sm' if can? :create, DrTarget %>
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>
+
+

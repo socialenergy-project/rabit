@@ -1,0 +1,45 @@
+<%= form_with(model: dr_target, local: true) do |form| %>
+  <% if dr_target.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(dr_target.errors.count, "error") %> prohibited this dr_target from being saved:</h2>
+
+      <ul>
+      <% dr_target.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :dr_event_id, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+       <%= form.collection_select :dr_event_id, DrEvent.all, :id, :name, { prompt: true }, class: "form-control custom-select", id: 'dr_target_dr_event_id'  %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :ts_offset, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.number_field :ts_offset, id: :ts_offset, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :volume, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :volume, id: :volume, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :cleared_price, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :cleared_price, id: :cleared_price, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary btn-sm" %>
+  </div>
+<% end %>

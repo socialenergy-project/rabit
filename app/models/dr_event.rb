@@ -151,11 +151,14 @@ class DrEvent < ApplicationRecord
   end
 
   def cancel!
-    return false unless active?
+    # return false unless active?
+    ActiveRecord::Base.transaction do
+      DrAction.joins(:dr_target).where('dr_targets.dr_event': self).delete_all
 
-    DrAction.joins(:dr_target).where('dr_targets.dr_event': self).delete_all
-
-    self.state = :ready
-    save!
+      self.state = :ready
+      save!
+    end
+  rescue
+    return false
   end
 end

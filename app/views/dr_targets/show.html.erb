@@ -1,0 +1,37 @@
+<%= content_for :title, @dr_target.id -%>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-area-chart"></i>
+        dr_target properties
+      </div>
+      <div class="card-body">
+        <p>
+          <strong>Dr event:</strong>
+          <%= link_to @dr_target.dr_event&.name, dr_event_path(@dr_target.dr_event) if @dr_target.dr_event -%>
+        </p>
+        <p>
+          <strong>Ts offset:</strong>
+          <%= @dr_target.ts_offset -%>
+        </p>
+        <p>
+          <strong>Volume:</strong>
+          <%= @dr_target.volume -%>
+        </p>
+        <p>
+          <strong>Cleared price:</strong>
+          <%= @dr_target.cleared_price -%>
+        </p>
+
+        <%= link_to "Edit", edit_dr_target_path(@dr_target), class: "btn btn-warning btn-sm" if can? :edit, @dr_target %> |
+        <%= link_to "All Dr Targets", dr_targets_path, class: "btn btn-info btn-sm" %>
+
+      </div>
+      <div class="card-footer small text-muted">
+      </div>
+    </div>
+  </div>
+</div>
+
