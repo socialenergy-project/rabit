@@ -31,7 +31,7 @@ class Ability
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
-    if user.has_role? 'admin'
+    if user.has_role? "admin"
       can :manage, :all
       cannot :manage, DrEvent
       can %i[read create], DrEvent
@@ -43,12 +43,23 @@ class Ability
       can [:activate], DrEvent, &:ready?
 
       can [:cancel], DrEvent, &:active?
-
     else
       # cannot :index, User
       cannot :manage, :all
 
-      can %i[read create schedule activate cancel], DrEvent, user_id: user.id
+      can %i[index read create], DrEvent, user_id: user.id
+
+      can [:schedule, :edit, :update, :destroy], DrEvent do |dr_event|
+        dr_event.user_id == user.id && (dr_event.created? || dr_event.ready?)
+      end
+
+      can [:activate], DrEvent do |a|
+        a.user_id == user.id && a.ready?
+      end
+
+      can [:cancel], DrEvent do |a|
+        a.user_id == user.id && a.active?
+      end
 
       can :read, ConsumerCategory
 
