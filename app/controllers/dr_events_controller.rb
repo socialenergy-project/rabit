@@ -19,7 +19,7 @@ class DrEventsController < ApplicationController
   def new
     default_interval = Interval.find_by(duration: 1.hour.seconds)
     @dr_event = DrEvent.new(interval: default_interval,
-                            starttime: default_interval.next_timestamp(DateTime.now - DateTime.now.utc_offset.seconds)&.strftime('%F %H:%M'),
+                            starttime: default_interval.next_timestamp(DateTime.now - DateTime.now.utc_offset.seconds)&.strftime("%F %H:%M"),
                             state: :created)
     3.times { |i| @dr_event.dr_targets.build ts_offset: i }
   end
@@ -27,10 +27,10 @@ class DrEventsController < ApplicationController
   def schedule
     respond_to do |format|
       if @dr_event.schedule! # @dr_event.save
-        format.html { redirect_to @dr_event, notice: 'Dr event was successfully scheduled.' }
+        format.html { redirect_to @dr_event, notice: "Dr event was successfully scheduled." }
         format.json { render :show, status: :ok, location: @dr_event }
       else
-        format.html { redirect_to @dr_event, alert: 'Dr event was NOT successfully scheduled.' }
+        format.html { redirect_to @dr_event, alert: "Dr event was NOT successfully scheduled." }
         format.json { render json: @dr_event.errors, status: :unprocessable_entity }
       end
     end
@@ -39,10 +39,10 @@ class DrEventsController < ApplicationController
   def activate
     respond_to do |format|
       if @dr_event.activate! # @dr_event.save
-        format.html { redirect_to @dr_event, notice: 'Dr event was successfully scheduled.' }
+        format.html { redirect_to @dr_event, notice: "Dr event was successfully scheduled." }
         format.json { render :show, status: :ok, location: @dr_event }
       else
-        format.html { redirect_to @dr_event, alert: 'Dr event was NOT successfully scheduled.' }
+        format.html { redirect_to @dr_event, alert: "Dr event was NOT successfully scheduled." }
         format.json { render json: @dr_event.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +51,10 @@ class DrEventsController < ApplicationController
   def cancel
     respond_to do |format|
       if @dr_event.cancel! # @dr_event.save
-        format.html { redirect_to @dr_event, notice: 'Dr event was successfully canceled.' }
+        format.html { redirect_to @dr_event, notice: "Dr event was successfully canceled." }
         format.json { render :show, status: :ok, location: @dr_event }
       else
-        format.html { redirect_to @dr_event, alert: 'Dr event was NOT successfully canceled.' }
+        format.html { redirect_to @dr_event, alert: "Dr event was NOT successfully canceled." }
         format.json { render json: @dr_event.errors, status: :unprocessable_entity }
       end
     end
@@ -69,8 +69,8 @@ class DrEventsController < ApplicationController
     @dr_event = DrEvent.new(dr_event_params.merge(state: :ready, user_id: current_user&.id))
 
     respond_to do |format|
-      if @dr_event.save
-        format.html { redirect_to @dr_event, notice: 'Dr event was successfully created.' }
+      if @dr_event.create_and_possibly_activate
+        format.html { redirect_to @dr_event, notice: "Dr event was successfully created." }
         format.json { render :show, status: :created, location: @dr_event }
       else
         format.html { render :new }
@@ -84,7 +84,7 @@ class DrEventsController < ApplicationController
   def update
     respond_to do |format|
       if @dr_event.update(dr_event_params)
-        format.html { redirect_to @dr_event, notice: 'Dr event was successfully updated.' }
+        format.html { redirect_to @dr_event, notice: "Dr event was successfully updated." }
         format.json { render :show, status: :ok, location: @dr_event }
       else
         format.html { render :edit }
@@ -98,7 +98,7 @@ class DrEventsController < ApplicationController
   def destroy
     respond_to do |format|
       @dr_event.destroy
-      format.html { redirect_to dr_events_url, notice: 'Dr event was successfully destroyed.' }
+      format.html { redirect_to dr_events_url, notice: "Dr event was successfully destroyed." }
       format.json { head :no_content }
     rescue StandardError => e
       format.html do

@@ -19,6 +19,8 @@ class DrEvent < ApplicationRecord
 
   validate :valid_starttime
 
+  validates_presence_of :consumer_category
+
   validates_presence_of :price
 
   validates_presence_of :dr_targets
@@ -39,6 +41,20 @@ class DrEvent < ApplicationRecord
         return
       end
     end
+  end
+
+  def create_and_possibly_activate
+    ActiveRecord::Base.transaction do
+      save
+      if dr_type == "automatic"
+        return schedule! && activate!
+      end
+    end
+    return self
+  rescue Exception => e
+    errors.add(:'create_and_possibly_activate', "#{e} #{e.backtrace}")
+
+    return false
   end
 
   def schedule!
@@ -106,8 +122,10 @@ class DrEvent < ApplicationRecord
       )
       self.state = :ready
       save!
+      self.reload
     end
-  rescue
+  rescue Exception => e
+    errors.add(:'schedule', "Schedule has failed #{e} #{e.backtrace}")
     return false
   end
 
@@ -146,7 +164,8 @@ class DrEvent < ApplicationRecord
         end.flatten
       )
     end
-  rescue
+  rescue Exception => e
+    errors.add(:'activate', "activate has failed #{e}  #{e.backtrace}")
     return false
   end
 
