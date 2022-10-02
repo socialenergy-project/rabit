@@ -66,7 +66,7 @@ class DrEventsController < ApplicationController
   # POST /dr_events
   # POST /dr_events.json
   def create
-    @dr_event = DrEvent.new(dr_event_params.merge(state: :ready))
+    @dr_event = DrEvent.new(dr_event_params.merge(state: :ready, user_id: current_user&.id))
 
     respond_to do |format|
       if @dr_event.save

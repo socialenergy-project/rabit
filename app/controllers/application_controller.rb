@@ -26,7 +26,10 @@ class ApplicationController < ActionController::Base
   check_authorization :unless => :do_not_check_authorization?
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to request.referer || root_path, :alert => exception.message
+    respond_to do |format|
+      format.html { redirect_to request.referer || root_path, :alert => exception.message }
+      format.json { render json: {"error": exception.message}, status: :unauthorized }
+    end
   end
 
   helper_method :sort_column, :sort_direction

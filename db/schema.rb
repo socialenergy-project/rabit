@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_30_133317) do
+ActiveRecord::Schema.define(version: 2022_09_30_153554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -173,8 +173,10 @@ ActiveRecord::Schema.define(version: 2020_11_30_133317) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "consumer_category_id"
+    t.bigint "user_id", null: false
     t.index ["consumer_category_id"], name: "index_dr_events_on_consumer_category_id"
     t.index ["interval_id"], name: "index_dr_events_on_interval_id"
+    t.index ["user_id"], name: "index_dr_events_on_user_id"
   end
 
   create_table "dr_plan_actions", force: :cascade do |t|
@@ -518,6 +520,7 @@ ActiveRecord::Schema.define(version: 2020_11_30_133317) do
   add_foreign_key "dr_actions", "dr_targets"
   add_foreign_key "dr_events", "consumer_categories"
   add_foreign_key "dr_events", "intervals"
+  add_foreign_key "dr_events", "users"
   add_foreign_key "dr_plan_actions", "consumer_categories"
   add_foreign_key "dr_plan_actions", "consumers"
   add_foreign_key "dr_plan_actions", "dr_targets"

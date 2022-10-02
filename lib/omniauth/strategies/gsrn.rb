@@ -45,6 +45,12 @@ module OmniAuth
 
       def self.validate_gsrn_token(email, token)
         return if token.nil? or email.nil? or token.length < 5 or email.length < 5
+
+        u1 = User.find_by email: email
+        if u1.authentication_token == token
+          return u1
+        end
+
         response = RestClient.post('https://socialauth.intelen.com/resource.php', "access_token=#{token}")
         result = JSON.parse response.body
         Rails.logger.debug "The results is #{result}"

@@ -48,6 +48,10 @@ class Ability
       # cannot :index, User
       cannot :manage, :all
 
+      can %i[read create schedule activate cancel], DrEvent, user_id: user.id
+
+      can :read, ConsumerCategory
+
       can :read, Consumer, users: { id: user.id } # .includes(:users), ['users.id' => user.id]
 
       can :manage, EccType, consumer: { users: { id: user.id } }
