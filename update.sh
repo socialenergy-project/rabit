@@ -8,7 +8,12 @@ eval "$(rbenv init -)"
 export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 eval $(ssh-agent)
 ssh-add ~/.ssh/id_rsa
-set -e
+set -euxo pipefail
+error_handler() {
+  echo "******* FAILED *******" 1>&2
+}
+
+trap error_handler ERR
 
 # enter deploy directory
 cd "$(dirname "${BASH_SOURCE[0]}")"
