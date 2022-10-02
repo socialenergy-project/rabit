@@ -35,7 +35,7 @@ class DrEvent < ApplicationRecord
   end
 
   def continuous_ts_offsets
-    dr_targets.order('ts_offset: :asc).each_with_index do |dr_target, i|
+    dr_targets.order(ts_offset: :asc).each_with_index do |dr_target, i|
       if i != dr_target.ts_offset
         errors.add(:'dr_targets.ts_offset', "offsets must start at zero and be consequtive")
         return
