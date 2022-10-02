@@ -173,7 +173,7 @@ ActiveRecord::Schema.define(version: 2022_09_30_153554) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "consumer_category_id"
-    t.bigint "user_id", null: false
+    t.bigint "user_id", default: 1, null: false
     t.index ["consumer_category_id"], name: "index_dr_events_on_consumer_category_id"
     t.index ["interval_id"], name: "index_dr_events_on_interval_id"
     t.index ["user_id"], name: "index_dr_events_on_user_id"
