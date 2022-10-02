@@ -32,7 +32,7 @@ bundle install
 RAILS_ENV=production rails db:migrate
 
 # create new seeds
-[ "$1" == --seed ] && RAILS_ENV=production rails db:seed
+[ "${1:-wrong}" == --seed ] && RAILS_ENV=production rails db:seed
 
 # and the static files
 RAILS_ENV=production rails assets:precompile || echo "Not compiled"
