@@ -63,6 +63,8 @@ class Ability
 
       can :read, ConsumerCategory
 
+      can :read, Interval
+
       can :read, Consumer, users: { id: user.id } # .includes(:users), ['users.id' => user.id]
 
       can :manage, EccType, consumer: { users: { id: user.id } }

@@ -1,0 +1,477 @@
+openapi: 3.0.3
+info:
+  title: SocialEnergy Demand Response API
+  description: |-
+    Interface for submitting Demand Response events to the SocialEnergy RAT platform
+
+    The credentials for the API are from the central DB can be obtained by the ICCS team of the [SocialEnergy project](https://socialenergy-project.eu)
+
+  contact:
+    name: Dimitros J. Vergados
+    url: https://socialenergy-project.eu
+  license:
+    name: GNU
+
+  version: 1.0.1
+servers:
+  - url: http://localhost:3000/
+paths:
+  /dr_events:
+    get:
+      tags:
+        - Demand Response Events
+      summary: Get a list of your Demand Response events
+      responses:
+        "200":
+          description: operation has been successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DrEventWithTargets"
+        "422":
+          description: Unprocessable Entity
+      security:
+        - userEmail: [post_pricing]
+        - userToken: [post_pricing]
+    post:
+      tags:
+        - Demand Response Events
+      summary: Submit a new Demand Response event
+      description: |
+        This endpoint is for submitting a new Demand Response event into the SocialEnergy RAT platform
+      requestBody:
+        $ref: "#/components/requestBodies/DrEvent"
+      responses:
+        "201":
+          description: operation has been successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DrEventWithTargets"
+        "422":
+          description: Unprocessable Entity
+      security:
+        - userEmail: [post_pricing]
+        - userToken: [post_pricing]
+  /dr_events/{dr_event_id}/:
+    parameters:
+      - in: path
+        required: true
+        name: dr_event_id
+        schema:
+          type: string
+    get:
+      tags:
+        - Demand Response Events
+      summary: Get details of a Demand Response event
+      responses:
+        "200":
+          description: operation has been successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DrEventWithTargets"
+        "422":
+          description: Unprocessable Entity
+      security:
+        - userEmail: [post_pricing]
+        - userToken: [post_pricing]
+    patch:
+      tags:
+        - Demand Response Events
+      summary: Update a Demand Response event
+      requestBody:
+        $ref: "#/components/requestBodies/DrEvent"
+      responses:
+        "200":
+          description: operation has been successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DrEventWithTargets"
+        "422":
+          description: Unprocessable Entity
+      security:
+        - userEmail: [post_pricing]
+        - userToken: [post_pricing]
+    put:
+      tags:
+        - Demand Response Events
+      summary: Update a Demand Response event
+      requestBody:
+        $ref: "#/components/requestBodies/DrEvent"
+      responses:
+        "200":
+          description: operation has been successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DrEventWithTargets"
+        "422":
+          description: Unprocessable Entity
+      security:
+        - userEmail: [post_pricing]
+        - userToken: [post_pricing]
+    delete:
+      tags:
+        - Demand Response Events
+      summary: Delete a Demand Response event
+      responses:
+        "200":
+          description: operation has been successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DrEventWithTargets"
+        "422":
+          description: Unprocessable Entity
+      security:
+        - userEmail: [post_pricing]
+        - userToken: [post_pricing]
+  /dr_events/{dr_event_id}/cancel:
+    parameters:
+      - in: path
+        required: true
+        name: dr_event_id
+        schema:
+          type: string
+    post:
+      tags:
+        - Demand Response Events
+      summary: Cancel a Demand Response event
+      responses:
+        "200":
+          description: operation has been successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DrEventWithTargets"
+        "422":
+          description: Unprocessable Entity
+      security:
+        - userEmail: [post_pricing]
+        - userToken: [post_pricing]
+  /dr_events/{dr_event_id}/schedule:
+    parameters:
+      - in: path
+        required: true
+        name: dr_event_id
+        schema:
+          type: string
+    post:
+      tags:
+        - Demand Response Events
+      summary: Schedule a Demand Response event, i.e. assign the consumers that will respond to it
+      responses:
+        "200":
+          description: operation has been successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DrEventWithTargets"
+        "422":
+          description: Unprocessable Entity
+      security:
+        - userEmail: [post_pricing]
+        - userToken: [post_pricing]
+  /dr_events/{dr_event_id}/activate:
+    parameters:
+      - in: path
+        required: true
+        name: dr_event_id
+        schema:
+          type: string
+    post:
+      tags:
+        - Demand Response Events
+      summary: Activate a schedulled Demand Response event. After being activated, the DR event will materiaze at starttime
+      responses:
+        "200":
+          description: operation has been successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DrEventWithTargets"
+        "422":
+          description: Unprocessable Entity
+      security:
+        - userEmail: [post_pricing]
+        - userToken: [post_pricing]
+  /consumer_categories:
+    get:
+      tags:
+        - Consumer Categories
+      summary: Get a list of the Consumer Categories
+      responses:
+        "200":
+          description: operation has been successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConsumerCategory"
+        "422":
+          description: Unprocessable Entity
+      security:
+        - userEmail: [post_pricing]
+        - userToken: [post_pricing]
+
+  /intervals:
+    get:
+      tags:
+        - Intervals
+      summary: Get a list of the Intervals
+      responses:
+        "200":
+          description: operation has been successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Interval"
+        "422":
+          description: Unprocessable Entity
+      security:
+        - userEmail: [post_pricing]
+        - userToken: [post_pricing]
+components:
+  requestBodies:
+    DrEvent:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DrEventBody"
+  schemas:
+    DrEventBody:
+      type: object
+      properties:
+        dr_event:
+          $ref: "#/components/schemas/DrEventWithAttributes"
+    DrEventWithAttributes:
+      allOf:
+        - $ref: "#/components/schemas/DrEvent"
+        - type: object
+          properties:
+            interval_id:
+              type: integer
+              minimum: 0
+              example: 1
+              description: The id of the Interval. Get the Allowed values for the interval ids from path /intervals/
+            consumer_category_id:
+              type: integer
+              minimum: 0
+              example: 2
+              description: The id of the Consumer Category that will be included in the DR event. Get the Allowed values for the interval ids from path /cosmumer_categories/.
+            dr_targets_attributes:
+              type: array
+              items:
+                $ref: "#/components/schemas/DrTarget"
+    DrEventWithTargets:
+      allOf:
+        - "$ref": "#/components/schemas/DrEvent"
+        - type: object
+          properties:
+            id:
+              type: integer
+              minimum: 76
+            consumer_category:
+              $ref: "#/components/schemas/ConsumerCategory"
+            interval:
+              $ref: "#/components/schemas/Interval"
+            state:
+              type: string
+              enum: [created, ready, active, in_progress, completed, elapsed]
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
+            dr_targets:
+              type: array
+              items:
+                $ref: "#/components/schemas/DrTargetWithPlan"
+            url:
+              type: string
+              example: http://localhost:3000/dr_events/76.json
+    DrTarget:
+      type: object
+      properties:
+        ts_offset:
+          type: integer
+          minimum: 0
+          description:
+            Number of intervals after starttime that the demand reduction will occur.
+
+            The `ts_offset` values must be consecutive starting at zero
+        volume:
+          type: number
+          minimum: 0
+          example: 34.0
+          description: The amount of demand reduction requested for the specified `ts_offset`.
+
+    DrTargetWithPlan:
+      allOf:
+        - $ref: "#/components/schemas/DrTarget"
+        - type: object
+          properties:
+            id:
+              type: integer
+              minimum: 0
+              example: 102
+            dr_event_id:
+              type: integer
+              minimum: 0
+              example: 76
+            dr_plan_actions:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    minimum: 0
+                  dr_target_id:
+                    type: integer
+                    minimum: 0
+                    example: 102
+                  consumer_id:
+                    type: integer
+                    minimum: 0
+                    example: 7
+                  volume_planned:
+                    type: number
+                    minimum: 0
+                    example: 10
+                  price_per_mw:
+                    type: number
+                    minimum: 0
+                    example: 33
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  consumer_category_id:
+                    type: number
+                    minimum: 0
+                    example: 2
+            dr_actions:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    minimum: 0
+                  dr_target_id:
+                    type: integer
+                    minimum: 0
+                    example: 102
+                  consumer_id:
+                    type: integer
+                    minimum: 0
+                    example: 7
+                  volume_planned:
+                    type: number
+                    minimum: 0
+                    example: 10
+                  volume_actual:
+                    type: number
+                    minimum: 0
+                    example: 10
+                  price_per_mw:
+                    type: number
+                    minimum: 0
+                    example: 33
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  activated_at:
+                    type: string
+                    format: date-time
+                  deactivated_at:
+                    type: string
+                    format: date-time
+
+    DrEvent:
+      type: object
+      properties:
+        name:
+          type: string
+        starttime:
+          type: string
+          format: date-time
+          example: "2022-10-03T11:00:00Z"
+          description: The time the Dr event will start. This time should be in the future. The `starttime` should be a multiple of the interval duration, i.e. alligned to hour, 15 minute, etc.
+        price:
+          type: number
+          minimum: 0
+          example: 34.0
+          description: The price that will be set for the DR event
+        dr_type:
+          type: string
+          enum: [automatic, manual]
+
+    ConsumerCategory:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 2
+        name:
+          type: string
+          example: "ICCS"
+        description:
+          type: string
+        real_time:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        reference_year:
+          type: number
+
+    Interval:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: "15 minutes"
+        duration:
+          type: integer
+          example: 900
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    userEmail:
+      type: apiKey
+      in: header
+      name: X-User-Email
+    userToken:
+      type: apiKey
+      in: header
+      name: X-User-Token
+
+security:
+  - userEmail: [post_pricing]
+  - userToken: [post_pricing]

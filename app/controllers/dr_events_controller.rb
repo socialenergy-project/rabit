@@ -83,6 +83,9 @@ class DrEventsController < ApplicationController
   # PATCH/PUT /dr_events/1.json
   def update
     respond_to do |format|
+      if dr_event_params["dr_targets_attributes"]
+        @dr_event.dr_targets.destroy_all
+      end
       if @dr_event.update(dr_event_params)
         format.html { redirect_to @dr_event, notice: "Dr event was successfully updated." }
         format.json { render :show, status: :ok, location: @dr_event }

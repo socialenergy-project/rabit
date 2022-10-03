@@ -1,7 +1,6 @@
-require 'rack-mini-profiler'
+require "rack-mini-profiler"
 
 class ApplicationController < ActionController::Base
-
   before_action :validate_gsrn_token
   # acts_as_token_authentication_handler_for User
 
@@ -18,7 +17,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   def check_messages
     current_user&.received_messages&.sent&.update_all(status: :notified)
   end
@@ -28,7 +26,22 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
       format.html { redirect_to request.referer || root_path, :alert => exception.message }
-      format.json { render json: {"error": exception.message}, status: :unauthorized }
+      format.json { render json: { "error": exception.message }, status: :unauthorized }
+    end
+  end
+
+  rescue_from Exception do |exception|
+    respond_to do |format|
+      p "The exception is", exception
+      format.html { raise exception }
+      format.json {
+        render json: { "error": exception.message }, status: case exception
+               when ActionController::RoutingError, ActiveRecord::RecordNotFound
+                 404
+               else
+                 :internal_server_error
+               end
+      }
     end
   end
 
@@ -37,10 +50,10 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     logger.debug "Just signed in from #{resource}, #{request.referer}"
 
-    if [ 'https://socialauth.intelen.com',
-         'https://rat.socialenergy-project.eu/users/auth/gsrn',
-         'https://rabit.socialenergy-project.eu/users/auth/gsrn',
-         'https://socialauth.intelen.com/login/index.php' ].include? request.referer
+    if ["https://socialauth.intelen.com",
+        "https://rat.socialenergy-project.eu/users/auth/gsrn",
+        "https://rabit.socialenergy-project.eu/users/auth/gsrn",
+        "https://socialauth.intelen.com/login/index.php"].include? request.referer
       return super
     end
 
@@ -75,7 +88,7 @@ class ApplicationController < ActionController::Base
   rescue StandardError => e
     logger.error "#{e.class}, #{e.message}"
     logger.error e.backtrace.join("\n")
-    render json: {error: e.message}, status: :internal_server_error
+    render json: { error: e.message }, status: :internal_server_error
   end
 
   def do_not_check_authorization?
